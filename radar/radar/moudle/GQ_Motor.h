@@ -10,7 +10,8 @@ extern "C" {
 #include "PID.h"
 #include "string.h"
 #include "can.h"
-
+#include "stdio.h"
+#include "math.h"
 
 
 typedef struct
@@ -58,30 +59,62 @@ extern gimbal_motor_t gimbal_motor_t_pitch;
 extern CAN_TxHeaderTypeDef tx_header;
 
 void gimbal_yaw_init(void);
+void gimbal_pitch_init(void);
 void update(gimbal_motor_t* gimbal,uint8_t rx_data[24],CAN_RxHeaderTypeDef* rx_header);
 void gimbal_PID_Calc(gimbal_motor_t* gimbal);
 void CAN_cmd_gimbal(gimbal_motor_t* gimbal);
+void rezero_pos(CAN_HandleTypeDef *hcan, uint8_t id);
+void conf_write(CAN_HandleTypeDef *hcan, uint8_t id);
 void timed_return_motor_status(CAN_HandleTypeDef *hcan, uint8_t id, int16_t t_ms);
+void gimbal_set_control_init(void);
+void gimbal_set_control(void);
 
 
+
+//pid²ÎÊý
 #define yaw_absolute_angle_kp 0.0f
 #define yaw_absolute_angle_ki 0.0f
 #define yaw_absolute_angle_kd 0.0f
-#define yaw_absolute_angle_imax 2000.0f
-#define yaw_absolute_angle_out_max 2000.0f
-#define yaw_gyro_kp 0.40f
+#define yaw_absolute_angle_imax 1000.0f
+#define yaw_absolute_angle_out_max 1000.0f
+
+
+#define yaw_gyro_kp 1.0f
 #define yaw_gyro_ki 0.0f
 #define yaw_gyro_kd 0.05f
 #define yaw_gyro_imax 2000.0f
-#define yaw_gyro_out_max 2000.0f
-#define yaw_relative_angle_kp 2000.0f
-#define yaw_relative_angle_ki 0.0f
+#define yaw_gyro_out_max 5000.0f
+#define yaw_relative_angle_kp 4000.0f
+#define yaw_relative_angle_ki 20.0f
 #define yaw_relative_angle_kd 0.05f
-#define yaw_relative_angle_imax 2000.0f
-#define yaw_relative_angle_out_max 2000.0f
+#define yaw_relative_angle_imax 1000.0f
+#define yaw_relative_angle_out_max 1000.0f
 
 
+#define pitch_absolute_angle_kp 0.0f
+#define pitch_absolute_angle_ki 0.0f
+#define pitch_absolute_angle_kd 0.0f
+#define pitch_absolute_angle_imax 1000.0f
+#define pitch_absolute_angle_out_max 1000.0f
 
+
+#define pitch_gyro_kp 0.40f
+#define pitch_gyro_ki 0.0f
+#define pitch_gyro_kd 0.05f
+#define pitch_gyro_imax 2000.0f
+#define pitch_gyro_out_max 2000.0f
+#define pitch_relative_angle_kp 5000.0f
+#define pitch_relative_angle_ki 0.0f
+#define pitch_relative_angle_kd 0.05f
+#define pitch_relative_angle_imax 1000.0f
+#define pitch_relative_angle_out_max 1000.0f
+
+
+//ÏÞ·ù
+#define yaw_max_relative_angle 0.48f
+#define yaw_min_relative_angle 0.52f
+#define pitch_max_relative_angle 3.0f
+#define pitch_min_relative_angle -3.0f
 
 #ifdef __cplusplus
 }

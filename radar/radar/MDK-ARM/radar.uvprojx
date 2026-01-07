@@ -703,6 +703,26 @@
               <FileType>5</FileType>
               <FilePath>..\moudle\GQ_Motor.h</FilePath>
             </File>
+            <File>
+              <FileName>USART_user.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\moudle\USART_user.c</FilePath>
+            </File>
+            <File>
+              <FileName>USART_user.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\moudle\USART_user.h</FilePath>
+            </File>
+            <File>
+              <FileName>aRGB.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\moudle\aRGB.c</FilePath>
+            </File>
+            <File>
+              <FileName>aRGB.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\moudle\aRGB.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

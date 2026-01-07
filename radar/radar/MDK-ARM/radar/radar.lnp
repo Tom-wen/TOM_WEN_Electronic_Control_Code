@@ -47,6 +47,8 @@
 "radar\imu_task.o"
 "radar\pid.o"
 "radar\gq_motor.o"
+"radar\usart_user.o"
+"radar\argb.o"
 --strict --scatter "radar\radar.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

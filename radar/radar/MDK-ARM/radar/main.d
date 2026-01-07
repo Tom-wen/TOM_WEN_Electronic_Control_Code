@@ -50,3 +50,4 @@ radar\main.o: ../Core/Inc/spi.h
 radar\main.o: ../Core/Inc/tim.h
 radar\main.o: ../Core/Inc/usart.h
 radar\main.o: ../Core/Inc/gpio.h
+radar\main.o: ../moudle/aRGB.h

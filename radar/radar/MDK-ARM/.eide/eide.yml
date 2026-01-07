@@ -98,6 +98,10 @@ virtualFolder:
         - path: ../moudle/PID.h
         - path: ../moudle/GQ_Motor.c
         - path: ../moudle/GQ_Motor.h
+        - path: ../moudle/USART_user.c
+        - path: ../moudle/USART_user.h
+        - path: ../moudle/aRGB.c
+        - path: ../moudle/aRGB.h
       folders: []
     - name: ::CMSIS
       files: []
@@ -258,4 +262,4 @@ targets:
         resetMode: default
         runAfterProgram: true
         speed: 4000
-    uploader: STLink
+    uploader: OpenOCD

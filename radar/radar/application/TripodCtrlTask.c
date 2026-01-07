@@ -4,33 +4,19 @@
 #include "cmsis_os.h"
 #include "can.h"
 #include "GQ_Motor.h"
-//#include "QD4310.h"
 #include "PID.h"
-//#include "Tripod.h"
+#include "USART_user.h"
+#include "aRGB.h"
 uint8_t rx_data[24] = {0};
-
-// 定义常量
-static const float yaw_center = 0.28f;   // 云台偏航中心位置,单位: rad
-static const float pitch_center = 0.32f; // 云台俯仰中心位置,单位: rad
-static const float PI = 3.14159265359f;  // π常量
 
 // 外部变量声明
 extern float INS_angle[3];       // yaw,pitch,roll
-extern float offset_x, offset_y; // 视觉偏移量
 
-// // 电机实例
-// QD4310 YawMotor;
-// QD4310 PitchMotor;
 
-// // 云台实例
-// Tripod tripod;
-
-// // PID控制器实例
-// PID vision_x_pid;
-// PID vision_y_pid;
 
 // 函数声明
 void CAN_InterfaceInit(void);
+
 
 void TripodCtrlTask(void *argument) 
 {
@@ -38,40 +24,23 @@ void TripodCtrlTask(void *argument)
     CAN_InterfaceInit();
     
     // // 初始化电机
+    gimbal_set_control_init();
 	gimbal_yaw_init();
-    // QD4310_init(&PitchMotor, &hcan1, 0x01);
+    gimbal_pitch_init();
     
-    // // 使能电机
-    // YawMotor.enable(&YawMotor);
-    // PitchMotor.enable(&PitchMotor);
-    
-    // // 上电复位云台角度
-    // YawMotor.setAngle(&YawMotor, yaw_center);
-    // PitchMotor.setAngle(&PitchMotor, pitch_center);
-    
-    // // 初始化云台
-    // PID position_pid = {POSITION_TYPE, 0.1f, 0.002f, 2.1f, 100, -100, 1, -1};
-    // Tripod_init(&tripod, &YawMotor, &PitchMotor, yaw_center, pitch_center, &position_pid, 0.001f);
-    
-    // // 初始化视觉PID控制器
-    // PID_init(&vision_x_pid, POSITION_TYPE, 60.0f, 0.0f, 30.0f, 10, -10, 10, -10);
-    // PID_init(&vision_y_pid, POSITION_TYPE, -25.0f, 0.0f, -35.0f, 10, -10, 5, -5);
-    
-    // osDelay(pdMS_TO_TICKS(2000));
-    // HAL_GPIO_WritePin(Laser_En_GPIO_Port, Laser_En_Pin, GPIO_PIN_SET); // 使能激光
-    // HAL_TIM_Base_Start_IT(&htim13);                                   // 开启视觉闭环定时器
-    // tripod.enable(&tripod);
+
+    user_usart_init();
+
     
     while (1) 
 		{
-            gimbal_set_contorl();
+            gimbal_set_control();
 			gimbal_PID_Calc(&gimbal_motor_t_yaw);
+            gimbal_PID_Calc(&gimbal_motor_t_pitch);
 			CAN_cmd_gimbal(&gimbal_motor_t_yaw);
+            CAN_cmd_gimbal(&gimbal_motor_t_pitch);
             osDelay(1);
             
-			
-        // while (ulTaskNotifyTake(pdTRUE, portMAX_DELAY) != pdPASS) {}
-        // tripod.Ctrl_ISR(&tripod, INS_angle[0] / PI * 180);
     }
 }
 
@@ -102,24 +71,27 @@ void CAN_InterfaceInit(void)
     }
 }
 
- void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
+ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) 
+ {
      if (hcan == &hcan1) 
      {
          CAN_RxHeaderTypeDef rx_header;
          HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &rx_header, rx_data);
         
-           //  if (rx_header.StdId == 1024) 
-			//				 {
 
-                  if (rx_header.DLC != 0)
-      {
-                 update(&gimbal_motor_t_yaw,rx_data, &rx_header);
-      }
-    //           } 
-//						 else if (rx_header.StdId == 0x01) 
-//						{
-//                 PitchMotor.update(&PitchMotor, rx_data);
-//             }
+        if (rx_header.DLC != 0)
+        {
+            // 检测ID，如果ID为4则写入yaw轴，如果ID为1则写入pitch轴
+
+            if (rx_header.StdId == 1024) 
+            {
+                update(&gimbal_motor_t_yaw, rx_data, &rx_header);
+            } 
+            else if (rx_header.StdId == 256) 
+            {
+                update(&gimbal_motor_t_pitch, rx_data, &rx_header);
+            }
+        }
          
      }
  }
@@ -131,3 +103,20 @@ void CAN_InterfaceInit(void)
 //                            vision_y_pid.calc(&vision_y_pid, offset_y));
 //     }
 // }
+
+
+void EXTI0_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI0_IRQn 0 */
+
+  /* USER CODE END EXTI0_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
+  /* USER CODE BEGIN EXTI0_IRQn 1 */
+  //零位复位
+    rezero_pos(&hcan1,1);
+    conf_write(&hcan1,1);
+    rezero_pos(&hcan1,4);
+    conf_write(&hcan1,4);
+    aRGB_led_show(0xFFFF0000); // 红灯
+  /* USER CODE END EXTI0_IRQn 1 */
+}

@@ -50,3 +50,7 @@ radar\tripodctrltask.o: ../Core/Inc/can.h
 radar\tripodctrltask.o: ../moudle/GQ_Motor.h
 radar\tripodctrltask.o: ../moudle/PID.h
 radar\tripodctrltask.o: D:\Keil5\ARM\ARMCC\Bin\..\include\string.h
+radar\tripodctrltask.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdio.h
+radar\tripodctrltask.o: D:\Keil5\ARM\ARMCC\Bin\..\include\math.h
+radar\tripodctrltask.o: ../moudle/USART_user.h
+radar\tripodctrltask.o: ../Core/Inc/usart.h

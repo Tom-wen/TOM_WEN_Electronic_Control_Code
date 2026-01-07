@@ -37,3 +37,5 @@ radar\gq_motor.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 radar\gq_motor.o: ..\moudle\PID.h
 radar\gq_motor.o: D:\Keil5\ARM\ARMCC\Bin\..\include\string.h
 radar\gq_motor.o: ../Core/Inc/can.h
+radar\gq_motor.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdio.h
+radar\gq_motor.o: D:\Keil5\ARM\ARMCC\Bin\..\include\math.h
