@@ -1,5 +1,6 @@
 #include "GQ_Motor.h"
 
+
 CAN_TxHeaderTypeDef tx_header;
 gimbal_motor_t gimbal_motor_t_yaw;
 gimbal_motor_t gimbal_motor_t_pitch;
@@ -86,9 +87,9 @@ void rezero_pos(CAN_HandleTypeDef *hcan, uint8_t id)
     uint8_t tdata[] = {0x40, 0x01, 0x04, 0x64, 0x20, 0x63, 0x0a};
 
     can_send(hcan, 0x8000 | id, tdata, sizeof(tdata));
-    HAL_Delay(1000);  // 建议延时1s
+     // 建议延时1s
 
-    conf_write(hcan, id);  // 保存设置
+ // 保存设置
 }
 /**
  * @brief 将电机 RAM 中设置保存到 flash 中(使用此指令后建议给电机重新上电)
@@ -127,21 +128,21 @@ motor_control_vel(&hcan1, gimbal->gimbal_motor_measure.motor_data.motor.id,gimba
 void gimbal_set_control_init(void)
 { 
 	gimbal_motor_t_yaw.relative_angle_set = 0.5f;//规定初始位置0.5圈
-  gimbal_motor_t_pitch.relative_angle_set = 0.5f;
+  gimbal_motor_t_pitch.relative_angle_set = 0.0f;
  // gimbal_motor_t_yaw.motor_gyro_set = 500.0f;
 }
 void gimbal_set_control(void)
 { 
   //	gimbal_motor_t_yaw.relative_angle_set = 0.52f;//规定初始位置0.5圈
-  //设置限幅
-  if (gimbal_motor_t_yaw.relative_angle_set > gimbal_motor_t_yaw.max_relative_angle)
-  {
-    gimbal_motor_t_yaw.relative_angle_set = gimbal_motor_t_yaw.max_relative_angle;
-  }
-  else if (gimbal_motor_t_yaw.relative_angle_set < gimbal_motor_t_yaw.min_relative_angle)
-  {
-    gimbal_motor_t_yaw.relative_angle_set = gimbal_motor_t_yaw.min_relative_angle;
-  }
+  // //设置限幅
+  // if (gimbal_motor_t_yaw.relative_angle_set > gimbal_motor_t_yaw.max_relative_angle)
+  // {
+  //   gimbal_motor_t_yaw.relative_angle_set = gimbal_motor_t_yaw.max_relative_angle;
+  // }
+  // else if (gimbal_motor_t_yaw.relative_angle_set < gimbal_motor_t_yaw.min_relative_angle)
+  // {
+  //   gimbal_motor_t_yaw.relative_angle_set = gimbal_motor_t_yaw.min_relative_angle;
+  // }
 
 
 }

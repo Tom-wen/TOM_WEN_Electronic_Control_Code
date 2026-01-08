@@ -39,6 +39,7 @@ void TripodCtrlTask(void *argument)
             gimbal_PID_Calc(&gimbal_motor_t_pitch);
 			CAN_cmd_gimbal(&gimbal_motor_t_yaw);
             CAN_cmd_gimbal(&gimbal_motor_t_pitch);
+            VOFA_Send_Float_Data(gimbal_motor_t_yaw.relative_angle_set,gimbal_motor_t_yaw.gimbal_motor_measure.motor_data.motor.position, gimbal_motor_t_pitch.relative_angle_set,gimbal_motor_t_pitch.gimbal_motor_measure.motor_data.motor.position);
             osDelay(1);
             
     }
@@ -114,8 +115,11 @@ void EXTI0_IRQHandler(void)
   /* USER CODE BEGIN EXTI0_IRQn 1 */
   //¡„Œª∏¥Œª
     rezero_pos(&hcan1,1);
+    osDelay(1000);
     conf_write(&hcan1,1);
+    osDelay(10);
     rezero_pos(&hcan1,4);
+    osDelay(1000);
     conf_write(&hcan1,4);
     aRGB_led_show(0xFFFF0000); // ∫Ïµ∆
   /* USER CODE END EXTI0_IRQn 1 */

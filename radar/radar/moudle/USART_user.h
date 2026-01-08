@@ -17,6 +17,7 @@ extern "C" {
 extern uint8_t received_buffer[BUFFER_SIZE];
 void user_usart_init(void);
 void process_received_data(uint8_t *buf, uint16_t this_time_rx_len);
+void VOFA_Send_Float_Data(float ch1, float ch2, float ch3, float ch4);
 	
 	
 	

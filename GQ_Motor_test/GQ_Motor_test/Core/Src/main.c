@@ -108,11 +108,11 @@ int main(void)
 //	motor_control_vel(&hcan1, 4, 2000, 200);
 //		motor_read(&hcan1, 4);
 
-	rezero_pos(&hcan1, 1);
-	conf_write(&hcan1, 1);
+//	rezero_pos(&hcan1, 1);
+//	conf_write(&hcan1, 1);
 	  
 	  //timed_return_motor_status(&hcan1, 4,100);
-	//motor_read(&hcan1, 1);
+	motor_read(&hcan1, 1);
 //motor_control_vel(&hcan1, 1, 1000, 200);
 	//motor_control_pos(&hcan1, 4, 5000, 200);
 	motor_control_pos(&hcan1, 1, 000, 200);
@@ -121,7 +121,7 @@ int main(void)
   while (1)
   {
 	Send_Data++;
-motor_control_vel(&hcan1, 1, 0, 200);
+//motor_control_vel(&hcan1, 1, 0, 200);
  HAL_Delay(2000);
 		
 //	motor_control_vel(&hcan1, 4, 1000, 200);
