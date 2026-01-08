@@ -7,6 +7,7 @@
 #include "PID.h"
 #include "USART_user.h"
 #include "aRGB.h"
+#include "remote_control.h"
 uint8_t rx_data[24] = {0};
 
 // 外部变量声明
@@ -37,6 +38,7 @@ void TripodCtrlTask(void *argument)
             gimbal_set_control();
 			gimbal_PID_Calc(&gimbal_motor_t_yaw);
             gimbal_PID_Calc(&gimbal_motor_t_pitch);
+            handle_remote_disconnect();//处理遥控器断线
 			CAN_cmd_gimbal(&gimbal_motor_t_yaw);
             CAN_cmd_gimbal(&gimbal_motor_t_pitch);
             VOFA_Send_Float_Data(gimbal_motor_t_yaw.relative_angle_set,gimbal_motor_t_yaw.gimbal_motor_measure.motor_data.motor.position, gimbal_motor_t_pitch.relative_angle_set,gimbal_motor_t_pitch.gimbal_motor_measure.motor_data.motor.position);
@@ -97,13 +99,7 @@ void CAN_InterfaceInit(void)
      }
  }
 
-// void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
-//     if (htim == &htim13) {
-//         //33.3Hz
-//         tripod.Ctrl(&tripod, vision_x_pid.calc(&vision_x_pid, offset_x), 
-//                            vision_y_pid.calc(&vision_y_pid, offset_y));
-//     }
-// }
+
 
 
 void EXTI0_IRQHandler(void)

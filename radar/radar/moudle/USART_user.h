@@ -13,6 +13,11 @@ extern "C" {
 
 
 
+//Ò£¿ØÆ÷×´Ì¬¼ì²âÊ¹ÓÃ
+extern volatile uint8_t sbus_online;
+extern volatile uint32_t last_sbus_recv_time;
+
+
 #define BUFFER_SIZE 256  
 extern uint8_t received_buffer[BUFFER_SIZE];
 void user_usart_init(void);

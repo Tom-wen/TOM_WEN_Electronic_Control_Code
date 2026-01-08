@@ -1,4 +1,10 @@
 #include "USART_user.h"
+#include "FreeRTOS.h"
+#include "task.h"
+
+
+
+
 uint16_t rx_len = 0;
 
 uint8_t received_buffer[BUFFER_SIZE];
@@ -18,9 +24,9 @@ void process_received_data(uint8_t *buf, uint16_t this_time_rx_len)
 
         // 解析float数据 (协议为小端序)
         // yaw角度
-        memcpy(&gimbal_motor_t_yaw.relative_angle_set, &buf[2], sizeof(float));
+        memcpy(&gimbal_motor_t_yaw.radar_add, &buf[2], sizeof(float));
         // pitch角度
-        memcpy(&gimbal_motor_t_pitch.relative_angle_set, &buf[6], sizeof(float));
+        memcpy(&gimbal_motor_t_pitch.radar_add, &buf[6], sizeof(float));
 
     }
 
@@ -61,6 +67,7 @@ void USART6_IRQHandler(void)
     }
 
 }
+
 
 
 

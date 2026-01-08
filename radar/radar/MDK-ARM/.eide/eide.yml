@@ -91,6 +91,8 @@ virtualFolder:
         - path: ../application/ins_task/BMI088Driver/BMI088Middleware.h
         - path: ../application/ins_task/BMI088Driver/BMI088reg.h
         - path: ../application/ins_task/IMU_Task.c
+        - path: ../application/remote_control.c
+        - path: ../application/remote_control.h
       folders: []
     - name: moudle
       files:
@@ -102,6 +104,8 @@ virtualFolder:
         - path: ../moudle/USART_user.h
         - path: ../moudle/aRGB.c
         - path: ../moudle/aRGB.h
+        - path: ../moudle/boards/bsp_rc.c
+        - path: ../moudle/boards/bsp_rc.h
       folders: []
     - name: ::CMSIS
       files: []
@@ -130,6 +134,7 @@ targets:
         - ../moudle
         - ../application/ins_task
         - ../application/ins_task/BMI088Driver
+        - ../moudle/boards
         - .cmsis/include
         - RTE/_radar
       libList: []

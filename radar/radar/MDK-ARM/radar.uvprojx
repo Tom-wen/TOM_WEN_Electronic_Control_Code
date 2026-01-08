@@ -135,7 +135,7 @@
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2V8M.DLL</Flash2>
-          <Flash3 />
+          <Flash3>"" ()</Flash3>
           <Flash4 />
           <pFcarmOut />
           <pFcarmGrp />
@@ -336,7 +336,7 @@
               <MiscControls />
               <Define>USE_HAL_DRIVER,STM32F407xx</Define>
               <Undefine />
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../application;../moudle;../application/ins_task;../application/ins_task/BMI088Driver</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../application;../moudle;../application/ins_task;../application/ins_task/BMI088Driver;../moudle/boards</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -675,6 +675,16 @@
               <FileType>1</FileType>
               <FilePath>..\application\ins_task\IMU_Task.c</FilePath>
             </File>
+            <File>
+              <FileName>remote_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\application\remote_control.c</FilePath>
+            </File>
+            <File>
+              <FileName>remote_control.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\application\remote_control.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -719,6 +729,16 @@
               <FileName>aRGB.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\moudle\aRGB.h</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_rc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\moudle\boards\bsp_rc.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_rc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\moudle\boards\bsp_rc.h</FilePath>
             </File>
           </Files>
         </Group>

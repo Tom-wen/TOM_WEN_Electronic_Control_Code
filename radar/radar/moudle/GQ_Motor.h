@@ -15,6 +15,7 @@ extern "C" {
 
 
 
+
 typedef struct
 {
     uint32_t id;
@@ -39,7 +40,6 @@ typedef struct
   PID_struct_t gimbal_motor_absolute_angle_pid;
   PID_struct_t gimbal_motor_relative_angle_pid;
   PID_struct_t gimbal_motor_gyro_pid;
-  float offset_ecd;
   float max_relative_angle; // rad
   float min_relative_angle; // rad
 
@@ -49,10 +49,11 @@ typedef struct
   float absolute_angle_set; // rad
   float motor_gyro;         // rad/s
   float motor_gyro_set;
-  float motor_speed;
-  float raw_cmd_current;
   float current_set;
   float given_current;
+
+  float radar_add;  //雷达发送的增量角度
+
 } gimbal_motor_t;
 
 extern gimbal_motor_t gimbal_motor_t_yaw;
@@ -69,6 +70,7 @@ void conf_write(CAN_HandleTypeDef *hcan, uint8_t id);
 void timed_return_motor_status(CAN_HandleTypeDef *hcan, uint8_t id, int16_t t_ms);
 void gimbal_set_control_init(void);
 void gimbal_set_control(void);
+void motor_read(CAN_HandleTypeDef *hcan, uint8_t id);
 
 
 
@@ -80,16 +82,17 @@ void gimbal_set_control(void);
 #define yaw_absolute_angle_out_max 1000.0f
 
 
-#define yaw_gyro_kp 1.0f
+#define yaw_gyro_kp 6.398f
 #define yaw_gyro_ki 0.0f
-#define yaw_gyro_kd 0.05f
-#define yaw_gyro_imax 2000.0f
-#define yaw_gyro_out_max 5000.0f
-#define yaw_relative_angle_kp 4000.0f
-#define yaw_relative_angle_ki 20.0f
-#define yaw_relative_angle_kd 0.05f
-#define yaw_relative_angle_imax 1000.0f
-#define yaw_relative_angle_out_max 1000.0f
+#define yaw_gyro_kd 1.218f
+#define yaw_gyro_imax 1000.0f
+#define yaw_gyro_out_max 3070.0f
+
+#define yaw_relative_angle_kp 3585.5f
+#define yaw_relative_angle_ki 1.6969f
+#define yaw_relative_angle_kd 5.999f
+#define yaw_relative_angle_imax 250.0f
+#define yaw_relative_angle_out_max 5950.0f
 
 
 #define pitch_absolute_angle_kp 0.0f
@@ -99,16 +102,17 @@ void gimbal_set_control(void);
 #define pitch_absolute_angle_out_max 1000.0f
 
 
-#define pitch_gyro_kp 0.40f
+#define pitch_gyro_kp 6.398f
 #define pitch_gyro_ki 0.0f
-#define pitch_gyro_kd 0.05f
-#define pitch_gyro_imax 2000.0f
-#define pitch_gyro_out_max 2000.0f
-#define pitch_relative_angle_kp 5000.0f
-#define pitch_relative_angle_ki 0.0f
-#define pitch_relative_angle_kd 0.05f
-#define pitch_relative_angle_imax 1000.0f
-#define pitch_relative_angle_out_max 1000.0f
+#define pitch_gyro_kd 1.218f
+#define pitch_gyro_imax 1000.0f
+#define pitch_gyro_out_max 3070.0f
+
+#define pitch_relative_angle_kp 3585.5f
+#define pitch_relative_angle_ki 1.6969f
+#define pitch_relative_angle_kd 5.999f
+#define pitch_relative_angle_imax 250.0f
+#define pitch_relative_angle_out_max 5950.0f
 
 
 //限幅

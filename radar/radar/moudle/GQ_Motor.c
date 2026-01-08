@@ -12,7 +12,7 @@ void gimbal_yaw_init(void)
   gimbal_motor_t_yaw.gimbal_motor_measure.motor_data.motor.id = 0x004;
   gimbal_motor_t_yaw.max_relative_angle = yaw_max_relative_angle;
   gimbal_motor_t_yaw.min_relative_angle = yaw_min_relative_angle;
-  timed_return_motor_status(&hcan1, 4,100);
+  motor_read(&hcan1, 4);
 }
 
 void gimbal_pitch_init(void)
@@ -23,7 +23,7 @@ void gimbal_pitch_init(void)
   gimbal_motor_t_pitch.gimbal_motor_measure.motor_data.motor.id = 0x001;
   gimbal_motor_t_pitch.max_relative_angle = pitch_max_relative_angle;
   gimbal_motor_t_pitch.min_relative_angle = pitch_min_relative_angle;
-  timed_return_motor_status(&hcan1, 1,100);
+  motor_read(&hcan1, 1);
 }
 
 
@@ -127,7 +127,7 @@ motor_control_vel(&hcan1, gimbal->gimbal_motor_measure.motor_data.motor.id,gimba
 
 void gimbal_set_control_init(void)
 { 
-	gimbal_motor_t_yaw.relative_angle_set = 0.5f;//规定初始位置0.5圈
+	gimbal_motor_t_yaw.relative_angle_set = 0.0f;//规定初始位置0.5圈
   gimbal_motor_t_pitch.relative_angle_set = 0.0f;
  // gimbal_motor_t_yaw.motor_gyro_set = 500.0f;
 }
@@ -143,6 +143,11 @@ void gimbal_set_control(void)
   // {
   //   gimbal_motor_t_yaw.relative_angle_set = gimbal_motor_t_yaw.min_relative_angle;
   // }
+//雷达发送的数据增量角度
+  gimbal_motor_t_yaw.relative_angle_set += gimbal_motor_t_yaw.radar_add;
+  gimbal_motor_t_pitch.relative_angle_set += gimbal_motor_t_pitch.radar_add;
+//遥控控制
+  RemoteControl(&gimbal_motor_t_yaw,&gimbal_motor_t_pitch);
 
 
 }
@@ -152,6 +157,17 @@ void timed_return_motor_status(CAN_HandleTypeDef *hcan, uint8_t id, int16_t t_ms
     uint8_t tdata[] = {0x05, 0xb4, 0x02, 0x00, 0x00};
 
     *(int16_t *)&tdata[3] = t_ms;
+
+    can_send(hcan, 0x8000 | id, tdata, sizeof(tdata));
+}
+
+/**
+ * @brief 读取电机位置、速度、力矩指令
+ * @param id 电机ID
+ */
+void motor_read(CAN_HandleTypeDef *hcan, uint8_t id)
+{
+    static uint8_t tdata[8] = {0x17, 0x01};
 
     can_send(hcan, 0x8000 | id, tdata, sizeof(tdata));
 }
