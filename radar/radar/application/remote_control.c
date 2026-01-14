@@ -215,6 +215,8 @@ void handle_remote_disconnect(void)
     {
         gimbal_motor_t_yaw.given_current = 0;
         gimbal_motor_t_pitch.given_current = 0;
+        gimbal_motor_t_yaw.relative_angle_set = 0;
+        gimbal_motor_t_pitch.relative_angle_set = 0;
     }
 }
 

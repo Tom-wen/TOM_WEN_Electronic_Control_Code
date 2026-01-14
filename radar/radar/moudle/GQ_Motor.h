@@ -72,6 +72,8 @@ void gimbal_set_control_init(void);
 void gimbal_set_control(void);
 void motor_read(CAN_HandleTypeDef *hcan, uint8_t id);
 
+void motor_control_pos(CAN_HandleTypeDef *hcan, uint8_t id, int32_t pos, int16_t tqe);
+
 
 
 //pid²ÎÊý
@@ -102,18 +104,17 @@ void motor_read(CAN_HandleTypeDef *hcan, uint8_t id);
 #define pitch_absolute_angle_out_max 1000.0f
 
 
-#define pitch_gyro_kp 6.398f
+#define pitch_gyro_kp 3.75f
 #define pitch_gyro_ki 0.0f
-#define pitch_gyro_kd 1.218f
-#define pitch_gyro_imax 1000.0f
-#define pitch_gyro_out_max 3070.0f
+#define pitch_gyro_kd 0.2f
+#define pitch_gyro_imax 2000.0f
+#define pitch_gyro_out_max 2000.0f
 
-#define pitch_relative_angle_kp 3585.5f
-#define pitch_relative_angle_ki 1.6969f
-#define pitch_relative_angle_kd 5.999f
-#define pitch_relative_angle_imax 250.0f
-#define pitch_relative_angle_out_max 5950.0f
-
+#define pitch_relative_angle_kp 4000.0f
+#define pitch_relative_angle_ki 0.35f
+#define pitch_relative_angle_kd 0.08f
+#define pitch_relative_angle_imax 500.0f
+#define pitch_relative_angle_out_max 1000.0f
 
 //ÏÞ·ù
 #define yaw_max_relative_angle 0.48f

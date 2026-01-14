@@ -19,15 +19,40 @@ void user_usart_init(void)
 void process_received_data(uint8_t *buf, uint16_t this_time_rx_len)
 {
 
-        if (buf[0] == 'V' && buf[1] == 'G' && buf[10] == 'V')
+        if (buf[0] == 0XFF && buf[10] == 0XFE)
     {
 
         // 解析float数据 (协议为小端序)
         // yaw角度
-        memcpy(&gimbal_motor_t_yaw.radar_add, &buf[2], sizeof(float));
+        memcpy(&gimbal_motor_t_yaw.radar_add, &buf[1], sizeof(float));
         // pitch角度
-        memcpy(&gimbal_motor_t_pitch.radar_add, &buf[6], sizeof(float));
-
+        memcpy(&gimbal_motor_t_pitch.radar_add, &buf[5], sizeof(float));
+                // 解析符号位 (假设符号位在buf[9])
+        uint8_t sign_flag = buf[9];
+        
+        // 根据符号位调整角度值
+        switch(sign_flag) 
+        {
+            case 0x00: // SIGN_ALL_NEGATIVE: pitch和yaw都为负
+                gimbal_motor_t_yaw.radar_add = -gimbal_motor_t_yaw.radar_add;
+                gimbal_motor_t_pitch.radar_add = -gimbal_motor_t_pitch.radar_add;
+                break;
+            case 0x01: // SIGN_YAW_POSITIVE: yaw为正，pitch为负
+                gimbal_motor_t_pitch.radar_add = -gimbal_motor_t_pitch.radar_add;
+                break;
+            case 0x02: // SIGN_PITCH_POSITIVE: pitch为正，yaw为负
+                gimbal_motor_t_yaw.radar_add = -gimbal_motor_t_yaw.radar_add;
+                break;
+            case 0x03: // SIGN_ALL_POSITIVE: 都为正
+                // 不需要调整
+                break;
+            case 0x04: // SIGN_NONE: 无效/零值
+                // 可以设置为0或不处理
+                break;
+            default:
+                // 处理未知符号位的情况
+                break;
+        }
     }
 
 }

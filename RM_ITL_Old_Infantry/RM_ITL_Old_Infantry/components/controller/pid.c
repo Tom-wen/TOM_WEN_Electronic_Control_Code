@@ -1,0 +1,252 @@
+#include "PID.h"
+
+/**************************几个PID除了过零保护外没有任何区别**********************************/
+
+int Limit_Min_Max(int value,int min,int max);
+
+/**
+ * @brief PID数组初始化
+ * @param PID PID数组
+ * @param kp 
+ * @param ki 
+ * @param kd 
+ * @param i_max 
+ * @param out_max 
+ */
+void PID_Init(PID_struct_t *PID,
+              float kp,
+              float ki,
+              float kd,
+              float i_max,
+              float out_max)//PID初始化函数
+{
+  PID->kp      = kp;
+  PID->ki      = ki;
+  PID->kd      = kd;
+  PID->i_max   = i_max;//积分限幅
+  PID->out_max = out_max;//输出限幅
+}
+
+ void PID_Protect_Angle(PID_struct_t *pid)
+{
+	if(pid->ref - pid->fdb > 4096)
+	{
+		pid->fdb+=8190;
+	}
+	else if(pid->ref - pid->fdb < -4096)
+	{
+		pid->fdb-=8190;
+	}
+}
+
+ void PID_Protect_Ink(PID_struct_t *pid)
+{
+	if(pid->ref - pid->fdb > 180)
+	{
+		pid->fdb+=360;
+	}
+	else if(pid->ref - pid->fdb < -180)
+	{
+		pid->fdb-=360;
+	}
+}
+
+float PID_Calc_Angle(PID_struct_t *PID, float ref, float fdb)//PID运算函数（目标，实际）
+{
+  PID->ref = ref;
+  PID->fdb = fdb;
+
+	PID_Protect_Angle(PID);//过零保护
+
+  PID->err[1] = PID->err[0];
+  PID->err[0] = PID->ref - PID->fdb;
+  
+  PID->p_out  = PID->kp * PID->err[0];
+  PID->i_out += PID->ki * PID->err[0];
+  PID->d_out  = PID->kd * (PID->err[0] - PID->err[1]);
+  PID->i_out=Limit_Min_Max(PID->i_out, -PID->i_max, PID->i_max);
+  
+  PID->output = PID->p_out + PID->i_out + PID->d_out;
+  PID->output=Limit_Min_Max(PID->output, -PID->out_max, PID->out_max);
+  return PID->output;
+}
+
+float PID_Calc_Ink(PID_struct_t *PID, float ref, float fdb)//PID运算函数（目标，实际）
+{
+  PID->ref = ref;
+  PID->fdb = fdb;
+
+	PID_Protect_Ink(PID);//过零保护
+
+  PID->err[1] = PID->err[0];
+  PID->err[0] = PID->ref - PID->fdb;
+  
+  PID->p_out  = PID->kp * PID->err[0];
+  PID->i_out += PID->ki * PID->err[0];
+  PID->d_out  = PID->kd * (PID->err[0] - PID->err[1]);
+  PID->i_out=Limit_Min_Max(PID->i_out, -PID->i_max, PID->i_max);
+  
+  PID->output = PID->p_out + PID->i_out + PID->d_out;
+  PID->output=Limit_Min_Max(PID->output, -PID->out_max, PID->out_max);
+  return PID->output;
+}
+
+float PID_Calc_Speed(PID_struct_t *PID, float ref, float fdb)//PID运算函数（目标，实际）
+{
+  PID->ref = ref;
+  PID->fdb = fdb;
+
+  PID->err[1] = PID->err[0];
+  PID->err[0] = PID->ref - PID->fdb;
+
+  PID->p_out  = PID->kp * PID->err[0];
+  PID->i_out += PID->ki * PID->err[0];
+  PID->d_out  = PID->kd * (PID->err[0] - PID->err[1]);
+  PID->i_out=Limit_Min_Max(PID->i_out, -PID->i_max, PID->i_max);
+  
+  PID->output = PID->p_out + PID->i_out + PID->d_out;
+  PID->output=Limit_Min_Max(PID->output, -PID->out_max, PID->out_max);
+  return PID->output;
+}
+
+/**
+ * @brief 限制一个整数变量 value 在指定的最小值 min 和最大值 max 之间
+ * @param value 输入值
+ * @param min 最小值
+ * @param max 最大值
+ * @return 
+ */
+int Limit_Min_Max(int value,int min,int max)
+{
+	if(value<min)
+		return min;
+	else if(value>max)
+		return max;
+	else return value;
+}
+
+#define LimitMax(input, max)   \
+	{                          \
+		if (input > max)       \
+		{                      \
+			input = max;       \
+		}                      \
+		else if (input < -max) \
+		{                      \
+			input = -max;      \
+		}                      \
+	}
+
+/**
+  * @brief          pid结构数据初始化
+  * @param[out]     pid: PID结构数据指针
+  * @param[in]      kd
+  * @param[in]      ki
+  * @param[in]      kd
+  * @param[in]      max_out: pid最大输出
+  * @param[in]      max_iout: pid最大积分输出
+ */
+void PID_init(pid_type_def *pid, float Kp, float Ki, float Kd, float max_out, float max_iout)
+{
+	if (pid == NULL)
+	{
+		return;
+	}
+	pid->Kp = Kp;
+	pid->Ki = Ki;
+	pid->Kd = Kd;
+	pid->max_out = max_out;
+	pid->max_iout = max_iout;
+	pid->Dbuf[0] = pid->Dbuf[1] = pid->Dbuf[2] = 0.0f;
+	pid->error[0] = pid->error[1] = pid->error[2] = pid->Pout = pid->Iout = pid->Dout = pid->out = 0.0f;
+}
+
+extern uint16_t CHASSIS_MOTOR_SPEED_MAX_OUT;
+
+/**
+ * @brief          pid计算
+ * @param[out]     pid: PID结构数据指针
+ * @param[in]      ref: 反馈数据
+ * @param[in]      set: 设定值
+ * @return         pid输出
+ */
+float PID_calc(pid_type_def *pid, float ref, float set)
+{
+	if (pid == NULL)
+	{
+		return 0.0f;
+	}
+
+	pid->error[2] = pid->error[1];
+	pid->error[1] = pid->error[0];
+	pid->set = set;
+	pid->fdb = ref;
+	pid->error[0] = set - ref;
+
+	pid->Pout = pid->Kp * pid->error[0];
+	pid->Iout += pid->Ki * pid->error[0];
+	pid->Dbuf[2] = pid->Dbuf[1];
+	pid->Dbuf[1] = pid->Dbuf[0];
+	pid->Dbuf[0] = (pid->error[0] - pid->error[1]);
+	pid->Dout = pid->Kd * pid->Dbuf[0];
+	LimitMax(pid->Iout, pid->max_iout);
+	pid->out = pid->Pout + pid->Iout + pid->Dout;
+	LimitMax(pid->out, pid->max_out);
+
+	return pid->out;
+}
+
+
+
+float PID_calc_chassis(pid_type_def *pid, float ref, float set)
+{
+	if (pid == NULL)
+	{
+		return 0.0f;
+	}
+
+	pid->error[2] = pid->error[1];
+	pid->error[1] = pid->error[0];
+	pid->set = set;
+	pid->fdb = ref;
+	pid->error[0] = set - ref;
+
+	pid->Pout = pid->Kp * pid->error[0];
+	pid->Iout += pid->Ki * pid->error[0];
+	pid->Dbuf[2] = pid->Dbuf[1];
+	pid->Dbuf[1] = pid->Dbuf[0];
+	pid->Dbuf[0] = (pid->error[0] - pid->error[1]);
+	pid->Dout = pid->Kd * pid->Dbuf[0];
+	LimitMax(pid->Iout, pid->max_iout);
+	pid->out = pid->Pout + pid->Iout + pid->Dout;
+	LimitMax(pid->out, CHASSIS_MOTOR_SPEED_MAX_OUT);
+
+	return pid->out;
+}
+
+
+/**
+  * @brief          pid 输出清除
+  * @param[out]     pid: PID结构数据指针
+  * @retval         none
+  */
+void PID_clear(pid_type_def *pid)
+{
+    if (pid == NULL)
+    {
+        return;
+    }
+
+    pid->error[0] = pid->error[1] = pid->error[2] = 0.0f;
+    pid->Dbuf[0] = pid->Dbuf[1] = pid->Dbuf[2] = 0.0f;
+    pid->out = pid->Pout = pid->Iout = pid->Dout = 0.0f;
+    pid->fdb = pid->set = 0.0f;
+}
+short PID_deadline_limit( short *input, float deadline)
+{
+if ((*input)<(deadline)&&(*input)>(-1*deadline))                                             
+        {                                                
+            (*input) = 0;                                
+        }   
+}
+

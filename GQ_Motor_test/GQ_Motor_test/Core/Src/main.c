@@ -103,7 +103,7 @@ int main(void)
 //motor_control_pos(&hcan1, 1, 10 , 100);
 //HAL_Delay(10000);
 
-//timed_return_motor_status(&hcan1, 1,10);
+timed_return_motor_status(&hcan1, 1,10);
 //motor_control_pos_vel_tqe(&hcan1, 1, 500, 2000, 200);
 //	motor_control_vel(&hcan1, 4, 2000, 200);
 //		motor_read(&hcan1, 4);
@@ -112,10 +112,10 @@ int main(void)
 //	conf_write(&hcan1, 1);
 	  
 	  //timed_return_motor_status(&hcan1, 4,100);
-	motor_read(&hcan1, 1);
-//motor_control_vel(&hcan1, 1, 1000, 200);
+	//motor_read(&hcan1, 1);
+motor_control_vel(&hcan1, 1, 1000, 200);
 	//motor_control_pos(&hcan1, 4, 5000, 200);
-	motor_control_pos(&hcan1, 1, 000, 200);
+	//motor_control_pos(&hcan1, 1, 1, 200);
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)

@@ -10,7 +10,7 @@
 #include "remote_control.h"
 uint8_t rx_data[24] = {0};
 
-// 外部变量声明
+// 外部全局变量
 extern float INS_angle[3];       // yaw,pitch,roll
 
 
@@ -27,23 +27,29 @@ void TripodCtrlTask(void *argument)
     // // 初始化电机
     gimbal_set_control_init();
 	gimbal_yaw_init();
+    osDelay(4);
     gimbal_pitch_init();
+    osDelay(1);
     
 
     user_usart_init();
 
-    
-    while (1) 
+
+    while (1)
 		{
+
             gimbal_set_control();
 			gimbal_PID_Calc(&gimbal_motor_t_yaw);
             gimbal_PID_Calc(&gimbal_motor_t_pitch);
-            handle_remote_disconnect();//处理遥控器断线
+            handle_remote_disconnect();//检测遥控器连接状态
+
 			CAN_cmd_gimbal(&gimbal_motor_t_yaw);
+            osDelay(5);
             CAN_cmd_gimbal(&gimbal_motor_t_pitch);
+            osDelay(5);
             VOFA_Send_Float_Data(gimbal_motor_t_yaw.relative_angle_set,gimbal_motor_t_yaw.gimbal_motor_measure.motor_data.motor.position, gimbal_motor_t_pitch.relative_angle_set,gimbal_motor_t_pitch.gimbal_motor_measure.motor_data.motor.position);
-            osDelay(1);
-            
+
+
     }
 }
 
@@ -74,28 +80,28 @@ void CAN_InterfaceInit(void)
     }
 }
 
- void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) 
+ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
  {
-     if (hcan == &hcan1) 
+     if (hcan == &hcan1)
      {
          CAN_RxHeaderTypeDef rx_header;
          HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &rx_header, rx_data);
-        
+
 
         if (rx_header.DLC != 0)
         {
-            // 检测ID，如果ID为4则写入yaw轴，如果ID为1则写入pitch轴
+            // 根据ID判断ID为4的写入yaw轴，根据ID为1的写入pitch轴
 
-            if (rx_header.StdId == 1024) 
+            if (rx_header.StdId == 1024)
             {
                 update(&gimbal_motor_t_yaw, rx_data, &rx_header);
-            } 
-            else if (rx_header.StdId == 256) 
+            }
+            else if (rx_header.StdId == 256)
             {
                 update(&gimbal_motor_t_pitch, rx_data, &rx_header);
             }
         }
-         
+
      }
  }
 
@@ -109,14 +115,14 @@ void EXTI0_IRQHandler(void)
   /* USER CODE END EXTI0_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
   /* USER CODE BEGIN EXTI0_IRQn 1 */
-  //零位复位
+  //校准校准
     rezero_pos(&hcan1,1);
-    osDelay(1000);
+    osDelay(10);
     conf_write(&hcan1,1);
     osDelay(10);
     rezero_pos(&hcan1,4);
-    osDelay(1000);
+    osDelay(10);
     conf_write(&hcan1,4);
-    aRGB_led_show(0xFFFF0000); // 红灯
+    aRGB_led_show(0xFFFF0000); //红色
   /* USER CODE END EXTI0_IRQn 1 */
 }
