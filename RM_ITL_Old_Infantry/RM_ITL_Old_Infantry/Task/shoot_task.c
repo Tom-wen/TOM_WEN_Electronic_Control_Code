@@ -39,8 +39,6 @@
 #include "main.h"
 #include "tim.h"
 #include "cmsis_os.h"
-
-#include "bsp_laser.h"
 #include "arm_math.h"
 #include "user_lib.h"
 //#include "referee.h"
@@ -154,7 +152,7 @@ void shoot_task(void const *pvParameters)
   vTaskDelay(SHOOT_TASK_INIT_TIME);
 
   //发射机构初始化
-  //shoot_init();
+  shoot_init();
   //servo_init();
 
   //判断底盘电机是否都在线

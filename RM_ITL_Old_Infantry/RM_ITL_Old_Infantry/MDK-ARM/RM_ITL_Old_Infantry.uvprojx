@@ -313,7 +313,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>4</Optim>
+            <Optim>1</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -768,31 +768,21 @@
               <FileType>5</FileType>
               <FilePath>..\Task\shoot_task.h</FilePath>
             </File>
+            <File>
+              <FileName>hoisting_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Task\hoisting_task.c</FilePath>
+            </File>
+            <File>
+              <FileName>hoisting_task.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Task\hoisting_task.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>boards</GroupName>
           <Files>
-            <File>
-              <FileName>bsp_adc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\boards\bsp_adc.c</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_adc.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\boards\bsp_adc.h</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_buzzer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\boards\bsp_buzzer.c</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_buzzer.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\boards\bsp_buzzer.h</FilePath>
-            </File>
             <File>
               <FileName>bsp_can.c</FileName>
               <FileType>1</FileType>
@@ -802,16 +792,6 @@
               <FileName>bsp_can.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\boards\bsp_can.h</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_crc32.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\boards\bsp_crc32.c</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_crc32.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\boards\bsp_crc32.h</FilePath>
             </File>
             <File>
               <FileName>bsp_delay.c</FileName>
@@ -824,36 +804,6 @@
               <FilePath>..\boards\bsp_delay.h</FilePath>
             </File>
             <File>
-              <FileName>bsp_flash.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\boards\bsp_flash.c</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_flash.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\boards\bsp_flash.h</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_fric.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\boards\bsp_fric.c</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_fric.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\boards\bsp_fric.h</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_i2c.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\boards\bsp_i2c.c</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_i2c.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\boards\bsp_i2c.h</FilePath>
-            </File>
-            <File>
               <FileName>bsp_imu_pwm.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\boards\bsp_imu_pwm.c</FilePath>
@@ -862,66 +812,6 @@
               <FileName>bsp_imu_pwm.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\boards\bsp_imu_pwm.h</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_laser.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\boards\bsp_laser.c</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_laser.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\boards\bsp_laser.h</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_led.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\boards\bsp_led.c</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_led.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\boards\bsp_led.h</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_rc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\boards\bsp_rc.c</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_rc.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\boards\bsp_rc.h</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_rng.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\boards\bsp_rng.c</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_rng.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\boards\bsp_rng.h</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_servo_pwm.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\boards\bsp_servo_pwm.c</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_servo_pwm.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\boards\bsp_servo_pwm.h</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\boards\bsp_spi.c</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_spi.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\boards\bsp_spi.h</FilePath>
             </File>
             <File>
               <FileName>bsp_usart.c</FileName>
@@ -952,6 +842,26 @@
               <FileName>bsp_pwm.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\boards\bsp_pwm.h</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\boards\bsp_led.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_led.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\boards\bsp_led.h</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_buzzer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\boards\bsp_buzzer.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_buzzer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\boards\bsp_buzzer.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1009,9 +919,39 @@
               <FilePath>..\components\controller\pid.h</FilePath>
             </File>
             <File>
-              <FileName>arm_math.h</FileName>
+              <FileName>arm_cortexM4lf_math.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>..\components\algorithm\arm_cortexM4lf_math.lib</FilePath>
+            </File>
+            <File>
+              <FileName>controller.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\components\algorithm\controller.c</FilePath>
+            </File>
+            <File>
+              <FileName>controller.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\Middlewares\ST\ARM\DSP\Inc\arm_math.h</FilePath>
+              <FilePath>..\components\algorithm\controller.h</FilePath>
+            </File>
+            <File>
+              <FileName>kalman_filter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\components\algorithm\kalman_filter.c</FilePath>
+            </File>
+            <File>
+              <FileName>kalman_filter.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\components\algorithm\kalman_filter.h</FilePath>
+            </File>
+            <File>
+              <FileName>QuaternionEKF.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\components\algorithm\QuaternionEKF.c</FilePath>
+            </File>
+            <File>
+              <FileName>QuaternionEKF.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\components\algorithm\QuaternionEKF.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1062,6 +1002,26 @@
               <FileName>gimbal_behaviour.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\application\gimbal_behaviour.h</FilePath>
+            </File>
+            <File>
+              <FileName>USART_receive.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\application\USART_receive.c</FilePath>
+            </File>
+            <File>
+              <FileName>USART_receive.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\application\USART_receive.h</FilePath>
+            </File>
+            <File>
+              <FileName>GQ_Motor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\application\GQ_Motor.c</FilePath>
+            </File>
+            <File>
+              <FileName>GQ_Motor.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\application\GQ_Motor.h</FilePath>
             </File>
           </Files>
         </Group>

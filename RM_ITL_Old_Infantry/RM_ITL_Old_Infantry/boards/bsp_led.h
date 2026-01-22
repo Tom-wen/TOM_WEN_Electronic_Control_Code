@@ -1,18 +1,13 @@
-//#ifndef BSP_LED_H
-//#define BSP_LED_H
-//#include "struct_typedef.h"
+#ifndef __BSP_LED_H__
+#define __BSP_LED_H__
 
-///**
-//  * @brief          aRGB show
-//  * @param[in]      aRGB: 0xaaRRGGBB, 'aa' is alpha, 'RR' is red, 'GG' is green, 'BB' is blue
-//  * @retval         none
-//  */
-///**
-//  * @brief          显示RGB
-//  * @param[in]      aRGB:0xaaRRGGBB,'aa' 是透明度,'RR'是红色,'GG'是绿色,'BB'是蓝色
-//  * @retval         none
-//  */
-//extern void aRGB_led_show(uint32_t aRGB);
+#include "stm32h7xx.h"
+#include "spi.h"
+#define WS2812_SPI_UNIT     hspi6
+extern SPI_HandleTypeDef WS2812_SPI_UNIT;
+void WS2812_Ctrl(uint8_t r, uint8_t g, uint8_t b);
+void LED_Normal();
+void LED_Warning();
+void LED_RC_Disconnected();
 
-
-//#endif
+#endif

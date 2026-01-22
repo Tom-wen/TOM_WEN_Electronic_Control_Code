@@ -7076,7 +7076,7 @@ Image component sizes
       1876        186          0         48        320      11525   can_receive.o
       2230        140          0         36          0      11163   chassis_behaviour.o
        708         64          0         72          0       2837   chassis_power_control.o
-      2304        302          8         16        564     621354   chassis_task.o
+      2304        302          8         16        564     621586   chassis_task.o
        158          0          0          0          0      22902   cmsis_os.o
         84         18          0          8          0       1663   crc.o
        282         20        770          2          0       5422   crc8_crc16.o
@@ -7087,7 +7087,7 @@ Image component sizes
        258          0          0          0          0       9463   fifo.o
        228         48        232         36       1728       7197   freertos.o
       1828        206          0         84          0      10206   gimbal_behaviour.o
-      1952        200          0         21        552      16783   gimbal_task.o
+      1952        200          0         21        552      17015   gimbal_task.o
        596         30          0          0          0       1423   gpio.o
        692         62          0         24      24576       4979   heap_4.o
        700         80          0          0        348       3360   i2c.o
@@ -7095,7 +7095,7 @@ Image component sizes
        148          6         12          0          0       1567   ist8310driver.o
        136         22          0          0          0       4231   ist8310driver_middleware.o
        148          0          0          0          0       3770   list.o
-       346         14          0          0          0     808525   main.o
+       346         14          0          0          0     808757   main.o
        764         24          0          0          0       3435   pid.o
       1014         92          0         12          0      12465   port.o
       1910         20          0          0         64      15140   queue.o
@@ -7147,7 +7147,7 @@ Image component sizes
        296          4          0          0          0       4024   user_lib.o
 
     ----------------------------------------------------------------------
-     93926       5114       1612       1340      49736    2065467   Object Totals
+     93926       5114       1612       1340      49736    2066163   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         98          0          2         18          8          0   (incl. Padding)
 
@@ -7233,8 +7233,8 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-    102788       5656       3964       1360      49736    2042257   Grand Totals
-    102788       5656       3964        352      49736    2042257   ELF Image Totals (compressed)
+    102788       5656       3964       1360      49736    2042953   Grand Totals
+    102788       5656       3964        352      49736    2042953   ELF Image Totals (compressed)
     102788       5656       3964        352          0          0   ROM Totals
 
 ==============================================================================

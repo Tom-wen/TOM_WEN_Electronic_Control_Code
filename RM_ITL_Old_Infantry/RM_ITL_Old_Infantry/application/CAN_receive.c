@@ -1,33 +1,17 @@
-/**
-  ****************************(C) COPYRIGHT 2019 DJI****************************
-  * @file       can_receive.c/h
-  * @brief      there is CAN interrupt function  to receive motor data,
-  *             and CAN send function to send motor current to control motor.
-  *             这里是CAN中断接收函数，接收电机数据,CAN发送函数发送电机电流控制电机.
-  * @note
-  * @history
-  *  Version    Date            Author          Modification
-  *  V1.0.0     Dec-26-2018     RM              1. done
-  *  V1.1.0     Nov-11-2019     RM              1. support hal lib
-  *
-  @verbatim
-  ==============================================================================
-
-  ==============================================================================
-  @endverbatim
-  ****************************(C) COPYRIGHT 2019 DJI****************************
-  */
 
 #include "CAN_receive.h"
 #include "cmsis_os.h"
 #include "chassis_task.h"
 #include "detect_task.h"
+#include "GQ_Motor.h"
 
 #include "main.h"
 
 extern FDCAN_HandleTypeDef hfdcan1;
 extern FDCAN_HandleTypeDef hfdcan2;
 extern FDCAN_HandleTypeDef hfdcan3;
+
+uint8_t rx_data_test[24]={0};
 
 
 
@@ -49,8 +33,6 @@ static FDCAN_TxHeaderTypeDef gimbal_tx_message;
 static uint8_t gimbal_can_send_data[8];
 static FDCAN_TxHeaderTypeDef chassis_tx_message;
 static uint8_t chassis_can_send_data[8];
-static FDCAN_TxHeaderTypeDef cap_tx_message;
-static uint8_t cap_can_send_data[8];
 
 
 float PowerData[7];
@@ -84,7 +66,7 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hcan, uint32_t RxFifo0ITs)
 {
   FDCAN_RxHeaderTypeDef rx_header;
 
-  uint8_t rx_data[8];
+  uint8_t rx_data[24]={0};
 
   HAL_FDCAN_GetRxMessage(hcan, FDCAN_RX_FIFO0, &rx_header, rx_data);
 
@@ -95,34 +77,30 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hcan, uint32_t RxFifo0ITs)
     case CAN_3508_M1_ID:
     {
       get_motor_measure(&motor_chassis[0], rx_data); //读取数据
-      // Calc_motor_Angle(&motor_chassis[0]);//角度计算
       detect_hook(CHASSIS_MOTOR1_TOE); //错误检测
       break;
     }
     case CAN_3508_M2_ID:
     {
       get_motor_measure(&motor_chassis[1], rx_data);
-      // Calc_motor_Angle(&motor_chassis[1]);
       detect_hook(CHASSIS_MOTOR2_TOE);
       break;
     }
     case CAN_3508_M3_ID:
     {
       get_motor_measure(&motor_chassis[2], rx_data);
-      // Calc_motor_Angle(&motor_chassis[2]);
       detect_hook(CHASSIS_MOTOR3_TOE);
       break;
     }
     case CAN_3508_M4_ID:
     {
       get_motor_measure(&motor_chassis[3], rx_data);
-      // Calc_motor_Angle(&motor_chassis[3]);      detect_hook(CHASSIS_MOTOR4_TOE);
+      detect_hook(CHASSIS_MOTOR4_TOE);
       break;
     }
     case CAN_YAW_MOTOR_ID:
     {
       get_motor_measure(&motor_gimbal[0], rx_data);
-      // Calc_motor_Angle(&motor_gimbal[0]);
       detect_hook(YAW_GIMBAL_MOTOR_TOE);
       break;
     }
@@ -141,7 +119,6 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hcan, uint32_t RxFifo0ITs)
     PowerData[5] = rx_data[6];                           // capacitor_level
 
     break;
-      break;
     }
 
     default:
@@ -169,7 +146,6 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hcan, uint32_t RxFifo0ITs)
 	 case CAN_PIT_MOTOR_ID:
     {
       get_motor_measure(&motor_gimbal[1], rx_data);
-      // Calc_motor_Angle(&motor_gimbal[1]);
       detect_hook(PITCH_GIMBAL_MOTOR_TOE);
       break;
     }
@@ -199,6 +175,35 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hcan, uint32_t RxFifo0ITs)
     }
     }
   }
+  else if (hcan == &hfdcan3)
+  {
+      if (rx_header.DataLength != 0)
+      {
+        switch (rx_header.Identifier)
+        {
+          case CAN_GQ_M1_ID:
+          {
+            get_GQ_motor_measure(&GQ_Motor_Measure[0], rx_data, 1);
+            break;
+          }
+          case CAN_GQ_M2_ID:
+          {
+            get_GQ_motor_measure(&GQ_Motor_Measure[1], rx_data, 2);
+            break;
+          }
+          case CAN_GQ_M3_ID:
+          {
+            get_GQ_motor_measure(&GQ_Motor_Measure[2], rx_data, 3);
+            break;
+          }
+          case CAN_GQ_M4_ID:
+          {
+            get_GQ_motor_measure(&GQ_Motor_Measure[3], rx_data, 4);
+            break;
+          }
+        }
+      }
+  }
 }
 
 /**
@@ -210,7 +215,6 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hcan, uint32_t RxFifo0ITs)
  */
 void CAN_cmd_friction(int16_t left_friction, int16_t rigit_friction)
 {
-  uint32_t send_mail_box;
   gimbal_tx_message.Identifier = CAN_FRICTION_ALL_ID;
   gimbal_tx_message.IdType = FDCAN_STANDARD_ID;
   gimbal_tx_message.TxFrameType = FDCAN_DATA_FRAME;
@@ -228,7 +232,6 @@ void CAN_cmd_friction(int16_t left_friction, int16_t rigit_friction)
   gimbal_tx_message.FDFormat=FDCAN_CLASSIC_CAN;
   gimbal_tx_message.TxEventFifoControl=FDCAN_NO_TX_EVENTS;
   gimbal_tx_message.MessageMarker=0;
-  //HAL_CAN_AddTxMessage(&hcan2, &gimbal_tx_message, gimbal_can_send_data, &send_mail_box);
 	HAL_StatusTypeDef status = HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1,&gimbal_tx_message, gimbal_can_send_data);
 }
 
@@ -239,17 +242,16 @@ void CAN_cmd_friction(int16_t left_friction, int16_t rigit_friction)
  */
 void CAN_cmd_shoot(int16_t shoot)
 {
-  uint32_t send_mail_box;
   gimbal_tx_message.Identifier = 0x1FF;
   gimbal_tx_message.IdType = FDCAN_STANDARD_ID;
   gimbal_tx_message.TxFrameType = FDCAN_DATA_FRAME;
   gimbal_tx_message.DataLength = 0x08;
-  gimbal_can_send_data[0] = (shoot >> 8);//0;
-  gimbal_can_send_data[1] = (shoot >> 8);//0;
+  gimbal_can_send_data[0] = (shoot >> 8);
+  gimbal_can_send_data[1] = (shoot >> 8);
   gimbal_can_send_data[2] = 0;
   gimbal_can_send_data[3] = 0;
-  gimbal_can_send_data[4] = 0;//(shoot >> 8);
-  gimbal_can_send_data[5] = 0;//shoot;
+  gimbal_can_send_data[4] = 0;
+  gimbal_can_send_data[5] = 0;
   gimbal_can_send_data[6] = 0;
   gimbal_can_send_data[7] = 0;
   gimbal_tx_message.ErrorStateIndicator=FDCAN_ESI_PASSIVE;
@@ -257,7 +259,6 @@ void CAN_cmd_shoot(int16_t shoot)
   gimbal_tx_message.FDFormat=FDCAN_CLASSIC_CAN;
   gimbal_tx_message.TxEventFifoControl=FDCAN_NO_TX_EVENTS;
   gimbal_tx_message.MessageMarker=0;
-  //HAL_CAN_AddTxMessage(&hcan1, &gimbal_tx_message, gimbal_can_send_data, &send_mail_box);
 	HAL_StatusTypeDef status = HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1,&gimbal_tx_message, gimbal_can_send_data);
 }
 
@@ -269,14 +270,11 @@ void CAN_cmd_shoot(int16_t shoot)
  */
 void CAN_cmd_gimbal(int16_t yaw, int16_t pitch)
 {
-	// Pitch  Can1    电机ID 4 0x208
-  uint32_t send_mail_box;
-  gimbal_tx_message.Identifier = 0x2FF;
+	// Pitch  Can1    电机ID   6 
+  gimbal_tx_message.Identifier = CAN_GIMBAL_ALL_ID;
   gimbal_tx_message.IdType = FDCAN_STANDARD_ID;
   gimbal_tx_message.TxFrameType = FDCAN_DATA_FRAME;
   gimbal_tx_message.DataLength = 0x08;
-//  gimbal_can_send_data[0] = (yaw >> 8);
-//  gimbal_can_send_data[1] = yaw;
 	gimbal_can_send_data[0] = 0;
   gimbal_can_send_data[1] = 0;
   gimbal_can_send_data[2] = (pitch >> 8);
@@ -290,9 +288,9 @@ void CAN_cmd_gimbal(int16_t yaw, int16_t pitch)
   gimbal_tx_message.FDFormat=FDCAN_CLASSIC_CAN;
   gimbal_tx_message.TxEventFifoControl=FDCAN_NO_TX_EVENTS;
   gimbal_tx_message.MessageMarker=0;
-   HAL_StatusTypeDef status_1 = HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1,&gimbal_tx_message, gimbal_can_send_data);
+  HAL_StatusTypeDef status_1 = HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1,&gimbal_tx_message, gimbal_can_send_data);
 
-	// Yaw  can2   电机ID   0x209 5      
+	// Yaw  can2   电机ID   5        
   gimbal_tx_message.Identifier = CAN_GIMBAL_ALL_ID;   
   gimbal_tx_message.IdType = FDCAN_STANDARD_ID;
   gimbal_tx_message.TxFrameType = FDCAN_DATA_FRAME;
@@ -305,14 +303,13 @@ void CAN_cmd_gimbal(int16_t yaw, int16_t pitch)
   gimbal_can_send_data[5] = 0;
   gimbal_can_send_data[6] = 0;
   gimbal_can_send_data[7] = 0;
-
   gimbal_tx_message.ErrorStateIndicator=FDCAN_ESI_PASSIVE;
   gimbal_tx_message.BitRateSwitch=FDCAN_BRS_OFF;
   gimbal_tx_message.FDFormat=FDCAN_CLASSIC_CAN;
   gimbal_tx_message.TxEventFifoControl=FDCAN_NO_TX_EVENTS;
   gimbal_tx_message.MessageMarker=0;
 
-HAL_StatusTypeDef status_2 = HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan2,&gimbal_tx_message, gimbal_can_send_data);
+  HAL_StatusTypeDef status_2 = HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan2,&gimbal_tx_message, gimbal_can_send_data);
 }
 
 /**
@@ -323,9 +320,8 @@ HAL_StatusTypeDef status_2 = HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan2,&gimbal_tx_m
  * @param[in]      motor4: (0x204) 3508电机控制电流, 范围 [-16384,16384]
  * @retval         none
  */
-uint8_t CAN_cmd_chassis(int16_t motor1, int16_t motor2, int16_t motor3, int16_t motor4)
+void CAN_cmd_chassis(int16_t motor1, int16_t motor2, int16_t motor3, int16_t motor4)
 {
-  uint32_t send_mail_box;
   chassis_tx_message.Identifier = CAN_CHASSIS_ALL_ID;
   chassis_tx_message.IdType = FDCAN_STANDARD_ID;
   chassis_tx_message.TxFrameType = FDCAN_DATA_FRAME;
@@ -338,7 +334,6 @@ uint8_t CAN_cmd_chassis(int16_t motor1, int16_t motor2, int16_t motor3, int16_t 
   chassis_can_send_data[5] = motor3;
   chassis_can_send_data[6] = motor4 >> 8;
   chassis_can_send_data[7] = motor4;
-	
 	chassis_tx_message.ErrorStateIndicator=FDCAN_ESI_PASSIVE;
   chassis_tx_message.BitRateSwitch=FDCAN_BRS_OFF;
   chassis_tx_message.FDFormat=FDCAN_CLASSIC_CAN;
@@ -346,39 +341,8 @@ uint8_t CAN_cmd_chassis(int16_t motor1, int16_t motor2, int16_t motor3, int16_t 
   chassis_tx_message.MessageMarker=0;
 	
 	HAL_StatusTypeDef status = HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan2,&chassis_tx_message, chassis_can_send_data);
-
-
-//	if(HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan2) != 0)
-//	{
-//		HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan2, &chassis_tx_message, chassis_can_send_data);
-//		return 1;
-//	}
-//    return 0;
 }
 
-// /**
-//  * @brief     发送超级电容设定功率
-//  * @param Power   30W~250W
-//  * 10Hz
-//  */
-// void super_cap_send_power(uint16_t power)
-// {
-// 	 uint32_t send_mail_box;
-//    cap_tx_message.Identifier = CAN_SUPERCAP_ID;
-//    cap_tx_message.IdType = FDCAN_STANDARD_ID;
-//    cap_tx_message.TxFrameType = FDCAN_DATA_FRAME;
-//    cap_tx_message.DataLength = 0x08;
-//    cap_can_send_data[0]=(uint8_t)power; //整数部分
-//    cap_can_send_data[1]=(uint8_t)(power*100.0f)%100; //小数部分
-//    cap_can_send_data[2]=0;
-//    cap_can_send_data[3]=0;
-//    cap_can_send_data[4]=0;
-//    cap_can_send_data[5]=0;
-//    cap_can_send_data[6]=0;
-//    cap_can_send_data[7]=0;
-//    HAL_StatusTypeDef status = HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan2,&gimbal_tx_message, gimbal_can_send_data);
-
-// }
 /**
  * @brief          返回yaw 6020电机数据指针
  * @param[in]      none

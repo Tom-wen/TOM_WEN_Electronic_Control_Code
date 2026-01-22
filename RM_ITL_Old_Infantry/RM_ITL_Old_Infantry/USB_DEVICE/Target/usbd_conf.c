@@ -69,13 +69,20 @@ void HAL_PCD_MspInit(PCD_HandleTypeDef* pcdHandle)
   if(pcdHandle->Instance==USB_OTG_HS)
   {
   /* USER CODE BEGIN USB_OTG_HS_MspInit 0 */
-
+	   __HAL_RCC_GPIOA_CLK_ENABLE();                   // ʹ��GPIOA�˿�
+    GPIO_InitTypeDef GPIO_InitStruct = {0};         // �����ṹ��; ���������λ����ͬ�����пɲ�д
+    GPIO_InitStruct.Pin = GPIO_PIN_12;              // ����PA12, ��D+
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;     // ���Ź���ģʽ
+    GPIO_InitStruct.Pull = GPIO_PULLDOWN;           // ����
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;    // ���ŷ�ת�ٶ�
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);         // ��ʼ��
+    HAL_Delay(5);                                   // ����Ƭ��
   /* USER CODE END USB_OTG_HS_MspInit 0 */
 
   /** Initializes the peripherals clock
   */
     PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_USB;
-    PeriphClkInitStruct.UsbClockSelection = RCC_USBCLKSOURCE_PLL;
+    PeriphClkInitStruct.UsbClockSelection = RCC_USBCLKSOURCE_HSI48;
     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
     {
       Error_Handler();

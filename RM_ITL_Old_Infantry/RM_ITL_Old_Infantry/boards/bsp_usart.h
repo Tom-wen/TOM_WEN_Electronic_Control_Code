@@ -24,10 +24,10 @@ extern volatile uint32_t last_sbus_recv_time;
 // 定义回调函数指针类型
 typedef void (*usart_rx_callback_t)(uint8_t *sbus_buf);
 
-extern uint8_t usart1_rx_buf[256];
+// extern uint8_t usart1_rx_buf[256];
 extern uint8_t usart2_rx_buf[256];
 extern uint8_t sbus_buf[25];
-extern uint8_t usart7_rx_buf[12];
+extern uint8_t usart7_rx_buf[256];
 
 extern uint8_t uart10_buff_ctrl;
 extern UART_RX_TypeDef uart10_rx_data_t[UART_BUFFER_QUANTITY];

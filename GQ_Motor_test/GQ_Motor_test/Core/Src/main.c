@@ -33,6 +33,13 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define mat arm_matrix_instance_f32
+#define Matrix_Init arm_mat_init_f32
+#define Matrix_Add arm_mat_add_f32
+#define Matrix_Subtract arm_mat_sub_f32
+#define Matrix_Multiply arm_mat_mult_f32
+#define Matrix_Transpose arm_mat_trans_f32
+#define Matrix_Inverse arm_mat_inverse_f32
 
 /* USER CODE END PD */
 
@@ -103,17 +110,22 @@ int main(void)
 //motor_control_pos(&hcan1, 1, 10 , 100);
 //HAL_Delay(10000);
 
-timed_return_motor_status(&hcan1, 1,10);
+
+
 //motor_control_pos_vel_tqe(&hcan1, 1, 500, 2000, 200);
 //	motor_control_vel(&hcan1, 4, 2000, 200);
 //		motor_read(&hcan1, 4);
 
 //	rezero_pos(&hcan1, 1);
 //	conf_write(&hcan1, 1);
-	  
+
+
 	  //timed_return_motor_status(&hcan1, 4,100);
 	//motor_read(&hcan1, 1);
-motor_control_vel(&hcan1, 1, 1000, 200);
+//motor_control_cur(&hcan1, 1, 10);
+
+timed_return_motor_status(&hcan1, 4,10);
+//motor_read(&hcan1,1);
 	//motor_control_pos(&hcan1, 4, 5000, 200);
 	//motor_control_pos(&hcan1, 1, 1, 200);
   /* Infinite loop */
@@ -121,8 +133,13 @@ motor_control_vel(&hcan1, 1, 1000, 200);
   while (1)
   {
 	Send_Data++;
+
+		motor_control_vel(&hcan1, 3, 1000, 1000);
+		
+		
 //motor_control_vel(&hcan1, 1, 0, 200);
- HAL_Delay(2000);
+// HAL_Delay(2000);
+		//motor_control_cur(&hcan1, 1, 10);
 		
 //	motor_control_vel(&hcan1, 4, 1000, 200);
 // HAL_Delay(2000);

@@ -1,30 +1,41 @@
-//#include "bsp_led.h"
-//#include "main.h"
+#include "bsp_led.h"
 
-//extern TIM_HandleTypeDef htim5;
-///**
-//  * @brief          aRGB show
-//  * @param[in]      aRGB: 0xaaRRGGBB, 'aa' is alpha, 'RR' is red, 'GG' is green, 'BB' is blue
-//  * @retval         none
-//  */
-///**
-//  * @brief          显示RGB
-//  * @param[in]      aRGB:0xaaRRGGBB,'aa' 是透明度,'RR'是红色,'GG'是绿色,'BB'是蓝色
-//  * @retval         none
-//  */
-//void aRGB_led_show(uint32_t aRGB)
-//{
-//    static uint8_t alpha;
-//    static uint16_t red,green,blue;
+#define WS2812_LowLevel    0xC0     // 0鐮?
+#define WS2812_HighLevel   0xF0     // 1鐮?
 
-//    alpha = (aRGB & 0xFF000000) >> 24;
-//    red = ((aRGB & 0x00FF0000) >> 16) * alpha;
-//    green = ((aRGB & 0x0000FF00) >> 8) * alpha;
-//    blue = ((aRGB & 0x000000FF) >> 0) * alpha;
+//LED鐐圭伅
+void WS2812_Ctrl(uint8_t r, uint8_t g, uint8_t b)
+{
+    uint8_t txbuf[24];
+    uint8_t res = 0;
+    for (int i = 0; i < 8; i++)
+    {
+        txbuf[7-i]  = (((g>>i)&0x01) ? WS2812_HighLevel : WS2812_LowLevel)>>1;
+        txbuf[15-i] = (((r>>i)&0x01) ? WS2812_HighLevel : WS2812_LowLevel)>>1;
+        txbuf[23-i] = (((b>>i)&0x01) ? WS2812_HighLevel : WS2812_LowLevel)>>1;
+    }
+    HAL_SPI_Transmit(&WS2812_SPI_UNIT, &res, 0, 0xFFFF);
+    while (WS2812_SPI_UNIT.State != HAL_SPI_STATE_READY);
+    HAL_SPI_Transmit(&WS2812_SPI_UNIT, txbuf, 24, 0xFFFF);
+    for (int i = 0; i < 100; i++)
+    {
+        HAL_SPI_Transmit(&WS2812_SPI_UNIT, &res, 1, 0xFFFF);
+    }
+}
 
-//    __HAL_TIM_SetCompare(&htim5, TIM_CHANNEL_1, blue);
-//    __HAL_TIM_SetCompare(&htim5, TIM_CHANNEL_2, green);
-//    __HAL_TIM_SetCompare(&htim5, TIM_CHANNEL_3, red);
-//}
+//姝ｅ父宸ヤ綔鏃剁殑LED浜豢鐏?
+void LED_Normal()
+{
+    WS2812_Ctrl(0,1,0);
+}
 
+//鍑虹幇闂鏃剁殑LED浜孩鐏?
+void LED_Warning()
+{
+    WS2812_Ctrl(1,0,0);
+}
 
+void LED_RC_Disconnected()
+{
+    WS2812_Ctrl(0,0,1);
+}

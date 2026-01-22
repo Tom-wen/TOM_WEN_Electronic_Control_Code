@@ -1,7 +1,10 @@
-// #ifndef BSP_BUZZER_H
-// #define BSP_BUZZER_H
-// #include "struct_typedef.h"
-// extern void buzzer_on(uint16_t psc, uint16_t pwm);
-// extern void buzzer_off(void);
+#ifndef __BSP_BUZZER_H__
+#define __BSP_BUZZER_H__
 
-// #endif
+#include "stm32h7xx.h"
+#include "tim.h"
+
+void buzzer_init();
+void buzzer_warning();
+
+#endif

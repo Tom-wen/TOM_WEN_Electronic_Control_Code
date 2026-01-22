@@ -387,6 +387,7 @@ void BMI088_gyro_read_over(uint8_t *rx_buf, float gyro[3]) {
 void BMI088_read(float gyro[3], float accel[3], float *temperate) {
     uint8_t buf[8] = {0, 0, 0, 0, 0, 0};
     int16_t bmi088_raw_temp;
+    static uint8_t error_count = 0;
 
     BMI088_accel_read_muli_reg(BMI088_ACCEL_XOUT_L, buf, 6);
 
@@ -405,6 +406,15 @@ void BMI088_read(float gyro[3], float accel[3], float *temperate) {
         gyro[1] = bmi088_raw_temp * BMI088_GYRO_SEN;
         bmi088_raw_temp = (int16_t)((buf[7]) << 8) | buf[6];
         gyro[2] = bmi088_raw_temp * BMI088_GYRO_SEN;
+        error_count = 0;  // 重置错误计数
+    } else {
+        // 如果芯片ID读取失败，保持上一次的有效值，避免使用未初始化的数据
+        error_count++;
+        if (error_count > 10) {  // 如果连续10次读取失败，设置为0
+            gyro[0] = 0.0f;
+            gyro[1] = 0.0f;
+            gyro[2] = 0.0f;
+        }
     }
     BMI088_accel_read_muli_reg(BMI088_TEMP_M, buf, 2);
 

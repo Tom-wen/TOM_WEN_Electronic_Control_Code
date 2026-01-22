@@ -1,13 +1,3 @@
-/**
- * @file gimbal_behaviour.h
- * @author 何清华
- * @brief
- * @version 0.1
- * @date 2022-03-17
- *
- * @copyright Copyright (c) 2022 SPR
- *
- */
 #ifndef GIMBAL_BEHAVIOUR_H
 #define GIMBAL_BEHAVIOUR_H
 #include "struct_typedef.h"
@@ -23,6 +13,8 @@ typedef enum
   GIMBAL_AUTO,
   GIMBAL_POLE
 } gimbal_behaviour_e;
+
+extern uint8_t up, medium, down;
 
 /**
  * @brief          被gimbal_set_mode函数调用在gimbal_task.c,云台行为状态机以及电机状态机设置
@@ -53,5 +45,7 @@ extern bool_t gimbal_cmd_to_chassis_stop(void);
  * @retval         1: no move 0:normal
  */
 extern bool_t gimbal_cmd_to_shoot_stop(void);
+
+
 
 #endif

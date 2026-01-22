@@ -42,6 +42,14 @@ void can_filter_init(void)
 	HAL_FDCAN_ConfigFifoWatermark(&hfdcan1, FDCAN_CFG_RX_FIFO0, 1);
 //	HAL_FDCAN_ConfigFifoWatermark(&hfdcan1, FDCAN_CFG_RX_FIFO1, 1);
 //	HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_TX_COMPLETE, FDCAN_TX_BUFFER0);
+
+    // ≈‰÷√ hfdcan2
+    HAL_FDCAN_ConfigFilter(&hfdcan2,&fdcan_filter);
+    HAL_FDCAN_ConfigGlobalFilter(&hfdcan2,FDCAN_REJECT,FDCAN_REJECT,FDCAN_REJECT_REMOTE,FDCAN_REJECT_REMOTE);
+
+    // ≈‰÷√ hfdcan3£®GQµÁª˙£©
+    HAL_FDCAN_ConfigFilter(&hfdcan3,&fdcan_filter);
+    HAL_FDCAN_ConfigGlobalFilter(&hfdcan3,FDCAN_REJECT,FDCAN_REJECT,FDCAN_REJECT_REMOTE,FDCAN_REJECT_REMOTE);
 }
 /**
 ************************************************************************

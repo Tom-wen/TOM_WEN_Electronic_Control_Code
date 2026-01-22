@@ -47,22 +47,3 @@ static void sbus_to_rc(uint8_t *sbus_buf)
     rc_ctrl.rc.ch[4] -= RC_CH_VALUE_OFFSET;
 }
 
-//// 死区处理加滤波器
-//int16_t rc_filter_with_deadband(LowPassFilter *lpf, int16_t raw_value, uint8_t channel)
-//{
-//    #define RC_DEADBAND 10
-//    static int16_t last_raw_value[5] = {0};  // 5个通道各自独立
-//    // 死区处理
-//    if(abs(raw_value) <= RC_DEADBAND)
-//    {
-//        raw_value = 0;
-//    }
-//    if(abs(raw_value - last_raw_value[channel]) <= 100)
-//    {
-//        raw_value = last_raw_value[channel];
-//    }
-//    last_raw_value[channel] = raw_value;
-//    // 低通滤波
-//    float filtered = LowPassFilter_operator(lpf, (float)raw_value);
-//    return (int16_t)filtered;
-//}

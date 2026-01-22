@@ -78,6 +78,5 @@ typedef __packed struct
 extern RC_ctrl_t rc_ctrl;
 void remote_control_init(void);
 static void sbus_to_rc(uint8_t *sbus_buf);
-//int16_t rc_filter_with_deadband(LowPassFilter *lpf, int16_t raw_value, uint8_t channel);
 
 #endif

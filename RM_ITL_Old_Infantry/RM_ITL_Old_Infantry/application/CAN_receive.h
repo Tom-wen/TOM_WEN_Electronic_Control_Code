@@ -1,23 +1,3 @@
-/**
-  ****************************(C) COPYRIGHT 2019 DJI****************************
-  * @file       can_receive.c/h
-  * @brief      there is CAN interrupt function  to receive motor data,
-  *             and CAN send function to send motor current to control motor.
-  *             这里是CAN中断接收函数，接收电机数据,CAN发送函数发送电机电流控制电机.
-  * @note
-  * @history
-  *  Version    Date            Author          Modification
-  *  V1.0.0     Dec-26-2018     RM              1. done
-  *  V1.1.0     Nov-11-2019     RM              1. support hal lib
-  *
-  @verbatim
-  ==============================================================================
-
-  ==============================================================================
-  @endverbatim
-  ****************************(C) COPYRIGHT 2019 DJI****************************
-  */
-
 #ifndef CAN_RECEIVE_H
 #define CAN_RECEIVE_H
 
@@ -58,8 +38,6 @@ typedef enum
   CAN_FRICTION_ALL_ID = 0x200,
   CAN_FRONT_LEFT_FRICTION_ID = 0x202,
   CAN_FRONT_RIGHT_FRICTION_ID = 0x203,
-  //CAN_LAST_LEFT_FRICTION_ID = 0x203,
-  //CAN_LAST_RIGHT_FRICTION_ID = 0x204,	
 } can_msg_id_e;
 
 // rm motor data
@@ -105,7 +83,7 @@ extern void CAN_cmd_gimbal(int16_t yaw, int16_t pitch);
  * @param[in]      motor4: (0x204) 3508电机控制电流, 范围 [-16384,16384]
  * @retval         none
  */
-extern uint8_t CAN_cmd_chassis(int16_t motor1, int16_t motor2, int16_t motor3, int16_t motor4);
+extern void CAN_cmd_chassis(int16_t motor1, int16_t motor2, int16_t motor3, int16_t motor4);
 
 /**
  * @brief          返回yaw 6020电机数据指针

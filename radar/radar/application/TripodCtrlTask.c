@@ -27,27 +27,28 @@ void TripodCtrlTask(void *argument)
     // // ³õÊ¼»¯µç»ú
     gimbal_set_control_init();
 	gimbal_yaw_init();
-    osDelay(4);
+    //osDelay(4);
     gimbal_pitch_init();
-    osDelay(1);
+    //osDelay(1);
     
 
     user_usart_init();
 
 
     while (1)
-		{
+	{
 
-            gimbal_set_control();
-			gimbal_PID_Calc(&gimbal_motor_t_yaw);
-            gimbal_PID_Calc(&gimbal_motor_t_pitch);
-            handle_remote_disconnect();//¼ì²âÒ£¿ØÆ÷Á¬½Ó×´Ì¬
-
-			CAN_cmd_gimbal(&gimbal_motor_t_yaw);
-            osDelay(5);
-            CAN_cmd_gimbal(&gimbal_motor_t_pitch);
-            osDelay(5);
-            VOFA_Send_Float_Data(gimbal_motor_t_yaw.relative_angle_set,gimbal_motor_t_yaw.gimbal_motor_measure.motor_data.motor.position, gimbal_motor_t_pitch.relative_angle_set,gimbal_motor_t_pitch.gimbal_motor_measure.motor_data.motor.position);
+    gimbal_set_control();
+	gimbal_yaw_PID_Calc(&gimbal_motor_t_yaw);
+    gimbal_pitch_PID_Calc(&gimbal_motor_t_pitch);
+    handle_remote_disconnect();//¼ì²âÒ£¿ØÆ÷Á¬½Ó×´Ì¬
+	CAN_yaw_cmd_gimbal(&gimbal_motor_t_yaw);
+    osDelay(1);
+    CAN_pitch_cmd_gimbal(&gimbal_motor_t_pitch);
+    osDelay(1);
+	motor_read(&hcan1,4);
+	osDelay(1);
+    VOFA_Send_Float_Data(gimbal_motor_t_yaw.relative_angle_set,gimbal_motor_t_yaw.gimbal_motor_measure.motor_data.motor.position, gimbal_motor_t_pitch.relative_angle_set,gimbal_motor_t_pitch.relative_angle);
 
 
     }
@@ -94,11 +95,12 @@ void CAN_InterfaceInit(void)
 
             if (rx_header.StdId == 1024)
             {
-                update(&gimbal_motor_t_yaw, rx_data, &rx_header);
+               update_yaw(&gimbal_motor_t_yaw, rx_data, &rx_header);
             }
-            else if (rx_header.StdId == 256)
+            else if (rx_header.StdId == 0x20A)   
             {
-                update(&gimbal_motor_t_pitch, rx_data, &rx_header);
+                get_motor_measure(&M6020_motor_measure, rx_data);
+                update_pitch(&gimbal_motor_t_pitch, &M6020_motor_measure, &rx_header);
             }
         }
 

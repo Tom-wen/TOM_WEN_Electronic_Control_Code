@@ -1,0 +1,238 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: μVision V5.36.0.0
+Copyright (C) 2021 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: a 沈文滔, a, LIC=HN0AE-5GNSQ-CXMU6-DWLR6-Y7SG1-NJRPB
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Plus  Version: 5.36.0.0
+Toolchain Path:  D:\Keil5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 7 (build 960)
+Assembler:       Armasm.exe V5.06 update 7 (build 960)
+Linker/Locator:  ArmLink.exe V5.06 update 7 (build 960)
+Library Manager: ArmAr.exe V5.06 update 7 (build 960)
+Hex Converter:   FromElf.exe V5.06 update 7 (build 960)
+CPU DLL:         SARMCM3.DLL V5.36.0.0
+Dialog DLL:      DCM.DLL V1.17.3.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.9.0
+Dialog DLL:      TCM.DLL V1.53.0.0
+ 
+<h2>Project:</h2>
+D:\git_push\TOM_WEN_Electronic_Control_Code\RM_ITL_Old_Infantry\RM_ITL_Old_Infantry\MDK-ARM\RM_ITL_Old_Infantry.uvprojx
+Project File Date:  01/22/2026
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 7 (build 960)', folder: 'D:\Keil5\ARM\ARMCC\Bin'
+Build target 'RM_ITL_Old_Infantry'
+assembling startup_stm32h723xx.s...
+compiling dma.c...
+compiling fdcan.c...
+compiling usart.c...
+compiling stm32h7xx_it.c...
+compiling stm32h7xx_hal_msp.c...
+compiling gpio.c...
+compiling usbd_core.c...
+compiling tim.c...
+compiling usb_device.c...
+compiling spi.c...
+compiling usbd_cdc_if.c...
+compiling usbd_desc.c...
+compiling usbd_conf.c...
+compiling freertos.c...
+compiling main.c...
+../application/remote_control.h(26): warning:  #3108-D: attribute "__packed__" does not apply here
+  typedef __packed struct
+../application/GQ_Motor.h(26): warning:  #1-D: last line of file ends without a newline
+  #endif
+../Core/Src/main.c: 2 warnings, 0 errors
+compiling bsp_pwm.c...
+compiling usbd_ioreq.c...
+compiling bsp_can.c...
+compiling bsp_imu_pwm.c...
+compiling bsp_led.c...
+..\boards\bsp_led.h(9): warning:  #1295-D: Deprecated declaration LED_Normal - give arg types
+  void LED_Normal();
+..\boards\bsp_led.h(10): warning:  #1295-D: Deprecated declaration LED_Warning - give arg types
+  void LED_Warning();
+..\boards\bsp_led.h(11): warning:  #1295-D: Deprecated declaration LED_RC_Disconnected - give arg types
+  void LED_RC_Disconnected();
+..\boards\bsp_led.c(41): warning:  #1-D: last line of file ends without a newline
+  }
+..\boards\bsp_led.c: 4 warnings, 0 errors
+compiling usbd_ctlreq.c...
+compiling bsp_dwt.c...
+compiling bsp_delay.c...
+compiling usbd_cdc.c...
+compiling bsp_usart.c...
+..\boards\bsp_usart.c(215): warning:  #550-D: variable "pUartData"  was set but never used
+          UART_RX_TypeDef *pUartData; /* 定义指向创建串口数据的指针 */     
+..\boards\bsp_usart.c: 1 warning, 0 errors
+compiling gimbal_task.c...
+..\Task\gimbal_task.h(265): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Task\INS_task.h(120): warning:  #1295-D: Deprecated declaration IMU_Temperature_Ctrl - give arg types
+  void IMU_Temperature_Ctrl();
+../boards/bsp_led.h(9): warning:  #1295-D: Deprecated declaration LED_Normal - give arg types
+  void LED_Normal();
+../boards/bsp_led.h(10): warning:  #1295-D: Deprecated declaration LED_Warning - give arg types
+  void LED_Warning();
+../boards/bsp_led.h(11): warning:  #1295-D: Deprecated declaration LED_RC_Disconnected - give arg types
+  void LED_RC_Disconnected();
+..\Task\gimbal_task.c(266): warning:  #177-D: variable "add_yaw_angle"  was declared but never referenced
+    float add_yaw_angle = 0.0f;
+..\Task\gimbal_task.c(267): warning:  #177-D: variable "add_pitch_angle"  was declared but never referenced
+    float add_pitch_angle = 0.0f;
+..\Task\gimbal_task.c(292): warning:  #177-D: function "gimbal_absolute_angle_limit"  was declared but never referenced
+  static void gimbal_absolute_angle_limit(gimbal_motor_t *gimbal_motor, float add)
+..\Task\gimbal_task.c(317): warning:  #177-D: function "gimbal_relative_angle_limit"  was declared but never referenced
+  static void gimbal_relative_angle_limit(gimbal_motor_t *gimbal_motor, float add)
+..\Task\gimbal_task.c(413): warning:  #177-D: function "gimbal_motor_relative_angle_control"  was declared but never referenced
+  static void gimbal_motor_relative_angle_control(gimbal_motor_t *gimbal_motor)
+..\Task\gimbal_task.c: 10 warnings, 0 errors
+compiling shoot_task.c...
+..\Task\gimbal_task.h(265): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Task\shoot_task.h(153): warning:  #1-D: last line of file ends without a newline
+  /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+..\Task\shoot_task.c(900): warning:  #1-D: last line of file ends without a newline
+  //}
+..\Task\shoot_task.c(143): warning:  #550-D: variable "shoot_block"  was set but never used
+  static int shoot_block;
+..\Task\shoot_task.c(145): warning:  #550-D: variable "move_flag"  was set but never used
+  static uint8_t move_flag = 0;
+..\Task\shoot_task.c(307): warning:  #177-D: variable "kadan_flag"  was declared but never referenced
+  static int kadan_flag;
+..\Task\shoot_task.c(588): warning:  #177-D: variable "wk11"  was declared but never referenced
+  static int wk11;
+..\Task\shoot_task.c(879): warning:  #177-D: function "bullet_one"  was declared but never referenced
+  static void bullet_one()
+..\Task\shoot_task.c: 8 warnings, 0 errors
+compiling hoisting_task.c...
+..\Task\gimbal_task.h(265): warning:  #1-D: last line of file ends without a newline
+  #endif
+../application/GQ_Motor.h(26): warning:  #1-D: last line of file ends without a newline
+  #endif
+../boards/bsp_led.h(9): warning:  #1295-D: Deprecated declaration LED_Normal - give arg types
+  void LED_Normal();
+../boards/bsp_led.h(10): warning:  #1295-D: Deprecated declaration LED_Warning - give arg types
+  void LED_Warning();
+../boards/bsp_led.h(11): warning:  #1295-D: Deprecated declaration LED_RC_Disconnected - give arg types
+  void LED_RC_Disconnected();
+..\Task\hoisting_task.c(152): warning:  #1-D: last line of file ends without a newline
+  }
+..\Task\hoisting_task.c: 6 warnings, 0 errors
+compiling chassis_task.c...
+..\Task\gimbal_task.h(265): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Task\INS_task.h(120): warning:  #1295-D: Deprecated declaration IMU_Temperature_Ctrl - give arg types
+  void IMU_Temperature_Ctrl();
+..\Task\chassis_task.c(98): warning:  #177-D: function "chassis_init"  was declared but never referenced
+  static void chassis_init(void)
+..\Task\chassis_task.c: 3 warnings, 0 errors
+compiling INS_task.c...
+..\Task\INS_Task.h(120): warning:  #1295-D: Deprecated declaration IMU_Temperature_Ctrl - give arg types
+  void IMU_Temperature_Ctrl();
+../boards/bsp_led.h(9): warning:  #1295-D: Deprecated declaration LED_Normal - give arg types
+  void LED_Normal();
+../boards/bsp_led.h(10): warning:  #1295-D: Deprecated declaration LED_Warning - give arg types
+  void LED_Warning();
+../boards/bsp_led.h(11): warning:  #1295-D: Deprecated declaration LED_RC_Disconnected - give arg types
+  void LED_RC_Disconnected();
+..\Task\INS_task.c: 4 warnings, 0 errors
+compiling bsp_buzzer.c...
+..\boards\bsp_buzzer.h(7): warning:  #1295-D: Deprecated declaration buzzer_init - give arg types
+  void buzzer_init();
+..\boards\bsp_buzzer.h(8): warning:  #1295-D: Deprecated declaration buzzer_warning - give arg types
+  void buzzer_warning();
+..\boards\bsp_buzzer.c: 2 warnings, 0 errors
+compiling BMI088Middleware.c...
+compiling GQ_Motor.c...
+..\application\GQ_Motor.h(26): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\application\GQ_Motor.c(12): warning:  #223-D: function "memcpy" declared implicitly
+        memcpy(&tdata[5], &cur, sizeof(uint16_t));
+..\application\GQ_Motor.c(130): warning:  #1-D: last line of file ends without a newline
+  }
+..\application\GQ_Motor.c: 3 warnings, 0 errors
+compiling BMI088driver.c...
+compiling pid.c...
+..\components\controller\pid.c(251): warning:  #940-D: missing return statement at end of non-void function "PID_deadline_limit" 
+  }
+..\components\controller\pid.c: 1 warning, 0 errors
+compiling remote_control.c...
+compiling controller.c...
+compiling QuaternionEKF.c...
+compiling CAN_receive.c...
+../Task/gimbal_task.h(265): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\application\GQ_Motor.h(26): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\application\CAN_receive.c: 2 warnings, 0 errors
+compiling gimbal_behaviour.c...
+../Task/gimbal_task.h(265): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\application\gimbal_behaviour.c: 1 warning, 0 errors
+compiling kalman_filter.c...
+compiling USART_receive.c...
+../Task/gimbal_task.h(265): warning:  #1-D: last line of file ends without a newline
+  #endif
+../Task/INS_task.h(120): warning:  #1295-D: Deprecated declaration IMU_Temperature_Ctrl - give arg types
+  void IMU_Temperature_Ctrl();
+..\application\USART_receive.c(34): warning:  #167-D: argument of type "const volatile uint8_t *" is incompatible with parameter of type "const void *__restrict__"
+          memcpy(&auto_shoot->yaw_add, &buf[3], sizeof(float));
+..\application\USART_receive.c(36): warning:  #167-D: argument of type "const volatile uint8_t *" is incompatible with parameter of type "const void *__restrict__"
+          memcpy(&auto_shoot->yaw_vel, &buf[7], sizeof(float));
+..\application\USART_receive.c(38): warning:  #167-D: argument of type "const volatile uint8_t *" is incompatible with parameter of type "const void *__restrict__"
+          memcpy(&auto_shoot->yaw_acc, &buf[11], sizeof(float));
+..\application\USART_receive.c(40): warning:  #167-D: argument of type "const volatile uint8_t *" is incompatible with parameter of type "const void *__restrict__"
+          memcpy(&auto_shoot->pitch_add, &buf[15], sizeof(float));
+..\application\USART_receive.c(42): warning:  #167-D: argument of type "const volatile uint8_t *" is incompatible with parameter of type "const void *__restrict__"
+          memcpy(&auto_shoot->pitch_vel, &buf[19], sizeof(float));
+..\application\USART_receive.c(44): warning:  #167-D: argument of type "const volatile uint8_t *" is incompatible with parameter of type "const void *__restrict__"
+          memcpy(&auto_shoot->pitch_acc, &buf[23], sizeof(float));
+..\application\USART_receive.c(79): warning:  #2748-D: null argument provided for parameter marked with attribute "nonnull"
+      memcpy(&sendBuffer[offset], 0, 4);
+..\application\USART_receive.c(87): warning:  #2748-D: null argument provided for parameter marked with attribute "nonnull"
+      memcpy(&sendBuffer[offset], 0, 4);
+..\application\USART_receive.c(91): warning:  #2748-D: null argument provided for parameter marked with attribute "nonnull"
+      memcpy(&sendBuffer[offset], 0, 4);
+..\application\USART_receive.c(95): warning:  #2748-D: null argument provided for parameter marked with attribute "nonnull"
+      memcpy(&sendBuffer[offset], 0, 2);
+..\application\USART_receive.c: 12 warnings, 0 errors
+compiling chassis_behaviour.c...
+../Task/gimbal_task.h(265): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\application\chassis_behaviour.c: 1 warning, 0 errors
+linking...
+Program Size: Code=104612 RO-data=3872 RW-data=1908 ZI-data=66132  
+FromELF: creating hex file...
+"RM_ITL_Old_Infantry\RM_ITL_Old_Infantry.axf" - 0 Error(s), 60 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.8.0.pack
+                ARM.CMSIS.5.8.0
+                CMSIS (Common Microcontroller Software Interface Standard)
+   * Component: CORE Version: 5.5.0
+
+Package Vendor: Keil
+                https://www.keil.com/pack/Keil.STM32H7xx_DFP.4.0.0.pack
+                Keil.STM32H7xx_DFP.4.0.0
+                STMicroelectronics STM32H7 Series Device Support
+
+<h2>Collection of Component include folders:</h2>
+  .\RTE\_RM_ITL_Old_Infantry
+  D:\Keil5\ARM\CMSIS\5.8.0\CMSIS\Core\Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:5.5.0
+      Include file:  CMSIS\Core\Include\tz_context.h
+Build Time Elapsed:  00:00:26
+</pre>
+</body>
+</html>

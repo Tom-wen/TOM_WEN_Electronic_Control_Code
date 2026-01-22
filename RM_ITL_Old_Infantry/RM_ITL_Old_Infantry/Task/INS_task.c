@@ -1,82 +1,37 @@
-/**
-  ****************************(C) COPYRIGHT 2019 DJI****************************
-  * @file       IMU_task.c/h
-  * @brief      use bmi088 to calculate the euler angle. no use ist8310, so only
-  *             enable data ready pin to save cpu time.enalbe bmi088 data ready
-  *             enable spi DMA to save the time spi transmit
-  *             ä¸»è¦åˆ©ç”¨é™€èºä»ªbmi088ï¼Œç£åŠ›è®¡ist8310ï¼Œå®Œæˆå§¿æ€è§£ç®—ï¼Œå¾—å‡ºæ¬§æ‹‰è§’ï¼Œ
-  *             æä¾›é€šè¿‡bmi088çš„data ready ä¸­æ–­å®Œæˆå¤–éƒ¨è§¦å‘ï¼Œå‡å°‘æ•°æ®ç­‰å¾…å»¶è¿Ÿ
-  *             é€šè¿‡DMAçš„SPIä¼ è¾“èŠ‚çº¦CPUæ—¶é—´.
-  * @note
-  * @history
-  *  Version    Date            Author          Modification
-  *  V1.0.0     Dec-26-2018     RM              1. done
-  *  V2.0.0     Nov-11-2019     RM              1. support bmi088, but don't support mpu6500
-  *
-  @verbatim
-  ==============================================================================
-
-  ==============================================================================
-  @endverbatim
-  ****************************(C) COPYRIGHT 2019 DJI****************************
-  */
 
 #include "INS_Task.h"
 #include "cmsis_os.h"
 #include "task.h"
-#include "bsp_imu_pwm.h"
-#include "bsp_spi.h"
+#include "bsp_pwm.h"
 #include "BMI088Driver.h"
-#include "MahonyAHRS.h"
 #include "pid.h"
 #include "tim.h"
 #include <math.h>
 #include "CAN_receive.h"
+#include "kalman_filter.h"
+#include "controller.h"
+#include "QuaternionEKF.h"
+#include "bsp_usart.h"
+#include "USART_receive.h"
+#include "bsp_led.h"
 
-// TODO: æ¸©æ§æ— æ³•ä½¿ç”¨
 #define IMU_temp_PWM(pwm)  imu_pwm_set(pwm) // pwmç»™å®š
-#define PI 3.14159265359f
-
+INS_t INS;
+IMU_Param_t IMU_Param;
+PID_t TempCtrl = {0};
 BIM088_origin_data BIM088_data;
+const float xb[3] = {1, 0, 0};
+const float yb[3] = {0, 1, 0};
+const float zb[3] = {0, 0, 1};
 
-/**
-  * @brief          control the temperature of bmi088
-  * @param[in]      temp: the temperature of bmi088
-  * @retval         none
-  */
-static void imu_temp_control(float temp);
+uint32_t INS_DWT_Count = 0;
+static float dt = 0, t = 0;
+uint8_t ins_debug_mode = 0;
+float RefTemp = 40;//40
+float speed = 0.0f;
+float speed1 = 0.0f;
+static void IMU_Param_Correction(IMU_Param_t *param, float gyro[3], float accel[3]);
 
-/**
-  * @brief          open the SPI DMA accord to the value of imu_update_flag
-  * @param[in]      none
-  * @retval         none
-  */
-//static void imu_cmd_spi_dma(void);
-
-void get_angle(float quat[4], float *yaw, float *pitch, float *roll);
-
-extern SPI_HandleTypeDef hspi1;
-
-uint8_t gyro_dma_rx_buf[SPI_DMA_GYRO_LENGHT];
-uint8_t gyro_dma_tx_buf[SPI_DMA_GYRO_LENGHT] = {0x82, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
-
-uint8_t accel_dma_rx_buf[SPI_DMA_ACCEL_LENGHT];
-uint8_t accel_dma_tx_buf[SPI_DMA_ACCEL_LENGHT] = {0x92, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
-
-uint8_t temp_dma_rx_buf[SPI_DMA_TEMP_LENGHT];
-uint8_t temp_dma_tx_buf[SPI_DMA_TEMP_LENGHT] = {0xA2, 0xFF, 0xFF, 0xFF};
-
-volatile uint8_t gyro_update_flag = 0;
-volatile uint8_t accel_update_flag = 0;
-volatile uint8_t accel_temp_update_flag = 0;
-volatile uint8_t imu_start_dma_flag = 0;
-
-bmi088_real_data_t bmi088_real_data;
-
-static uint8_t first_temperate = 0;
-PID_struct_t imu_temp_pid;
-
-float INS_angle[3]; //euler angle, unit rad.
 
 INS_data_t INS_data;
 
@@ -86,205 +41,322 @@ INS_data_t INS_data;
   * @retval         none
   */
 void INS_task(void *argument) {
-    MahonyAHRS AHRS;
     
     osDelay(InsTask_INIT_TIME);
 
-    while (BMI088_init()) {
+    while (BMI088_init()) 
+    {
         osDelay(100);
     }
-		HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
-
-    PID_init(&imu_temp_pid, TEMPERATURE_PID_KP, TEMPERATURE_PID_KI, TEMPERATURE_PID_KD, TEMPERATURE_PID_MAX_OUT,
-             TEMPERATURE_PID_MAX_IOUT);
-    
-    MahonyAHRS_init(&AHRS, 1000);
-
-    //SPI2_DMA_init();
-
-    imu_start_dma_flag = 1;
-    
+    INS_Init();
+		
     while (1) 
-			{
-
-        //wait spi DMA tansmit done
-       //while (ulTaskNotifyTake(pdTRUE, portMAX_DELAY) != pdPASS) {}
-				BMI088_read(BIM088_data.gyro, BIM088_data.accel, &BIM088_data.temp);
-				
-				INS_data.angle_yaw=INS_angle[0];
-				INS_data.angle_pitch=INS_angle[1];
-				INS_data.angle_roll=INS_angle[2];
-
-        if (gyro_update_flag & (1 << IMU_UPDATE_SHFITS)) {
-            gyro_update_flag &= ~(1 << IMU_UPDATE_SHFITS);
-            BMI088_gyro_read_over(gyro_dma_rx_buf + BMI088_GYRO_RX_BUF_DATA_OFFSET, BIM088_data.gyro);
-        }
+    {
+		INS_Task();
+        INS_data.angle_yaw = INS.Yaw * PI / 180.0f;
+        INS_data.angle_pitch = INS.Pitch * PI / 180.0f;
+        INS_data.angle_roll = INS.Roll * PI / 180.0f;
+        INS_data.wx = INS.Gyro[0];
+        INS_data.wy = INS.Gyro[1];
+        INS_data.wz = INS.Gyro[2];
+        INS_data.ax = INS.Accel[0];
+        INS_data.ay = INS.Accel[1];
+        INS_data.az = INS.Accel[2];
+        vTaskDelay(pdMS_TO_TICKS(2));
+			//usart_vofa_send(&huart7);
         
-        if (accel_update_flag & (1 << IMU_UPDATE_SHFITS)) {
-            accel_update_flag &= ~(1 << IMU_UPDATE_SHFITS);
-            BMI088_accel_read_over(accel_dma_rx_buf + BMI088_ACCEL_RX_BUF_DATA_OFFSET, BIM088_data.accel,
-                                   &bmi088_real_data.time);
-        }
 
-        if (accel_temp_update_flag & (1 << IMU_UPDATE_SHFITS)) {
-            accel_temp_update_flag &= ~(1 << IMU_UPDATE_SHFITS);
-            BMI088_temperature_read_over(temp_dma_rx_buf + BMI088_ACCEL_RX_BUF_DATA_OFFSET,
-                                         &BIM088_data.temp);
-            imu_temp_control(BIM088_data.temp);
-        }
-
-        MahonyAHRS_update(&AHRS, 
-                          BIM088_data.gyro[0], BIM088_data.gyro[1], BIM088_data.gyro[2],
-                          BIM088_data.accel[0], BIM088_data.accel[1], BIM088_data.accel[2]);
-                          
-        get_angle(MahonyAHRS_get_q_data(&AHRS), INS_angle, INS_angle + 1, INS_angle + 2);
-        //xTaskNotifyGive((TaskHandle_t)TripodCtrlHandle);
     }
 }
 
-void get_angle(float q[4], float *yaw, float *pitch, float *roll) {
-    *yaw = atan2f(2.0f * (q[0] * q[3] + q[1] * q[2]), 2.0f * (q[0] * q[0] + q[1] * q[1]) - 1.0f);
-    *pitch = asinf(-2.0f * (q[1] * q[3] - q[0] * q[2]));
-    *roll = atan2f(2.0f * (q[0] * q[1] + q[2] * q[3]), 2.0f * (q[0] * q[0] + q[3] * q[3]) - 1.0f);
+
+
+void INS_Init(void)
+{
+    IMU_Param.scale[Xt] = 1;
+    IMU_Param.scale[Yt] = 1;
+    IMU_Param.scale[Zt] = 1;
+    IMU_Param.Yaw = 0;
+    IMU_Param.Pitch = 0;
+    IMU_Param.Roll = 0;
+    IMU_Param.flag = 1;
+    IMU_QuaternionEKF_Init(10, 0.001, 10000000, 1, 0);
+    // imu heat init
+    PID_Init1(&TempCtrl, 800, 300, 0, 300, 20, 0, 0, 0, 0, 0, 0, 0);
+    HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
+    INS.AccelLPF = 0.0085;
+    // ³õÊ¼»¯yawÁãÆ®¹À¼Æ²ÎÊı£¨ĞÂÔö£©
+    INS.YawGyroBias = 0.0f;
+    INS.StableCount = 0;
+    INS.YawGyroSum = 0.0f;
+    INS.BiasInitialized = 0;
 }
 
-/**
-  * @brief          control the temperature of bmi088
-  * @param[in]      temp: the temperature of bmi088
-  * @retval         none
-  */
-static void imu_temp_control(float temp) {
-    uint16_t tempPWM;
-    static uint8_t temp_constant_time = 0;
+void INS_Task(void)
+{
+    static uint32_t count = 0;
+    const float gravity[3] = {0, 0, 9.81f};
+    static uint8_t sensor_init_count = 0;
     
-    if (first_temperate) {
-        PID_Calc_Speed(&imu_temp_pid, temp, 45.0f);
-        if (imu_temp_pid.output < 0.0f) {
-            imu_temp_pid.output = 0.0f;
-        }
-        tempPWM = (uint16_t)imu_temp_pid.output;
-        IMU_temp_PWM(tempPWM);
-    } else {
-        //in beginning, max power
-        if (temp > 45.0f) {
-            temp_constant_time++;
-            if (temp_constant_time > 200) {
-                //è¾¾åˆ°è®¾ç½®æ¸©åº¦ï¼Œå°†ç§¯åˆ†é¡¹è®¾ç½®ä¸ºä¸€åŠæœ€å¤§åŠŸç‡ï¼ŒåŠ é€Ÿæ”¶æ•›
-                first_temperate = 1;
-                imu_temp_pid.i_out = MPU6500_TEMP_PWM_MAX / 2.0f;
+    dt = DWT_GetDeltaT(&INS_DWT_Count);
+    
+    // ¼ì²édtÊÇ·ñÓĞĞ§
+    if (dt <= 0.0f || dt > 0.1f || dt != dt) {
+        count++;
+        return;
+    }
+    
+    t += dt;
+    // ins update
+    if ((count % 1) == 0)
+    {
+        BMI088_read(BIM088_data.gyro, BIM088_data.accel, &BIM088_data.temp);
+        
+        // Êı¾İÓĞĞ§ĞÔ¼ì²é - ¼ì²éÊÇ·ñÎªNaN»ò³¬³öºÏÀí·¶Î§
+        uint8_t data_valid = 1;
+        
+        // ¼ì²é¼ÓËÙ¶È¼ÆÊı¾İ
+        for (uint8_t i = 0; i < 3; i++) {
+            if (BIM088_data.accel[i] != BIM088_data.accel[i] ||  // NaN¼ì²é
+                fabsf(BIM088_data.accel[i]) > 100.0f) {        // ³¬³öºÏÀí·¶Î§(100m/s?)
+                data_valid = 0;
+                break;
             }
         }
-        IMU_temp_PWM(MPU6500_TEMP_PWM_MAX - 1);
+        
+        // ¼ì²éÍÓÂİÒÇÊı¾İ
+        if (data_valid) {
+            for (uint8_t i = 0; i < 3; i++) {
+                if (BIM088_data.gyro[i] != BIM088_data.gyro[i] ||  // NaN¼ì²é
+                    fabsf(BIM088_data.gyro[i]) > 50.0f) {        // ³¬³öºÏÀí·¶Î§(50rad/s)
+                    data_valid = 0;
+                    break;
+                }
+            }
+        }
+        
+        // Èç¹ûÊı¾İÎŞĞ§£¬Ìø¹ı±¾´Î¸üĞÂ
+        if (!data_valid) {
+            sensor_init_count++;
+            if (sensor_init_count < 100) {  // Ç°100´ÎÔÊĞíÊı¾İ²»ÎÈ¶¨
+                count++;
+                return;
+            }
+        } else {
+            sensor_init_count = 0;
+        }
+        
+        INS.Accel[Xt] = BIM088_data.accel[Xt];
+        INS.Accel[Yt] = BIM088_data.accel[Yt];
+        INS.Accel[Zt] = BIM088_data.accel[Zt];
+        INS.Gyro[Xt] = BIM088_data.gyro[Xt];
+        INS.Gyro[Yt] = BIM088_data.gyro[Yt];
+        INS.Gyro[Zt] = BIM088_data.gyro[Zt];
+        // =============== yawÁãÆ®¹À¼ÆÓë²¹³¥£¨ĞÂÔö£© ===============
+        // ¼ÆËã½ÇËÙ¶ÈºÍ¼ÓËÙ¶ÈÄ£Öµ
+        float gyro_norm = sqrtf(INS.Gyro[Xt] * INS.Gyro[Xt] +
+                                INS.Gyro[Yt] * INS.Gyro[Yt] +
+                                INS.Gyro[Zt] * INS.Gyro[Zt]);
+        float accel_norm = sqrtf(INS.Accel[Xt] * INS.Accel[Xt] +
+                                 INS.Accel[Yt] * INS.Accel[Yt] +
+                                 INS.Accel[Zt] * INS.Accel[Zt]);
+        // ÅĞ¶ÏÊÇ·ñ¾²Ö¹£º½ÇËÙ¶ÈĞ¡ÇÒ¼ÓËÙ¶È½Ó½üÖØÁ¦
+        if (gyro_norm < 0.05f && accel_norm > 9.3f && accel_norm < 10.3f)
+        {
+            // ÀÛ¼Óyaw½ÇËÙ¶È
+            INS.YawGyroSum += INS.Gyro[Zt];
+            INS.StableCount++;
+            if (INS.StableCount >= 100)
+            {
+                // ¼ÆËãÆ½¾ùÖµ×÷ÎªÁãÆ®¹À¼Æ
+                INS.YawGyroBias = INS.YawGyroBias * 0.95f +
+                                  (INS.YawGyroSum / INS.StableCount) * 0.05f; // µÍÍ¨ÂË²¨
+                INS.BiasInitialized = 1;
+                // ÖØÖÃ¼ÆÊıÆ÷
+                INS.StableCount = 0;
+                INS.YawGyroSum = 0.0f;
+            }
+        }
+        else
+        {
+            // ÔË¶¯×´Ì¬£¬ÖØÖÃ¼ÆÊıÆ÷
+            INS.StableCount = 0;
+            INS.YawGyroSum = 0.0f;
+        }
+        // ²¹³¥yawÁãÆ®£¨Èç¹ûÒÑ³õÊ¼»¯£©
+        if (INS.BiasInitialized)
+        {
+            INS.Gyro[Zt] -= INS.YawGyroBias;
+        }
+        // =============== yawÁãÆ®¹À¼ÆÓë²¹³¥½áÊø ===============
+        // demo function,ÓÃÓÚĞŞÕı°²×°Îó²î,¿ÉÒÔ²»¹Ü,±¾demoÔİÊ±Ã»ÓÃ
+        IMU_Param_Correction(&IMU_Param, INS.Gyro, INS.Accel);
+        // ¼ÆËãÖØÁ¦¼ÓËÙ¶ÈÊ¸Á¿ºÍbÏµµÄXYÁ½ÖáµÄ¼Ğ½Ç,¿ÉÓÃ×÷¹¦ÄÜÀ©Õ¹,±¾demoÔİÊ±Ã»ÓÃ
+        INS.atanxz = -atan2f(INS.Accel[Xt], INS.Accel[Zt]) * 180 / PI;
+        INS.atanyz = atan2f(INS.Accel[Yt], INS.Accel[Zt]) * 180 / PI;
+        // ºËĞÄº¯Êı,EKF¸üĞÂËÄÔªÊı
+        IMU_QuaternionEKF_Update(INS.Gyro[Xt], INS.Gyro[Yt], INS.Gyro[Zt],
+                                 INS.Accel[Xt], INS.Accel[Yt], INS.Accel[Zt], dt);
+        memcpy(INS.q, QEKF_INS.q, sizeof(QEKF_INS.q));
+        // »úÌåÏµ»ùÏòÁ¿×ª»»µ½µ¼º½×ø±êÏµ£¬±¾ÀıÑ¡È¡¹ßĞÔÏµÎªµ¼º½Ïµ
+        BodyFrameToEarthFrame(xb, INS.xn, INS.q);
+        BodyFrameToEarthFrame(yb, INS.yn, INS.q);
+        BodyFrameToEarthFrame(zb, INS.zn, INS.q);
+        // ½«ÖØÁ¦´Óµ¼º½×ø±êÏµn×ª»»µ½»úÌåÏµb,Ëæºó¸ù¾İ¼ÓËÙ¶È¼ÆÊı¾İ¼ÆËãÔË¶¯¼ÓËÙ¶È
+        float gravity_b[3];
+        EarthFrameToBodyFrame(gravity, gravity_b, INS.q);
+        for (uint8_t i = 0; i < 3; i++) // Í¬Ñù¹ıÒ»¸öµÍÍ¨ÂË²¨
+        {
+            INS.MotionAccel_b[i] = (INS.Accel[i] - gravity_b[i]) * dt / (INS.AccelLPF + dt) +
+                                    INS.MotionAccel_b[i] * INS.AccelLPF / (INS.AccelLPF + dt);
+        }
+        BodyFrameToEarthFrame(INS.MotionAccel_b, INS.MotionAccel_n, INS.q); // ×ª»»»Øµ¼º½Ïµn
+        // »ñÈ¡×îÖÕÊı¾İ²¢¼ì²éNaN
+        INS.Yaw = QEKF_INS.Yaw;
+        INS.Pitch = QEKF_INS.Pitch;
+        INS.Roll = QEKF_INS.Roll;
+        
+        // NaN¼ì²âÓë»Ö¸´
+        if (INS.Yaw != INS.Yaw || INS.Pitch != INS.Pitch || INS.Roll != INS.Roll) {
+            // Èç¹û¼ì²âµ½NaN£¬ÖØĞÂ³õÊ¼»¯EKF
+            IMU_QuaternionEKF_Init(10, 0.001, 10000000, 1, 0);
+            INS.Yaw = 0.0f;
+            INS.Pitch = 0.0f;
+            INS.Roll = 0.0f;
+        }
+        
+        INS.YawTotalAngle = QEKF_INS.YawTotalAngle;
+        INS.temp = BIM088_data.temp;
     }
+    // temperature control
+    if ((count % 2) == 0)
+    {
+        // 500hz
+        IMU_Temperature_Ctrl();
+    }
+    count++;
 }
 
-//void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-//    if (GPIO_Pin == ACC_INT_Pin) 
-//    {
-//        accel_update_flag |= 1 << IMU_DR_SHFITS;
-//        accel_temp_update_flag |= 1 << IMU_DR_SHFITS;
-//        if (imu_start_dma_flag) 
-//        {
-//            imu_cmd_spi_dma();
-//        }
-//    } 
-//    else if (GPIO_Pin == GYRO_CS_Pin) 
-//    {
-//        gyro_update_flag |= 1 << IMU_DR_SHFITS;
-//        if (imu_start_dma_flag) 
-//        {
-//            imu_cmd_spi_dma();
-//        }
-//    }
-//}
 
 /**
-  * @brief          open the SPI DMA accord to the value of imu_update_flag
-  * @param[in]      none
-  * @retval         none
-  */
-//static void imu_cmd_spi_dma(void) {
-//    // å¼€å¯é™€èºä»ªçš„DMAä¼ è¾“
-//    if ((gyro_update_flag & (1 << IMU_DR_SHFITS)) && 
-//        !(hspi1.hdmatx->Instance->CR & DMA_SxCR_EN) && 
-//        !(hspi1.hdmarx->Instance->CR & DMA_SxCR_EN) &&
-//        !(accel_update_flag & (1 << IMU_SPI_SHFITS)) && 
-//        !(accel_temp_update_flag & (1 << IMU_SPI_SHFITS))) {
-//        
-//        gyro_update_flag &= ~(1 << IMU_DR_SHFITS);
-//        gyro_update_flag |= (1 << IMU_SPI_SHFITS);
+ * @brief          Transform 3dvector from BodyFrame to EarthFrame
+ * @param[1]       vector in BodyFrame
+ * @param[2]       vector in EarthFrame
+ * @param[3]       quaternion
+ */
+void BodyFrameToEarthFrame(const float *vecBF, float *vecEF, float *q)
+{
+    vecEF[0] = 2.0f * ((0.5f - q[2] * q[2] - q[3] * q[3]) * vecBF[0] +
+                       (q[1] * q[2] - q[0] * q[3]) * vecBF[1] +
+                       (q[1] * q[3] + q[0] * q[2]) * vecBF[2]);
 
-//        HAL_GPIO_WritePin(GYRO_CS_GPIO_Port, GYRO_CS_Pin, GPIO_PIN_RESET);
-//        SPI1_DMA_enable((uint32_t)gyro_dma_tx_buf, (uint32_t)gyro_dma_rx_buf, SPI_DMA_GYRO_LENGHT);
-//        return;
-//    }
-//    
-//    // å¼€å¯åŠ é€Ÿåº¦è®¡çš„DMAä¼ è¾“
-//    if ((accel_update_flag & (1 << IMU_DR_SHFITS)) && 
-//        !(hspi1.hdmatx->Instance->CR & DMA_SxCR_EN) && 
-//        !(hspi1.hdmarx->Instance->CR & DMA_SxCR_EN) &&
-//        !(gyro_update_flag & (1 << IMU_SPI_SHFITS)) && 
-//        !(accel_temp_update_flag & (1 << IMU_SPI_SHFITS))) {
-//        
-//        accel_update_flag &= ~(1 << IMU_DR_SHFITS);
-//        accel_update_flag |= (1 << IMU_SPI_SHFITS);
+    vecEF[1] = 2.0f * ((q[1] * q[2] + q[0] * q[3]) * vecBF[0] +
+                       (0.5f - q[1] * q[1] - q[3] * q[3]) * vecBF[1] +
+                       (q[2] * q[3] - q[0] * q[1]) * vecBF[2]);
 
-//        HAL_GPIO_WritePin(ACC_CS_GPIO_Port, ACC_CS_Pin, GPIO_PIN_RESET);
-//        SPI1_DMA_enable((uint32_t)accel_dma_tx_buf, (uint32_t)accel_dma_rx_buf, SPI_DMA_ACCEL_LENGHT);
-//        return;
-//    }
+    vecEF[2] = 2.0f * ((q[1] * q[3] - q[0] * q[2]) * vecBF[0] +
+                       (q[2] * q[3] + q[0] * q[1]) * vecBF[1] +
+                       (0.5f - q[1] * q[1] - q[2] * q[2]) * vecBF[2]);
+}
 
-//    if ((accel_temp_update_flag & (1 << IMU_DR_SHFITS)) && 
-//        !(hspi1.hdmatx->Instance->CR & DMA_SxCR_EN) && 
-//        !(hspi1.hdmarx->Instance->CR & DMA_SxCR_EN) &&
-//        !(gyro_update_flag & (1 << IMU_SPI_SHFITS)) && 
-//        !(accel_update_flag & (1 << IMU_SPI_SHFITS))) {
-//        
-//        accel_temp_update_flag &= ~(1 << IMU_DR_SHFITS);
-//        accel_temp_update_flag |= (1 << IMU_SPI_SHFITS);
+/**
+ * @brief          Transform 3dvector from EarthFrame to BodyFrame
+ * @param[1]       vector in EarthFrame
+ * @param[2]       vector in BodyFrame
+ * @param[3]       quaternion
+ */
+void EarthFrameToBodyFrame(const float *vecEF, float *vecBF, float *q)
+{
+    vecBF[0] = 2.0f * ((0.5f - q[2] * q[2] - q[3] * q[3]) * vecEF[0] +
+                       (q[1] * q[2] + q[0] * q[3]) * vecEF[1] +
+                       (q[1] * q[3] - q[0] * q[2]) * vecEF[2]);
 
-//        HAL_GPIO_WritePin(ACC_CS_GPIO_Port, ACC_CS_Pin, GPIO_PIN_RESET);
-//        SPI1_DMA_enable((uint32_t)temp_dma_tx_buf, (uint32_t)temp_dma_rx_buf, SPI_DMA_TEMP_LENGHT);
-//        return;
-//    }
-//}
+    vecBF[1] = 2.0f * ((q[1] * q[2] - q[0] * q[3]) * vecEF[0] +
+                       (0.5f - q[1] * q[1] - q[3] * q[3]) * vecEF[1] +
+                       (q[2] * q[3] + q[0] * q[1]) * vecEF[2]);
 
-//void DMA2_Stream2_IRQHandler(void) {
-//    if (__HAL_DMA_GET_FLAG(hspi1.hdmarx, __HAL_DMA_GET_TC_FLAG_INDEX(hspi1.hdmarx)) != RESET) {
-//        __HAL_DMA_CLEAR_FLAG(hspi1.hdmarx, __HAL_DMA_GET_TC_FLAG_INDEX(hspi1.hdmarx));
+    vecBF[2] = 2.0f * ((q[1] * q[3] + q[0] * q[2]) * vecEF[0] +
+                       (q[2] * q[3] - q[0] * q[1]) * vecEF[1] +
+                       (0.5f - q[1] * q[1] - q[2] * q[2]) * vecEF[2]);
+}
 
-//        //gyro read over
-//        if (gyro_update_flag & (1 << IMU_SPI_SHFITS)) {
-//            gyro_update_flag &= ~(1 << IMU_SPI_SHFITS);
-//            gyro_update_flag |= (1 << IMU_UPDATE_SHFITS);
+/**
+ * @brief reserved.ÓÃÓÚĞŞÕıIMU°²×°Îó²îÓë±ê¶ÈÒòÊıÎó²î,¼´ÍÓÂİÒÇÖáºÍÔÆÌ¨ÖáµÄ°²×°Æ«ÒÆ
+ *
+ *
+ * @param param IMU²ÎÊı
+ * @param gyro  ½ÇËÙ¶È
+ * @param accel ¼ÓËÙ¶È
+ */
+static void IMU_Param_Correction(IMU_Param_t *param, float gyro[3], float accel[3])
+{
+    static float lastYawOffset, lastPitchOffset, lastRollOffset;
+    static float c_11, c_12, c_13, c_21, c_22, c_23, c_31, c_32, c_33;
+    float cosPitch, cosYaw, cosRoll, sinPitch, sinYaw, sinRoll;
 
-//            HAL_GPIO_WritePin(GYRO_CS_GPIO_Port, GYRO_CS_Pin, GPIO_PIN_SET);
-//        }
+    if (fabsf(param->Yaw - lastYawOffset) > 0.001f ||
+        fabsf(param->Pitch - lastPitchOffset) > 0.001f ||
+        fabsf(param->Roll - lastRollOffset) > 0.001f || param->flag)
+    {
+        cosYaw = arm_cos_f32(param->Yaw / 57.295779513f);
+        cosPitch = arm_cos_f32(param->Pitch / 57.295779513f);
+        cosRoll = arm_cos_f32(param->Roll / 57.295779513f);
+        sinYaw = arm_sin_f32(param->Yaw / 57.295779513f);
+        sinPitch = arm_sin_f32(param->Pitch / 57.295779513f);
+        sinRoll = arm_sin_f32(param->Roll / 57.295779513f);
 
-//        //accel read over
-//        if (accel_update_flag & (1 << IMU_SPI_SHFITS)) {
-//            accel_update_flag &= ~(1 << IMU_SPI_SHFITS);
-//            accel_update_flag |= (1 << IMU_UPDATE_SHFITS);
+        // 1.yaw(alpha) 2.pitch(beta) 3.roll(gamma)
+        c_11 = cosYaw * cosRoll + sinYaw * sinPitch * sinRoll;
+        c_12 = cosPitch * sinYaw;
+        c_13 = cosYaw * sinRoll - cosRoll * sinYaw * sinPitch;
+        c_21 = cosYaw * sinPitch * sinRoll - cosRoll * sinYaw;
+        c_22 = cosYaw * cosPitch;
+        c_23 = -sinYaw * sinRoll - cosYaw * cosRoll * sinPitch;
+        c_31 = -cosPitch * sinRoll;
+        c_32 = sinPitch;
+        c_33 = cosPitch * cosRoll;
+        param->flag = 0;
+    }
+    float gyro_temp[3];
+    for (uint8_t i = 0; i < 3; i++)
+        gyro_temp[i] = gyro[i] * param->scale[i];
 
-//            HAL_GPIO_WritePin(ACC_CS_GPIO_Port, ACC_CS_Pin, GPIO_PIN_SET);
-//        }
-//        
-//        //temperature read over
-//        if (accel_temp_update_flag & (1 << IMU_SPI_SHFITS)) {
-//            accel_temp_update_flag &= ~(1 << IMU_SPI_SHFITS);
-//            accel_temp_update_flag |= (1 << IMU_UPDATE_SHFITS);
+    gyro[Xt] = c_11 * gyro_temp[Xt] +
+              c_12 * gyro_temp[Yt] +
+              c_13 * gyro_temp[Zt];
+    gyro[Yt] = c_21 * gyro_temp[Xt] +
+              c_22 * gyro_temp[Yt] +
+              c_23 * gyro_temp[Zt];
+    gyro[Zt] = c_31 * gyro_temp[Xt] +
+              c_32 * gyro_temp[Yt] +
+              c_33 * gyro_temp[Zt];
 
-//            HAL_GPIO_WritePin(ACC_CS_GPIO_Port, ACC_CS_Pin, GPIO_PIN_SET);
-//        }
+    float accel_temp[3];
+    for (uint8_t i = 0; i < 3; i++)
+        accel_temp[i] = accel[i];
 
-//        imu_cmd_spi_dma();
+    accel[Xt] = c_11 * accel_temp[Xt] +
+               c_12 * accel_temp[Yt] +
+               c_13 * accel_temp[Zt];
+    accel[Yt] = c_21 * accel_temp[Xt] +
+               c_22 * accel_temp[Yt] +
+               c_23 * accel_temp[Zt];
+    accel[Zt] = c_31 * accel_temp[Xt] +
+               c_32 * accel_temp[Yt] +
+               c_33 * accel_temp[Zt];
 
-//        if (gyro_update_flag & (1 << IMU_UPDATE_SHFITS)) {
-//            if (xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED) {
-//                static BaseType_t xHigherPriorityTaskWoken;
-//                vTaskNotifyGiveFromISR((TaskHandle_t)InsHandle, &xHigherPriorityTaskWoken);
-//                portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-//            }
-//        }
-//    }
-//}
+    lastYawOffset = param->Yaw;
+    lastPitchOffset = param->Pitch;
+    lastRollOffset = param->Roll;
+}
+
+/**
+ * @brief ÎÂ¶È¿ØÖÆ
+ * 
+ */
+void IMU_Temperature_Ctrl(void)
+{
+    PID_Calculate(&TempCtrl, BIM088_data.temp, RefTemp);
+
+    TIM_Set_PWM(&htim3, TIM_CHANNEL_4, float_constrain(float_rounding(TempCtrl.Output), 0, UINT32_MAX));
+}

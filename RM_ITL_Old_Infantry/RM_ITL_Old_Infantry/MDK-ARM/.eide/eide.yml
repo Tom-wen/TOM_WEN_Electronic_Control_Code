@@ -118,45 +118,27 @@ virtualFolder:
         - path: ../Task/referee_usart_task.h
         - path: ../Task/shoot_task.c
         - path: ../Task/shoot_task.h
+        - path: ../Task/hoisting_task.c
+        - path: ../Task/hoisting_task.h
       folders: []
     - name: boards
       files:
-        - path: ../boards/bsp_adc.c
-        - path: ../boards/bsp_adc.h
-        - path: ../boards/bsp_buzzer.c
-        - path: ../boards/bsp_buzzer.h
         - path: ../boards/bsp_can.c
         - path: ../boards/bsp_can.h
-        - path: ../boards/bsp_crc32.c
-        - path: ../boards/bsp_crc32.h
         - path: ../boards/bsp_delay.c
         - path: ../boards/bsp_delay.h
-        - path: ../boards/bsp_flash.c
-        - path: ../boards/bsp_flash.h
-        - path: ../boards/bsp_fric.c
-        - path: ../boards/bsp_fric.h
-        - path: ../boards/bsp_i2c.c
-        - path: ../boards/bsp_i2c.h
         - path: ../boards/bsp_imu_pwm.c
         - path: ../boards/bsp_imu_pwm.h
-        - path: ../boards/bsp_laser.c
-        - path: ../boards/bsp_laser.h
-        - path: ../boards/bsp_led.c
-        - path: ../boards/bsp_led.h
-        - path: ../boards/bsp_rc.c
-        - path: ../boards/bsp_rc.h
-        - path: ../boards/bsp_rng.c
-        - path: ../boards/bsp_rng.h
-        - path: ../boards/bsp_servo_pwm.c
-        - path: ../boards/bsp_servo_pwm.h
-        - path: ../boards/bsp_spi.c
-        - path: ../boards/bsp_spi.h
         - path: ../boards/bsp_usart.c
         - path: ../boards/bsp_usart.h
         - path: ../boards/bsp_dwt.c
         - path: ../boards/bsp_dwt.h
         - path: ../boards/bsp_pwm.c
         - path: ../boards/bsp_pwm.h
+        - path: ../boards/bsp_led.c
+        - path: ../boards/bsp_led.h
+        - path: ../boards/bsp_buzzer.c
+        - path: ../boards/bsp_buzzer.h
       folders: []
     - name: components
       files:
@@ -165,19 +147,18 @@ virtualFolder:
         - path: ../components/devices/BMI088/inc/BMI088driver.h
         - path: ../components/devices/BMI088/inc/BMI088Middleware.h
         - path: ../components/devices/BMI088/inc/BMI088reg.h
-        - path: ../components/algorithm/kalman_filter.c
-        - path: ../components/algorithm/kalman_filter.h
-        - path: ../components/algorithm/QuaternionEKF.c
-        - path: ../components/algorithm/QuaternionEKF.h
-        - path: ../components/algorithm/controller.c
-        - path: ../components/algorithm/controller.h
-        - path: ../components/algorithm/math_utils.c
-        - path: ../components/algorithm/math_utils.h
         - path: ../components/algorithm/user_lib.c
         - path: ../components/algorithm/user_lib.h
         - path: ../components/devices/MahonyAHRS.h
         - path: ../components/controller/pid.c
         - path: ../components/controller/pid.h
+        - path: ../components/algorithm/arm_cortexM4lf_math.lib
+        - path: ../components/algorithm/controller.c
+        - path: ../components/algorithm/controller.h
+        - path: ../components/algorithm/kalman_filter.c
+        - path: ../components/algorithm/kalman_filter.h
+        - path: ../components/algorithm/QuaternionEKF.c
+        - path: ../components/algorithm/QuaternionEKF.h
       folders: []
     - name: application
       files:
@@ -186,6 +167,14 @@ virtualFolder:
         - path: ../application/remote_control.c
         - path: ../application/remote_control.h
         - path: ../application/struct_typedef.h
+        - path: ../application/chassis_behaviour.c
+        - path: ../application/chassis_behaviour.h
+        - path: ../application/gimbal_behaviour.c
+        - path: ../application/gimbal_behaviour.h
+        - path: ../application/USART_receive.c
+        - path: ../application/USART_receive.h
+        - path: ../application/GQ_Motor.c
+        - path: ../application/GQ_Motor.h
       folders: []
     - name: ::CMSIS
       files: []
@@ -249,7 +238,7 @@ targets:
             c99-mode: true
             gnu-extensions: true
             one-elf-section-per-function: true
-            optimization: level-3
+            optimization: level-0
             warnings: all-warnings
           global:
             output-debug-info: enable

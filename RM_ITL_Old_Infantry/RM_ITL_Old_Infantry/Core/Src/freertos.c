@@ -115,6 +115,18 @@ const osThreadAttr_t shoot_attributes = {
   .stack_size = sizeof(shootBuffer),
   .priority = (osPriority_t) osPriorityNormal,
 };
+/* Definitions for hoisting */
+osThreadId_t hoistingHandle;
+uint32_t hoistingBuffer[ 512 ];
+osStaticThreadDef_t hoistingControlBlock;
+const osThreadAttr_t hoisting_attributes = {
+  .name = "hoisting",
+  .cb_mem = &hoistingControlBlock,
+  .cb_size = sizeof(hoistingControlBlock),
+  .stack_mem = &hoistingBuffer[0],
+  .stack_size = sizeof(hoistingBuffer),
+  .priority = (osPriority_t) osPriorityNormal,
+};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -127,6 +139,7 @@ extern void detect_task(void *argument);
 void INS_task(void *argument);
 extern void gimbal_task(void *argument);
 extern void shoot_task(void *argument);
+extern void hoisting_task(void *argument);
 
 extern void MX_USB_DEVICE_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
@@ -175,6 +188,9 @@ void MX_FREERTOS_Init(void) {
 
   /* creation of shoot */
   shootHandle = osThreadNew(shoot_task, NULL, &shoot_attributes);
+
+  /* creation of hoisting */
+  hoistingHandle = osThreadNew(hoisting_task, NULL, &hoisting_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */

@@ -1,53 +1,80 @@
 #ifndef USER_LIB_H
 #define USER_LIB_H
 #include "struct_typedef.h"
+#include "math.h"
+#include "stdlib.h"
+#include "string.h"
+
+#define user_malloc malloc
 
 typedef __packed struct
 {
-    float input;        //è¾“å…¥æ•°æ®
-    float out;          //è¾“å‡ºæ•°æ®
-    float min_value;    //é™å¹…æœ€å°å€¼
-    float max_value;    //é™å¹…æœ€å¤§å€¼
-    float frame_period; //æ—¶é—´é—´éš”
+    float input;        //????????¡ã???
+    float out;          //????????¡ã???
+    float min_value;    //¨¦?????????¡ã????
+    float max_value;    //¨¦?????????¡è¡ì???
+    float frame_period; //???¨¦??¨¦??¨¦??
 } ramp_function_source_t;
 
 typedef __packed struct
 {
-    float input;        //è¾“å…¥æ•°æ®
-    float out;          //æ»¤æ³¢è¾“å‡ºçš„æ•°æ®
-    float num[1];       //æ»¤æ³¢å‚æ•°
-    float frame_period; //æ»¤æ³¢çš„æ—¶é—´é—´éš” å•ä½ s
+    float input;        //????????¡ã???
+    float out;          //??¡è??????????????¡ã???
+    float num[1];       //??¡è????????¡ã
+    float frame_period; //??¡è?????????¨¦??¨¦??¨¦?? ?????? s
 } first_order_filter_type_t;
-//å¿«é€Ÿå¼€æ–¹
+
+typedef __packed struct
+{
+    uint16_t Order;
+    uint32_t Count;
+
+    float *x;
+    float *y;
+
+    float k;
+    float b;
+
+    float StandardDeviation;
+
+    float t[4];
+} Ordinary_Least_Squares_t;
+//???¨¦????????
 extern float invSqrt(float num);
 
-//æ–œæ³¢å‡½æ•°åˆå§‹åŒ–
+//???????????¡ã????¡ì????
 void ramp_init(ramp_function_source_t *ramp_source_type, float frame_period, float max, float min);
 
-//æ–œæ³¢å‡½æ•°è®¡ç®—
+//???????????¡ã??????
 void ramp_calc(ramp_function_source_t *ramp_source_type, float input);
-//ä¸€é˜¶æ»¤æ³¢åˆå§‹åŒ–
+//???¨¦????¡è???????¡ì????
 extern void first_order_filter_init(first_order_filter_type_t *first_order_filter_type, float frame_period, const float num[1]);
-//ä¸€é˜¶æ»¤æ³¢è®¡ç®—
+//???¨¦????¡è?????????
 extern void first_order_filter_cali(first_order_filter_type_t *first_order_filter_type, float input);
-//ç»å¯¹é™åˆ¶
+//??????¨¦?????
 extern void abs_limit(float *num, float Limit);
-//åˆ¤æ–­ç¬¦å·ä½
+//??¡è????????¡¦???
 extern float sign(float value);
-//æµ®ç‚¹æ­»åŒº
+//????????????
 extern float fp32_deadline(float Value, float minValue, float maxValue);
-//int26æ­»åŒº
+//int26??????
 extern int16_t int16_deadline(int16_t Value, int16_t minValue, int16_t maxValue);
-//é™å¹…å‡½æ•°
+//¨¦??????????¡ã
 extern float float_constrain(float Value, float minValue, float maxValue);
-//é™å¹…å‡½æ•°
+//¨¦??????????¡ã
 extern int16_t int16_constrain(int16_t Value, int16_t minValue, int16_t maxValue);
-//å¾ªç¯é™å¹…å‡½æ•°
+//??????¨¦??????????¡ã
 extern float loop_fp32_constrain(float Input, float minValue, float maxValue);
-//è§’åº¦ Â°é™å¹… 180 ~ -180
+//?¡ì???? ?¡ã¨¦????? 180 ~ -180
 extern float theta_format(float Ang);
 
-//å¼§åº¦æ ¼å¼åŒ–ä¸º-PI~PI
+void OLS_Init(Ordinary_Least_Squares_t *OLS, uint16_t order);
+float OLS_Derivative(Ordinary_Least_Squares_t *OLS, float deltax, float y);
+int float_rounding(float raw);
+
+//»¡¶È¸ñÊ½»¯Îª-PI~PI
 #define rad_format(Ang) loop_fp32_constrain((Ang), -PI, PI)
+
+
 
 #endif

@@ -59,7 +59,7 @@ osThreadId_t InsHandle;
 const osThreadAttr_t Ins_attributes = {
   .name = "Ins",
   .stack_size = 256 * 4,
-  .priority = (osPriority_t) osPriorityRealtime,
+  .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for TripodCtrl */
 osThreadId_t TripodCtrlHandle;

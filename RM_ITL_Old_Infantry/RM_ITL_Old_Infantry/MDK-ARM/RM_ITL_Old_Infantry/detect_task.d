@@ -1,0 +1,16 @@
+rm_itl_old_infantry\detect_task.o: ..\Task\detect_task.c
+rm_itl_old_infantry\detect_task.o: ..\Task\detect_task.h
+rm_itl_old_infantry\detect_task.o: ../application/struct_typedef.h
+rm_itl_old_infantry\detect_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h
+rm_itl_old_infantry\detect_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+rm_itl_old_infantry\detect_task.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
+rm_itl_old_infantry\detect_task.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdint.h
+rm_itl_old_infantry\detect_task.o: ../Core/Inc/FreeRTOSConfig.h
+rm_itl_old_infantry\detect_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+rm_itl_old_infantry\detect_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+rm_itl_old_infantry\detect_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+rm_itl_old_infantry\detect_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+rm_itl_old_infantry\detect_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+rm_itl_old_infantry\detect_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+rm_itl_old_infantry\detect_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+rm_itl_old_infantry\detect_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h

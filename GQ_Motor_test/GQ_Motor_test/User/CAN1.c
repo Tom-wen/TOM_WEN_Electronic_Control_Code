@@ -123,6 +123,23 @@ void motor_control_vel(CAN_HandleTypeDef *hcan, uint8_t id, int16_t vel, int16_t
 
     can_send(hcan, 0x8000 | id, tdata, 8);
 }
+
+  /**
+   * @brief 电流控制
+   * @param hcan CAN句柄
+   * @param id 电机ID
+   * @param cur 电流：单位 0.01A，如 cur = 100 表示 1A
+   * @param tqe 力矩限制：单位 0.01 NM，如 tqe = 110 表示最大力矩为 1.1NM
+   */
+  void motor_control_current(CAN_HandleTypeDef *hcan, uint8_t id, int16_t cur, int16_t tqe)
+  {
+      uint8_t tdata[8] = {0x06, 0x06, 0x00, 0x80, 0x20, 0x00, 0x80, 0x00};
+
+      *(int16_t *)&tdata[4] = cur;
+      *(int16_t *)&tdata[6] = tqe;
+
+      can_send(hcan, 0x8000 | id, tdata, 8);
+  }
 /**
  * @brief 力矩模式
  * @param id 电机ID
@@ -220,4 +237,35 @@ void motor_read(CAN_HandleTypeDef *hcan, uint8_t id)
     static uint8_t tdata[8] = {0x17, 0x01};
 
     can_send(hcan, 0x8000 | id, tdata, sizeof(tdata));
+}
+
+/**
+ * @brief DQ电压控制
+ * @param id 电机ID
+ * @param vol Q相电压，单位：0.1v，如 vol = 10 表示 Q 相电压为 1V
+ */
+void motor_control_volt(CAN_HandleTypeDef *hcan, uint8_t id, int16_t vol)
+{
+    static uint8_t tdata[] = {0x01, 0x00, 0x08, 0x05, 0x1b, 0x00, 0x00};
+
+    // *(int16_t *)&tdata[5] = vol;
+    memcpy(&tdata[5], &vol, sizeof(int16_t));
+
+    can_send(hcan, id, tdata, sizeof(tdata));
+}
+
+
+/**
+ * @brief DQ电流控制
+ * @param id 电机ID
+ * @param cur Q相电流，单位：0.1A，如 cur = 10 表示 Q 相电压为 1A
+ */
+void motor_control_cur(CAN_HandleTypeDef *hcan, uint8_t id, int16_t cur)
+{
+    static uint8_t tdata[] = {0x01, 0x00, 0x09, 0x05, 0x1c, 0x00, 0x00};
+
+    // *(int16_t *)&tdata[5] = cur;
+    memcpy(&tdata[5], &cur, sizeof(int16_t));
+
+    can_send(hcan, id, tdata, sizeof(tdata));
 }
