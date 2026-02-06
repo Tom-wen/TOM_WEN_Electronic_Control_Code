@@ -41,6 +41,7 @@ void set_motor_stop(CAN_HandleTypeDef *fdcanHandle, uint8_t id);
 void set_motor_brake(CAN_HandleTypeDef *fdcanHandle, uint8_t id);
 void motor_read(CAN_HandleTypeDef *hcanx, uint8_t id);
 void motor_control_cur(CAN_HandleTypeDef *hcan, uint8_t id, int16_t cur);
+void CAN_1(CAN_HandleTypeDef *hcan, uint8_t id);
 
 
 

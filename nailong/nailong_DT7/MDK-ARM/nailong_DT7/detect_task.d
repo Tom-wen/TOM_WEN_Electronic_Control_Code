@@ -1,0 +1,16 @@
+nailong_dt7\detect_task.o: ..\Task\detect_task.c
+nailong_dt7\detect_task.o: ..\Task\detect_task.h
+nailong_dt7\detect_task.o: ..\application\struct_typedef.h
+nailong_dt7\detect_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h
+nailong_dt7\detect_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+nailong_dt7\detect_task.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
+nailong_dt7\detect_task.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdint.h
+nailong_dt7\detect_task.o: ../Core/Inc/FreeRTOSConfig.h
+nailong_dt7\detect_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+nailong_dt7\detect_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+nailong_dt7\detect_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+nailong_dt7\detect_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+nailong_dt7\detect_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+nailong_dt7\detect_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+nailong_dt7\detect_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+nailong_dt7\detect_task.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h

@@ -1,0 +1,12 @@
+nailong_dt7\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/list.c
+nailong_dt7\list.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
+nailong_dt7\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+nailong_dt7\list.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
+nailong_dt7\list.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdint.h
+nailong_dt7\list.o: ../Core/Inc/FreeRTOSConfig.h
+nailong_dt7\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+nailong_dt7\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+nailong_dt7\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+nailong_dt7\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+nailong_dt7\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+nailong_dt7\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h

@@ -117,24 +117,28 @@ int main(void)
 //		motor_read(&hcan1, 4);
 
 //	rezero_pos(&hcan1, 1);
-//	conf_write(&hcan1, 1);
+	//conf_write(&hcan1, 4);
 
 
 	  //timed_return_motor_status(&hcan1, 4,100);
 	//motor_read(&hcan1, 1);
 //motor_control_cur(&hcan1, 1, 10);
 
-timed_return_motor_status(&hcan1, 4,10);
+//timed_return_motor_status(&hcan1, 4,10);
+//HAL_Delay(10);
 //motor_read(&hcan1,1);
 	//motor_control_pos(&hcan1, 4, 5000, 200);
 	//motor_control_pos(&hcan1, 1, 1, 200);
+CAN_1(&hcan1, 3);
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
 	Send_Data++;
-
-		motor_control_vel(&hcan1, 3, 1000, 1000);
+//motor_control_pos(&hcan1, 4, 5000, 200);
+		//motor_control_pos_vel_tqe(&hcan1, 4, 500, 2000, 200);
+		HAL_Delay(1);
+		//motor_control_vel(&hcan1, 1, 1000, 1000);
 		
 		
 //motor_control_vel(&hcan1, 1, 0, 200);

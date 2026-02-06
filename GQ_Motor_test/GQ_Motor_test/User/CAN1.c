@@ -269,3 +269,11 @@ void motor_control_cur(CAN_HandleTypeDef *hcan, uint8_t id, int16_t cur)
 
     can_send(hcan, id, tdata, sizeof(tdata));
 }
+
+void CAN_1(CAN_HandleTypeDef *hcan, uint8_t id);
+{
+	static uint8_t tdata[] = {0x80, 0x7F, 0x17, 0x01};
+
+   can_send(hcan, id, tdata, sizeof(tdata));
+
+}

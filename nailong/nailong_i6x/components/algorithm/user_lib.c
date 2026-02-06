@@ -1,0 +1,279 @@
+#include "user_lib.h"
+#include "arm_math.h"
+#include "stdint.h"
+
+//???иж????????
+float invSqrt(float num)
+{
+    float halfnum = 0.5f * num;
+    float y = num;
+    long i = *(long *)&y;
+    i = 0x5f3759df - (i >> 1);
+    y = *(float *)&i;
+    y = y * (1.5f - (halfnum * y * y));
+    return y;
+}
+
+/**
+ * @brief          ???????????бу????бь????
+ * @author         RM
+ * @param[in]      ???????????бу?????????
+ * @param[in]      иж??иж????????иж??????????? s
+ * @param[in]      ????бшбь???
+ * @param[in]      ????бу????
+ * @retval         ?????????
+ */
+void ramp_init(ramp_function_source_t *ramp_source_type, float frame_period, float max, float min)
+{
+    ramp_source_type->frame_period = frame_period;
+    ramp_source_type->max_value = max;
+    ramp_source_type->min_value = min;
+    ramp_source_type->input = 0.0f;
+    ramp_source_type->out = 0.0f;
+}
+
+/**
+ * @brief          ???????????бу?????????????????????????????????????????? ??????????????? /s ???????бь??????????????????????
+ * @author         RM
+ * @param[in]      ???????????бу?????????
+ * @param[in]      ?????????
+ * @param[in]      ??бш????????бу
+ * @retval         ?????????
+ */
+void ramp_calc(ramp_function_source_t *ramp_source_type, float input)
+{
+    ramp_source_type->input = input;
+    ramp_source_type->out += ramp_source_type->input * ramp_source_type->frame_period;
+    if (ramp_source_type->out > ramp_source_type->max_value)
+    {
+        ramp_source_type->out = ramp_source_type->max_value;
+    }
+    else if (ramp_source_type->out < ramp_source_type->min_value)
+    {
+        ramp_source_type->out = ramp_source_type->min_value;
+    }
+}
+/**
+ * @brief          ???иж?????иж????бш???????бь????
+ * @author         RM
+ * @param[in]      ???иж?????иж????бш????????????
+ * @param[in]      иж??иж????????иж??????????? s
+ * @param[in]      ??бш????????бу
+ * @retval         ?????????
+ */
+void first_order_filter_init(first_order_filter_type_t *first_order_filter_type, float frame_period, const float num[1])
+{
+    first_order_filter_type->frame_period = frame_period;
+    first_order_filter_type->num[0] = num[0];
+    first_order_filter_type->input = 0.0f;
+    first_order_filter_type->out = 0.0f;
+}
+
+/**
+ * @brief          ???иж?????иж????бш?????????
+ * @author         RM
+ * @param[in]      ???иж?????иж????бш????????????
+ * @param[in]      иж??иж????????иж??????????? s
+ * @retval         ?????????
+ */
+void first_order_filter_cali(first_order_filter_type_t *first_order_filter_type, float input)
+{
+    first_order_filter_type->input = input;
+    first_order_filter_type->out =
+        first_order_filter_type->num[0] / (first_order_filter_type->num[0] + first_order_filter_type->frame_period) * first_order_filter_type->out + first_order_filter_type->frame_period / (first_order_filter_type->num[0] + first_order_filter_type->frame_period) * first_order_filter_type->input;
+}
+
+//??????иж?????
+void abs_limit(float *num, float Limit)
+{
+    if (*num > Limit)
+    {
+        *num = Limit;
+    }
+    else if (*num < -Limit)
+    {
+        *num = -Limit;
+    }
+}
+
+//??бш????????бж???
+float sign(float value)
+{
+    if (value >= 0.0f)
+    {
+        return 1.0f;
+    }
+    else
+    {
+        return -1.0f;
+    }
+}
+
+//????????????
+float fp32_deadline(float Value, float minValue, float maxValue)
+{
+    if (Value < maxValue && Value > minValue)
+    {
+        Value = 0.0f;
+    }
+    return Value;
+}
+
+// int26??????
+int16_t int16_deadline(int16_t Value, int16_t minValue, int16_t maxValue)
+{
+    if (Value < maxValue && Value > minValue)
+    {
+        Value = 0;
+    }
+    return Value;
+}
+
+//иж??????????бу
+float float_constrain(float Value, float minValue, float maxValue)
+{
+    if (Value < minValue)
+        return minValue;
+    else if (Value > maxValue)
+        return maxValue;
+    else
+        return Value;
+}
+
+//иж??????????бу
+int16_t int16_constrain(int16_t Value, int16_t minValue, int16_t maxValue)
+{
+    if (Value < minValue)
+        return minValue;
+    else if (Value > maxValue)
+        return maxValue;
+    else
+        return Value;
+}
+
+
+float loop_fp32_constrain(float Input, float minValue, float maxValue)
+{
+    if (maxValue < minValue) {
+        return Input;
+    }
+    float len = maxValue - minValue;
+    // ????бу???????????бу???? [0, len) ???иж????????????бь???? [minValue, maxValue)
+    Input = fmodf(Input - minValue, len);
+    if (Input < 0) {
+        Input += len;
+    }
+    return Input + minValue;
+}
+//??????иж??????????бу
+//float loop_fp32_constrain(float Input, float minValue, float maxValue)
+//{
+//    if (maxValue < minValue)
+//    {
+//        return Input;
+//    }
+
+//    if (Input > maxValue)
+//    {
+//        float len = maxValue - minValue;
+//        while (Input > maxValue)
+//        {
+//            Input -= len;
+//        }
+//    }
+//    else if (Input < minValue)
+//    {
+//        float len = maxValue - minValue;
+//        while (Input < minValue)
+//        {
+//            Input += len;
+//        }
+//    }
+//    return Input;
+//}
+
+//??бь???????????????-PI~PI
+
+
+
+//?бь????????????????-180~180
+float theta_format(float Ang)
+{
+    return loop_fp32_constrain(Ang, -180.0f, 180.0f);
+}
+
+/**
+  * @brief          ????бу?????????????????????бж??????
+  * @param[in]      ????бу???????????????????
+  * @param[in]      ?????бж??бу??бж????бж????????????бж??????иж??иж??иж??
+  * @param[in]      ?????бж???
+  * @retval         ????????????k
+  */
+float OLS_Derivative(Ordinary_Least_Squares_t *OLS, float deltax, float y)
+{
+    static float temp = 0;
+    temp = OLS->x[1];
+    for (uint16_t i = 0; i < OLS->Order - 1; ++i)
+    {
+        OLS->x[i] = OLS->x[i + 1] - temp;
+        OLS->y[i] = OLS->y[i + 1];
+    }
+    OLS->x[OLS->Order - 1] = OLS->x[OLS->Order - 2] + deltax;
+    OLS->y[OLS->Order - 1] = y;
+
+    if (OLS->Count < OLS->Order)
+    {
+        OLS->Count++;
+    }
+
+    memset((void *)OLS->t, 0, sizeof(float) * 4);
+    for (uint16_t i = OLS->Order - OLS->Count; i < OLS->Order; ++i)
+    {
+        OLS->t[0] += OLS->x[i] * OLS->x[i];
+        OLS->t[1] += OLS->x[i];
+        OLS->t[2] += OLS->x[i] * OLS->y[i];
+        OLS->t[3] += OLS->y[i];
+    }
+
+    OLS->k = (OLS->t[2] * OLS->Order - OLS->t[1] * OLS->t[3]) / (OLS->t[0] * OLS->Order - OLS->t[1] * OLS->t[1]);
+
+    OLS->StandardDeviation = 0;
+    for (uint16_t i = OLS->Order - OLS->Count; i < OLS->Order; ++i)
+    {
+        OLS->StandardDeviation += fabsf(OLS->k * OLS->x[i] + OLS->b - OLS->y[i]);
+    }
+    OLS->StandardDeviation /= OLS->Order;
+
+    return OLS->k;
+}
+
+/**
+  * @brief          ????бу??????????????бь????
+  * @param[in]      ????бу???????????????????
+  * @param[in]      ??бж??????
+  * @retval         ?????????
+  */
+void OLS_Init(Ordinary_Least_Squares_t *OLS, uint16_t order)
+{
+    OLS->Order = order;
+    OLS->Count = 0;
+    OLS->x = (float *)user_malloc(sizeof(float) * order);
+    OLS->y = (float *)user_malloc(sizeof(float) * order);
+    OLS->k = 0;
+    OLS->b = 0;
+    memset((void *)OLS->x, 0, sizeof(float) * order);
+    memset((void *)OLS->y, 0, sizeof(float) * order);
+    memset((void *)OLS->t, 0, sizeof(float) * 4);
+}
+
+int float_rounding(float raw)
+{
+    static int integer;
+    static float decimal;
+    integer = (int)raw;
+    decimal = raw - integer;
+    if (decimal > 0.5f)
+        integer++;
+    return integer;
+}
+
