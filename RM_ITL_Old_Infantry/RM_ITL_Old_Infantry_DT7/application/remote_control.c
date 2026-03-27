@@ -293,9 +293,9 @@ void vtm_data_parse(uint8_t *vtm_buf)
     vtm_rc_data.mouse_z = (int16_t)(vtm_buf[14] | (vtm_buf[15] << 8));  // Êó±êZÖá
 
     // Êó±ê°´¼ü£¨¸÷2Î»£©
-    vtm_rc_data.mouse_left   = (vtm_buf[16] >> 6) & 0x03;  // ×ó¼ü
-    vtm_rc_data.mouse_right  = (vtm_buf[16] >> 4) & 0x03;  // ÓÒ¼ü
-    vtm_rc_data.mouse_middle = (vtm_buf[16] >> 2) & 0x03;  // ÖĞ¼ü
+    vtm_rc_data.mouse_left   = (vtm_buf[16] >> 0) & 0x03;  // ×ó¼ü
+    vtm_rc_data.mouse_right  = (vtm_buf[16] >> 2) & 0x03;  // ÓÒ¼ü
+    vtm_rc_data.mouse_middle = (vtm_buf[16] >> 4) & 0x03;  // ÖĞ¼ü
 
     // 8. ½âÎö¼üÅÌÊı¾İ£¨2×Ö½Ú£©
     vtm_rc_data.key = (uint16_t)(vtm_buf[17] | (vtm_buf[18] << 8));

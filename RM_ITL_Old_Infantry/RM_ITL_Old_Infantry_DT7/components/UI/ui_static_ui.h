@@ -1,0 +1,41 @@
+//
+// Created by RM UI Designer
+// Static Edition
+//
+
+#ifndef UI_static_ui_H
+#define UI_static_ui_H
+
+#include "ui_interface.h"
+
+extern ui_interface_line_t *ui_static_ui_Ungroup_mid_line;
+extern ui_interface_line_t *ui_static_ui_Ungroup_vertical_Line;
+extern ui_interface_arc_t *ui_static_ui_Ungroup_downArc;
+extern ui_interface_line_t *ui_static_ui_Ungroup_mode_line1;
+extern ui_interface_line_t *ui_static_ui_Ungroup_mode_line2;
+extern ui_interface_rect_t *ui_static_ui_Ungroup_speed_mode1;
+extern ui_interface_line_t *ui_static_ui_Ungroup_mid_line1;
+extern ui_interface_arc_t *ui_static_ui_Ungroup_energy_arc1;
+extern ui_interface_arc_t *ui_static_ui_Ungroup_energy_arc2;
+extern ui_interface_line_t *ui_static_ui_Ungroup_energy_line1;
+extern ui_interface_line_t *ui_static_ui_Ungroup_energy_line2;
+extern ui_interface_line_t *ui_static_ui_Ungroup_mid_line2;
+extern ui_interface_line_t *ui_static_ui_Ungroup_mid_line3;
+extern ui_interface_line_t *ui_static_ui_Ungroup_mid_line4;
+extern ui_interface_ellipse_t *ui_static_ui_Ungroup_mid_Ellipse;
+extern ui_interface_line_t *ui_static_ui_Ungroup_left_line;
+extern ui_interface_line_t *ui_static_ui_Ungroup_right_line;
+extern ui_interface_arc_t *ui_static_ui_Ungroup_upArc;
+extern ui_interface_string_t *ui_static_ui_Ungroup_speed;
+extern ui_interface_string_t *ui_static_ui_Ungroup_CHASSIS_NO_FOLLOW_GIMBAL;
+extern ui_interface_string_t *ui_static_ui_Ungroup_CHASSIS_FOLLOW_GIMBAL;
+extern ui_interface_string_t *ui_static_ui_Ungroup_CHASSIS_TOP;
+extern ui_interface_string_t *ui_static_ui_Ungroup_SHOOT_STOP;
+extern ui_interface_string_t *ui_static_ui_Ungroup_SHOOT_READY;
+extern ui_interface_string_t *ui_static_ui_Ungroup_SHOOT_BULLET;
+
+void ui_init_static_ui_Ungroup();
+void ui_update_static_ui_Ungroup();
+void ui_remove_static_ui_Ungroup();
+
+#endif // UI_static_ui_H

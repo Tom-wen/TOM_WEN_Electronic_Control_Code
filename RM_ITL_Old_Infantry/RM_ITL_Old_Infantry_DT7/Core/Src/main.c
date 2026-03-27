@@ -112,11 +112,14 @@ int main(void)
   MX_USART10_UART_Init();
   MX_TIM3_Init();
   MX_TIM12_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   DWT_Init(480); 
   buzzer_init();
+  //buzzer_play_twinkle_star();
 	bsp_can_init();
-  usart_rx_dma_start(&huart5, sbus_buf, sizeof(sbus_buf));            
+  usart_rx_dma_start(&huart5, sbus_buf, sizeof(sbus_buf));
+  usart_rx_dma_start(&huart1, usart1_rx_buf, sizeof(usart1_rx_buf));             
   usart_rx_dma_start(&huart7, usart7_rx_buf, sizeof(usart7_rx_buf));  
   usart_rx_dma_start(&huart10, usart10_rx_buf, sizeof(usart10_rx_buf));
 	remote_control_init();

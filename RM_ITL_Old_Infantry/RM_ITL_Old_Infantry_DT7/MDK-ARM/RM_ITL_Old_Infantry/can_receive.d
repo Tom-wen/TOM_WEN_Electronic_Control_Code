@@ -67,4 +67,6 @@ rm_itl_old_infantry\can_receive.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
 rm_itl_old_infantry\can_receive.o: ../components/algorithm/user_lib.h
 rm_itl_old_infantry\can_receive.o: D:\Keil5\ARM\ARMCC\Bin\..\include\string.h
 rm_itl_old_infantry\can_receive.o: ../Task/detect_task.h
+rm_itl_old_infantry\can_receive.o: ../boards/bsp_led.h
+rm_itl_old_infantry\can_receive.o: ../Core/Inc/spi.h
 rm_itl_old_infantry\can_receive.o: ..\application\GQ_Motor.h

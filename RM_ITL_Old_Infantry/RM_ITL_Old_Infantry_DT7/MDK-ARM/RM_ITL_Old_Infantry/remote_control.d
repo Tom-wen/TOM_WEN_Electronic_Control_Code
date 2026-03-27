@@ -50,4 +50,6 @@ rm_itl_old_infantry\remote_control.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdio.h
 rm_itl_old_infantry\remote_control.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
 rm_itl_old_infantry\remote_control.o: ../Task/detect_task.h
 rm_itl_old_infantry\remote_control.o: ../application/struct_typedef.h
+rm_itl_old_infantry\remote_control.o: ../boards/bsp_led.h
+rm_itl_old_infantry\remote_control.o: ../Core/Inc/spi.h
 rm_itl_old_infantry\remote_control.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h

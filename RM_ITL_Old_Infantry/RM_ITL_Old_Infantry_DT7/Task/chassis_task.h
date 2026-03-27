@@ -45,10 +45,13 @@
 
 #ifdef vtm_rc_ctrl
 
-   #define KEY_POSITIVE_X_SPEED 1.0f
-   #define KEY_NEGATIVE_X_SPEED -1.0f
-   #define KEY_POSITIVE_Y_SPEED 1.0f
-   #define KEY_NEGATIVE_Y_SPEED -1.0f
+   #define KEY_POSITIVE_X_SPEED 150.0f
+   #define KEY_NEGATIVE_X_SPEED -150.0f
+   #define KEY_POSITIVE_Y_SPEED 150.0f
+   #define KEY_NEGATIVE_Y_SPEED -150.0f
+   #define KEY_MAX_X_SPEED 400.0f
+   #define KEY_MAX_Y_SPEED 400.0f
+
 
 #endif
 /* =========================== 底盘控制参数 =========================== */
@@ -106,11 +109,12 @@
 
 #define MAX_WHEEL_SPEED           3.7f    // 单个底盘电机最大速度
 #define CHASSIS_MOTOR_SPEED_MAX_OUT 20000.0f   // 底盘运动过程最大前进速度
-#define NORMAL_MAX_CHASSIS_SPEED_X 1.5f 
-#define NORMAL_MAX_CHASSIS_SPEED_Y 1.5f    // 底盘运动过程最大平移速度 
+#define NORMAL_MAX_CHASSIS_SPEED_X 6.0f 
+#define NORMAL_MAX_CHASSIS_SPEED_Y 6.0f    // 底盘运动过程最大平移速度 
 #define NORMAL_MAX_CHASSIS_SPEED_Z 6.0f    // 
-#define CHASSIS_TOP_SPEED          9       // 底盘小陀螺速度 
-#define TOP_MAX_CHASSIS_SPEED      4.0f    // 底盘小陀螺时最大平移速度
+#define CHASSIS_TOP_SPEED          10.0f       // 底盘小陀螺速度 
+#define CHASSIS_FOLLOW_SPEED       10.0f        // 底盘旋转云台速度
+#define TOP_MAX_CHASSIS_SPEED      6.0f    // 底盘小陀螺时最大平移速度
 
 /* =========================== 底盘模式枚举 =========================== */
 
@@ -174,6 +178,9 @@ typedef struct
   float chassis_roll;  // 陀螺仪和云台电机叠加的roll角度
 } chassis_move_t;
 
+
+
+
 /* =========================== 函数声明 =========================== */
 
 /**
@@ -184,8 +191,12 @@ typedef struct
 extern void chassis_task(void const *pvParameters);
 
 
+
 // 获取云台电机指针
 const gimbal_motor_t* get_pitch_motor_point(void);
 const gimbal_motor_t* get_yaw_motor_point(void);
+
+extern chassis_move_t chassis_move;
+
 
 #endif

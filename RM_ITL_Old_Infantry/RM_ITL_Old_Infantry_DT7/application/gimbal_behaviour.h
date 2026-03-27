@@ -44,7 +44,7 @@ extern bool_t gimbal_cmd_to_chassis_stop(void);
  * @retval         1: no move 0:normal
  */
 extern bool_t gimbal_cmd_to_shoot_stop(void);
-
+extern gimbal_behaviour_e gimbal_behaviour;
 
 
 #endif

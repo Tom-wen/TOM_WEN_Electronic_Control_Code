@@ -7,14 +7,18 @@
 #define GIMBAL_CAN hfdcan2
 
 #define ANGLE_T 8191
-extern float PowerData[7];
-//超级电容
-extern float capacitor_voltage;    // 电容电压
-extern float capacitor_current;    // 电容电流
-extern uint8_t battery_power;      // 电池功率
-extern uint8_t limit_power;        // 限制功率
-extern uint8_t capacitor_level;    // 电容电量
-extern float power;                // 发送的功率值
+
+typedef struct
+{
+    float capacitor_voltage;      // 电容电压 (V), 范围 0~30V
+    float capacitor_current;      // 电容电流 (A), 范围 -12~12A, 负充电/正放电
+    uint8_t battery_power;        // 电池功率 (W), 范围 0~256W
+    uint8_t limit_power;          // 限制功率 (W), 范围 0~256W
+    uint8_t capacitor_level;      // 电容电量百分比 (%), 范围 0~100
+    uint8_t status_indicator;     // 状态指示
+    uint32_t last_update_time;    // 最后更新时间戳 (可选，用于检测通信超时)
+} supercap_data_t;
+
 
 /* CAN send and receive ID */
 typedef enum
@@ -33,11 +37,12 @@ typedef enum
   CAN_YAW_MOTOR_ID = 0x209,
 	CAN_PIT_MOTOR_ID = 0x20A,
 	CAN_SUPERCAP_ID = 0x0FF,    
- 
 	
   CAN_FRICTION_ALL_ID = 0x200,
   CAN_FRONT_LEFT_FRICTION_ID = 0x202,
   CAN_FRONT_RIGHT_FRICTION_ID = 0x203,
+
+  CAN_LIMIMT_ID =0x101,
 } can_msg_id_e;
 
 // rm motor data
@@ -123,8 +128,18 @@ extern const motor_measure_t *get_chassis_motor_measure_point(uint8_t i);
  */
 extern void super_cap_send_power(uint16_t Power);
 
-
-
+typedef struct
+{
+  uint8_t head[2];
+  uint8_t hoisting_1;  //摆臂1
+  uint8_t hoisting_2;
+  uint8_t hoisting_3;
+  uint8_t hoisting_4;
+  uint8_t tail;
+} limit_switch_t;
+extern limit_switch_t limit_switch;
+void limit_data_process(limit_switch_t *limit_data ,uint8_t *data);
+extern supercap_data_t supercap_data;
 
 
 #endif

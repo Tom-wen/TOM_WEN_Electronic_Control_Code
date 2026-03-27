@@ -59,5 +59,9 @@ rm_itl_old_infantry\bsp_usart.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSI
 rm_itl_old_infantry\bsp_usart.o: D:\Keil5\ARM\ARMCC\Bin\..\include\string.h
 rm_itl_old_infantry\bsp_usart.o: ../Task/detect_task.h
 rm_itl_old_infantry\bsp_usart.o: ../application/struct_typedef.h
+rm_itl_old_infantry\bsp_usart.o: ../boards/bsp_led.h
+rm_itl_old_infantry\bsp_usart.o: ../Core/Inc/spi.h
 rm_itl_old_infantry\bsp_usart.o: ../application/USART_receive.h
 rm_itl_old_infantry\bsp_usart.o: ../components/Circular_buffer/Circular_buffer.h
+rm_itl_old_infantry\bsp_usart.o: ../application/remote_control.h
+rm_itl_old_infantry\bsp_usart.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h

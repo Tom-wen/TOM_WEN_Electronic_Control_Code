@@ -36,6 +36,7 @@
 #include "pid.h"
 #include "usart.h"
 #include "USART_receive.h"
+#include "referee_usart_task.h"
 
 /**
  * @brief          射击初始化，初始化PID，遥控器指针，电机指针
@@ -180,8 +181,21 @@ void shoot_init(void)
  * @retval         void
  */
 
+uint8_t heat_flag; //1是超热量
 static void shoot_set_mode(void)
  {
+
+    if ((!toe_is_error(REFEREE_TOE)) && (referee_data.power_heat.shooter_17mm_1_barrel_heat + SHOOT_HEAT_REMAIN_VALUE > referee_data.robot.shooter_barrel_heat_limit))
+    {
+        if (shoot_control.shoot_mode == SHOOT_BULLET || shoot_control.shoot_mode == SHOOT_READY)
+        {
+            heat_flag=1;
+        }
+    }
+    else
+    {
+        heat_flag=0;
+    }
 
   #ifdef DT7_rc_ctrl 
     //处于上档，进入发射模式
@@ -207,33 +221,30 @@ static void shoot_set_mode(void)
   
   #ifdef i6x_rc_ctrl
 
-  //处于下档，开启摩擦轮
+
+      //处于下档，开启摩擦轮
     if (i6x_switch_is_down(i6x_ctrl.s[FRICTION_RC_MODE_CHANNEL]))
     {
-        shoot_control.shoot_mode = SHOOT_READY; 
+        shoot_control.shoot_mode = SHOOT_READY;
+        if (i6x_switch_is_down(i6x_ctrl.s[SHOOT_RC_MODE_CHANNEL]))
+        {
+          shoot_control.shoot_mode = SHOOT_BULLET;			
+        }
     }
   //处于上档，关闭摩擦轮
-		else if (i6x_switch_is_up(i6x_ctrl.s[FRICTION_RC_MODE_CHANNEL]))
-    {
-        shoot_control.shoot_mode = SHOOT_STOP;
-    }
-		if (i6x_switch_is_down(i6x_ctrl.s[SHOOT_RC_MODE_CHANNEL]))
-    {
-			shoot_control.shoot_mode = SHOOT_BULLET;			
-    }
-  		else if (i6x_switch_is_up(i6x_ctrl.s[SHOOT_RC_MODE_CHANNEL]))
+		if (i6x_switch_is_up(i6x_ctrl.s[FRICTION_RC_MODE_CHANNEL]))
     {
         shoot_control.shoot_mode = SHOOT_STOP;
     }
   #endif
 
   #ifdef vtm_rc_ctrl
-        // 检测R键是否按下（上升沿触发）
-        static uint8_t r_key_last_state = 0;
-        uint8_t r_key_current_state = (vtm_rc_data.key & KEY_PRESSED_OFFSET_F) ? 1 : 0;
+        // 检测F键是否按下（上升沿触发）
+        static uint8_t f_key_last_state = 0;
+        uint8_t f_key_current_state = (vtm_rc_data.key & KEY_PRESSED_OFFSET_F) ? 1 : 0;
 
         // 上升沿检测：当前按下且上次未按下
-        if (r_key_current_state && !r_key_last_state)
+        if (f_key_current_state && !f_key_last_state)
         {
             // 切换到下一个模式（循环切换）
             shoot_mode_index = (shoot_mode_index + 1) % 2; // 2种模式
@@ -250,17 +261,24 @@ static void shoot_set_mode(void)
             }
         }
 
-        // 更新上一次R键状态
-        r_key_last_state = r_key_current_state;
+        // 更新上一次F键状态
+        f_key_last_state = f_key_current_state;
 
-        if(shoot_control.shoot_mode == SHOOT_READY)
+        if(shoot_control.shoot_mode == SHOOT_READY || shoot_control.shoot_mode == SHOOT_BULLET )
         {
           //手动开火
           if (open_fire(vtm_rc_data.mouse_left))
           {
-            shoot_control.shoot_mode = SHOOT_BULLET;
+            if(heat_flag==0)//如果未超热量，就开火
+            {
+              shoot_control.shoot_mode = SHOOT_BULLET;
+            }
+            else
+            {
+              shoot_control.shoot_mode = SHOOT_READY;
+            }
           }
-          else if (hold_fire(vtm_rc_data.mouse_left))
+          else
           {
             shoot_control.shoot_mode = SHOOT_READY;
           }
@@ -269,12 +287,54 @@ static void shoot_set_mode(void)
           {
             if(auto_shoot.mode == 2)//把开火权交给自瞄
             {
-              shoot_control.shoot_mode = SHOOT_BULLET;
+              if(heat_flag==0)//如果未超热量，就开火
+              {
+                shoot_control.shoot_mode = SHOOT_BULLET;
+              }
+              else
+              {
+                shoot_control.shoot_mode = SHOOT_READY;
+              }
             }            
           }
-          else if (hold_fire(vtm_rc_data.mouse_right))
+        }
+
+
+
+
+        //图传遥控器
+        if(vtm_rc_data.mode_sw == 1 || vtm_rc_data.mode_sw == 2)
+        {
+            // 检测FN键是否按下（上升沿触发）
+          static uint8_t fn_key_last_state = 0;
+          uint8_t fn_key_current_state = vtm_rc_data.fn_1 ? 1 : 0;
+
+          // 上升沿检测：当前按下且上次未按下
+          if (fn_key_current_state && !fn_key_last_state)
           {
-            shoot_control.shoot_mode = SHOOT_READY;
+              // 切换到下一个模式（循环切换）
+              shoot_mode_index = (shoot_mode_index + 1) % 2; // 2种模式
+
+              // 根据索引设置底盘模式
+              switch (shoot_mode_index)
+              {
+                  case 0:
+                      shoot_control.shoot_mode = SHOOT_STOP;
+                      break;
+                  case 1:
+                      shoot_control.shoot_mode = SHOOT_READY; 
+                      break;
+              }
+          }
+          // 更新上一次FN键状态
+          fn_key_last_state = fn_key_current_state;
+
+          if(shoot_control.shoot_mode == SHOOT_READY)
+          {
+            if(vtm_rc_data.trigger)
+            {
+              shoot_control.shoot_mode = SHOOT_BULLET;
+            }
           }
         }
   #endif
@@ -328,12 +388,12 @@ static void shoot_control_loop(void)
     shoot_control.left_fricition_motor.motor_speed_pid.max_out = FRICTION_ACCEL_MAX_OUT;
     shoot_control.right_fricition_motor.motor_speed_pid.max_out = FRICTION_ACCEL_MAX_OUT;
   }
-  else if (shoot_control.shoot_mode == SHOOT_READY)
+  if (shoot_control.shoot_mode == SHOOT_READY)
   {
     //设置拨弹轮的速度
     shoot_control.trigger_motor.speed_set = 0.0f;
     //摩擦轮缓启动
-    if (shoot_control.right_fricition_motor.speed > (FRICTION_SPEED_SET * 0.0f))
+    if (shoot_control.right_fricition_motor.speed < (FRICTION_SPEED_SET * 0.0f))
     {
       shoot_control.left_fricition_motor.motor_speed_pid.max_out = FRICTION_MAX_OUT;
       shoot_control.right_fricition_motor.motor_speed_pid.max_out = FRICTION_MAX_OUT;
@@ -341,9 +401,13 @@ static void shoot_control_loop(void)
 	  shoot_control.left_fricition_motor.speed_set = -FRICTION_SPEED_SET;
     shoot_control.right_fricition_motor.speed_set = FRICTION_SPEED_SET;
   }
-  else if (shoot_control.shoot_mode == SHOOT_BULLET)
+  if (shoot_control.shoot_mode == SHOOT_BULLET)
   {
 		shoot_control.trigger_motor.speed_set = CONTINUE_TRIGGER_SPEED;		
+  }
+  else  
+  {
+    shoot_control.trigger_motor.speed_set = 0.0f;
   }
 
   //计算拨弹轮电机PID

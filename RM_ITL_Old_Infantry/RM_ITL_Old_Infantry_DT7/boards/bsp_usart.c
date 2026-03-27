@@ -27,7 +27,7 @@ unsigned char Data_Number = 0;
 unsigned char data_to_send[4*MAX_CHANNEL+4] = {0};
 
 // 建议每个串口各自有一个发送完成标志
-// static volatile uint8_t usart1_tx_dma_done = 1;
+static volatile uint8_t usart1_tx_dma_done = 1;
 static volatile uint8_t usart2_tx_dma_done = 1;
 static volatile uint8_t usart7_tx_dma_done = 1;
 static volatile uint8_t usart10_tx_dma_done = 1;
@@ -36,7 +36,7 @@ static volatile uint8_t usart10_tx_dma_done = 1;
 // 为每个CAN口声明独立的回调函数指针
 static usart_rx_callback_t usart5_user_callback = NULL;//usart5
 
-// uint8_t usart1_rx_buf[256];//串口1接收数据
+uint8_t usart1_rx_buf[256];//串口1接收数据
 uint8_t usart2_rx_buf[256];//串口2接收数据
 uint8_t sbus_buf[25];//串口5接收数据,只进行遥控器接收，不发送
 uint8_t usart7_rx_buf[256];//串口7接收数据
@@ -64,8 +64,8 @@ void bsp_usart5_set_callback(usart_rx_callback_t callback)
 uint8_t usart_tx_dma_send(UART_HandleTypeDef *huart, uint8_t *data, uint16_t len)
 {
     volatile uint8_t *tx_done = NULL;
-    // if(huart->Instance == USART1)
-    //     tx_done = &usart1_tx_dma_done;
+    if(huart->Instance == USART1)
+        tx_done = &usart1_tx_dma_done;
     if(huart->Instance == USART2)
         tx_done = &usart2_tx_dma_done;        
     else if(huart->Instance == UART7)
@@ -96,8 +96,8 @@ uint8_t usart_tx_dma_send(UART_HandleTypeDef *huart, uint8_t *data, uint16_t len
  */
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
-    // if(huart->Instance == USART1)
-    //     usart1_tx_dma_done = 1;
+    if(huart->Instance == USART1)
+        usart1_tx_dma_done = 1;
     if(huart->Instance == USART2)
         usart2_tx_dma_done = 1;
     else if(huart->Instance == UART7)
@@ -138,11 +138,11 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
         HAL_UART_AbortReceive(&huart5);
         HAL_UARTEx_ReceiveToIdle_DMA(&huart5, sbus_buf, sizeof(sbus_buf));
     }
-    // else if(huart == &huart1)
-    // {
-    //     HAL_UART_AbortReceive(&huart1);
-    //     HAL_UARTEx_ReceiveToIdle_DMA(&huart1, usart1_rx_buf, sizeof(usart1_rx_buf));        
-    // }
+    else if(huart == &huart1)
+    {
+        HAL_UART_AbortReceive(&huart1);
+        HAL_UARTEx_ReceiveToIdle_DMA(&huart1, usart1_rx_buf, sizeof(usart1_rx_buf));        
+    }
     else if(huart == &huart2)
     {
         HAL_UART_AbortReceive(&huart2);
@@ -171,11 +171,11 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 {
     // 用户自定义数据处理
     extern void usart_rx_data_process(UART_HandleTypeDef *huart, uint8_t *buf, uint16_t len);
-    // if(huart->Instance == USART1)
-    // {
-    //     usart_rx_data_process(huart, usart1_rx_buf, Size);
-    //     usart_rx_dma_start(huart, usart1_rx_buf, sizeof(usart1_rx_buf));
-    // }
+    if(huart->Instance == USART1)
+    {
+        usart_rx_data_process(huart, usart1_rx_buf, Size);
+        usart_rx_dma_start(huart, usart1_rx_buf, sizeof(usart1_rx_buf));
+    }
     if(huart->Instance == USART2)
     {
         usart_rx_dma_start(huart, usart2_rx_buf, sizeof(usart2_rx_buf));
@@ -214,6 +214,8 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
         usart_rx_data_process(huart, usart10_rx_buf, Size);
         /* 重启开始DMA传输 */
         usart_rx_dma_start(huart, usart10_rx_buf, sizeof(usart10_rx_buf));  // USART10 DMA接收初始化
+
+        detect_hook(REFEREE_TOE);
     }
 
 }

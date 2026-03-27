@@ -44,3 +44,7 @@ void LED_OFF()
 {
     WS2812_Ctrl(0,0,0);
 }
+void LED_Warning_Motor()
+{
+    WS2812_Ctrl(10,10,10);
+}

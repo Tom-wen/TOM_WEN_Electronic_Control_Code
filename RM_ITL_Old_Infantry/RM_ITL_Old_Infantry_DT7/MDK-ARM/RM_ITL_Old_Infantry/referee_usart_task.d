@@ -63,3 +63,8 @@ rm_itl_old_infantry\referee_usart_task.o: ../components/CRC/CRC.h
 rm_itl_old_infantry\referee_usart_task.o: D:\Keil5\ARM\ARMCC\Bin\..\include\string.h
 rm_itl_old_infantry\referee_usart_task.o: ../application/remote_control.h
 rm_itl_old_infantry\referee_usart_task.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
+rm_itl_old_infantry\referee_usart_task.o: ../components/Circular_buffer/Circular_buffer.h
+rm_itl_old_infantry\referee_usart_task.o: ..\components\UI\ui_static_ui.h
+rm_itl_old_infantry\referee_usart_task.o: ..\components\UI\ui_interface.h
+rm_itl_old_infantry\referee_usart_task.o: ..\components\UI\ui_types.h
+rm_itl_old_infantry\referee_usart_task.o: ..\components\UI\ui_dynamic_ui.h

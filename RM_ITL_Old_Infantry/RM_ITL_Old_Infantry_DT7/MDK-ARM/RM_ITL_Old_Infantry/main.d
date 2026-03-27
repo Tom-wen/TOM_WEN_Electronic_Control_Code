@@ -68,6 +68,7 @@ rm_itl_old_infantry\main.o: ../Core/Inc/gpio.h
 rm_itl_old_infantry\main.o: ../boards/bsp_can.h
 rm_itl_old_infantry\main.o: ../boards/bsp_usart.h
 rm_itl_old_infantry\main.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdarg.h
+rm_itl_old_infantry\main.o: ../boards/bsp_buzzer.h
 rm_itl_old_infantry\main.o: ../application/remote_control.h
 rm_itl_old_infantry\main.o: ../boards/bsp_DWT.h
 rm_itl_old_infantry\main.o: ../USB_DEVICE/App/usbd_cdc_if.h

@@ -58,5 +58,7 @@ rm_itl_old_infantry\gimbal_behaviour.o: D:\Keil5\ARM\ARMCC\Bin\..\include\string
 rm_itl_old_infantry\gimbal_behaviour.o: D:\Keil5\ARM\ARMCC\Bin\..\include\float.h
 rm_itl_old_infantry\gimbal_behaviour.o: D:\Keil5\ARM\ARMCC\Bin\..\include\limits.h
 rm_itl_old_infantry\gimbal_behaviour.o: ../Task/detect_task.h
+rm_itl_old_infantry\gimbal_behaviour.o: ../boards/bsp_led.h
+rm_itl_old_infantry\gimbal_behaviour.o: ../Core/Inc/spi.h
 rm_itl_old_infantry\gimbal_behaviour.o: ../components/algorithm/user_lib.h
 rm_itl_old_infantry\gimbal_behaviour.o: ..\application\USART_receive.h

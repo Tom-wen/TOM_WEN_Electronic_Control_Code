@@ -38,25 +38,28 @@
 #define FRICTION_MAX_IOUT 6000.0f
 //拨盘
 //2006电机拨弹盘的pid
-#define TRIGGER_KP     19.0f
+#define TRIGGER_KP     16.0f
 #define TRIGGER_KI     0.0f
-#define TRIGGER_KD     0.1f
+#define TRIGGER_KD     0.4f
 #define TRIGGER_MAX_OUT  9500.0f
 #define TRIGGER_MAX_IOUT 6000.0f
 
 
 //拨弹速度
-#define CONTINUE_TRIGGER_SPEED      900.0f
+#define CONTINUE_TRIGGER_SPEED      2000.0f
 
 /*****************************摩擦轮速度*****************************/
 
-#define FRICTION_SPEED_SET    6800.0f
+#define FRICTION_SPEED_SET    -5500.0f
 
 /*****************************摩擦轮速度*****************************/
 
-#define FRICTION_ACCEL_MAX_OUT      1000//摩擦轮启动加速电流限幅
+#define FRICTION_ACCEL_MAX_OUT      1000.0f //摩擦轮启动加速电流限幅
 
 #define SPEED_WAVE_THRESHOLD        300.0f //计算发射子弹数量的速度波动阈值
+
+//热量预留值，防止超热量
+#define SHOOT_HEAT_REMAIN_VALUE 25
 
 
 typedef enum
@@ -115,6 +118,8 @@ typedef struct
 } shoot_control_t;
 
 void shoot_task(void const *pvParameters);
+
+extern shoot_control_t shoot_control;
 
 #endif
 

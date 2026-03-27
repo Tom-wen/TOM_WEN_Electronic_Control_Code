@@ -71,6 +71,8 @@ rm_itl_old_infantry\chassis_task.o: ../Middlewares/ST/ARM/DSP/Inc/arm_math.h
 rm_itl_old_infantry\chassis_task.o: D:\Keil5\ARM\ARMCC\Bin\..\include\float.h
 rm_itl_old_infantry\chassis_task.o: D:\Keil5\ARM\ARMCC\Bin\..\include\limits.h
 rm_itl_old_infantry\chassis_task.o: ..\Task\detect_task.h
+rm_itl_old_infantry\chassis_task.o: ../boards/bsp_led.h
+rm_itl_old_infantry\chassis_task.o: ../Core/Inc/spi.h
 rm_itl_old_infantry\chassis_task.o: ..\Task\INS_task.h
 rm_itl_old_infantry\chassis_task.o: ../application/gimbal_behaviour.h
 rm_itl_old_infantry\chassis_task.o: ../application/control_power.h

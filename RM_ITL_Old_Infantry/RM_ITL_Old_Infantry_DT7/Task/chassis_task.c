@@ -9,6 +9,7 @@
 #include "INS_task.h"
 #include "gimbal_behaviour.h"
 #include "control_power.h"
+#include "referee_usart_task.h"
 
 
 /* 底盘运动数据 */
@@ -48,9 +49,9 @@ void chassis_task(void const *pvParameters)
         /* 底盘控制PID计算 */
         chassis_control_loop();
 
-        /* 确保至少一个电机在线，这样CAN控制包可以被接收到 */
-        if (!(toe_is_error(CHASSIS_MOTOR1_TOE) && toe_is_error(CHASSIS_MOTOR2_TOE) && 
-              toe_is_error(CHASSIS_MOTOR3_TOE) && toe_is_error(CHASSIS_MOTOR4_TOE)))
+        /* 只有当所有电机都在线时，才发送控制电流 */
+        if (!toe_is_error(CHASSIS_MOTOR1_TOE) && !toe_is_error(CHASSIS_MOTOR2_TOE) && 
+            !toe_is_error(CHASSIS_MOTOR3_TOE) && !toe_is_error(CHASSIS_MOTOR4_TOE))
         {
             /* 当遥控器掉线的时候，发送给底盘电机零电流 */
             if (toe_is_error(DBUS_TOE))
@@ -71,6 +72,8 @@ void chassis_task(void const *pvParameters)
             /* 底盘电机掉线，发送给底盘电机零电流 */
             CAN_cmd_chassis(0, 0, 0, 0);
         }
+
+        super_cap_send_power(referee_data.robot.chassis_power_limit);
 
         /* 系统延时 */
         vTaskDelay(CHASSIS_CONTROL_TIME_MS);
@@ -116,7 +119,6 @@ static void chassis_init(void)
     chassis_move.top_positive_max_speed = TOP_MAX_CHASSIS_SPEED;
     chassis_move.top_negative_max_speed = -TOP_MAX_CHASSIS_SPEED;
 
-    Chassis_Power_Init();
 
     /* 更新一下数据 */
     chassis_feedback_update();
@@ -245,7 +247,9 @@ static void chassis_control_loop(void)
                         chassis_move.motor_chassis[i].speed_set);
     }
 
-    Chassis_Power_Total_Control(1000,4,4);
+    Power_Control(&chassis_move);//底盘功率限制
+
+    super_power_limit(&chassis_move);//超级电容功率限制
 
     /* 赋值电流值 */
     for (uint8_t i = 0; i < 4; i++)

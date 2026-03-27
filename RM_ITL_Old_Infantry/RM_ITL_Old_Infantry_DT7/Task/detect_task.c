@@ -163,18 +163,11 @@ void detect_task(void const *pvParameters)
                 }
             }
         }
-
+//上电前对电机的检查
         if (toe_is_error(CHASSIS_MOTOR1_TOE) || toe_is_error(CHASSIS_MOTOR2_TOE) ||
-            toe_is_error(CHASSIS_MOTOR3_TOE) || toe_is_error(CHASSIS_MOTOR4_TOE) ||
-            toe_is_error(HOISTING_MOTOR1_TOE) || toe_is_error(HOISTING_MOTOR2_TOE) ||
-            toe_is_error(HOISTING_MOTOR3_TOE) || toe_is_error(HOISTING_MOTOR4_TOE) ||
-            toe_is_error(YAW_GIMBAL_MOTOR_TOE) || toe_is_error(PITCH_GIMBAL_MOTOR_TOE) ||
-            toe_is_error(TRIGGER_MOTOR_TOE) || toe_is_error(FRONT_LEFT_FRICTION_MOTOR_TOE) || toe_is_error(FRONT_RIGHT_FRICTION_MOTOR_TOE))
+            toe_is_error(CHASSIS_MOTOR3_TOE) || toe_is_error(CHASSIS_MOTOR4_TOE) )
         {
-            LED_Warning();
-            osDelay(1000);
-            LED_OFF();
-            osDelay(1000);
+            LED_Warning_Motor();
         }
         else
         {

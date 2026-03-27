@@ -163,6 +163,16 @@ virtualFolder:
         - path: ../components/CRC/CRC.h
         - path: ../components/Circular_buffer/Circular_buffer.c
         - path: ../components/Circular_buffer/Circular_buffer.h
+        - path: ../components/UI/ui.h
+        - path: ../components/UI/ui_default.c
+        - path: ../components/UI/ui_default.h
+        - path: ../components/UI/ui_dynamic_ui.c
+        - path: ../components/UI/ui_dynamic_ui.h
+        - path: ../components/UI/ui_interface.c
+        - path: ../components/UI/ui_interface.h
+        - path: ../components/UI/ui_static_ui.c
+        - path: ../components/UI/ui_static_ui.h
+        - path: ../components/UI/ui_types.h
       folders: []
     - name: application
       files:
@@ -224,6 +234,7 @@ targets:
         - ../Drivers/CMSIS/DSP/Include/dsp
         - ../Middlewares/ST/ARM/DSP/Inc
         - ../components/Circular_buffer
+        - ../components/UI
         - .cmsis/include
         - RTE/_RM_ITL_Old_Infantry
       libList: []
@@ -237,7 +248,8 @@ targets:
         options:
           version: 4
           afterBuildTasks: []
-          asm-compiler: {}
+          asm-compiler:
+            defines: []
           beforeBuildTasks: []
           c/cpp-compiler:
             CXX_FLAGS: --diag_suppress=1 --diag_suppress=1295

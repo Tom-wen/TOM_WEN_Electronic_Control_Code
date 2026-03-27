@@ -100,8 +100,12 @@ extern hoisting_t hoisting_control;
 
 
 //³õÊ¼½Ç¶ÈÇ°À¡
-#define forward_angle_feedforward -0.8f   //rad
-#define backward_angle_feedforward -0.8f  //rad
+#define forward_angle_feedforward -0.2f   //rad  
+#define backward_angle_feedforward -0.2f  //rad
+
+
+#define HOISTING_AUTO_FORWARD_ANGLE_OFFSET 3.0f//3.0
+#define HOISTING_AUTO_BACKWARD_ANGLE_OFFSET 7.0f//7.0
 
 //Ò£¿ØÆ÷
 #define FORWARD_CHANNEL 2

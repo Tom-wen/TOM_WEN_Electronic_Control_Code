@@ -84,7 +84,7 @@ extern void chassis_rc_to_control_vector(float *vx_set, float *vy_set, chassis_m
     return;
   }
 
-  int16_t vx_channel, vy_channel;
+  int16_t vx_channel = 0, vy_channel = 0;
   float vx_set_channel=0.0f, vy_set_channel=0.0f;
 
 #ifdef DT7_rc_ctrl   
@@ -103,42 +103,51 @@ extern void chassis_rc_to_control_vector(float *vx_set, float *vy_set, chassis_m
   {
       if (vtm_rc_data.key & KEY_PRESSED_OFFSET_W)
       {
-        vx_set_channel += chassis_move_rc_to_vector->vx_positive_max_speed;
+        vx_channel = KEY_MAX_X_SPEED;
       }
       if (vtm_rc_data.key & KEY_PRESSED_OFFSET_S)
       {
-        vx_set_channel += chassis_move_rc_to_vector->vx_negative_max_speed;
+        vx_channel = -KEY_MAX_X_SPEED;
       }
 
-      if (vtm_rc_data.key & KEY_PRESSED_OFFSET_A)
-      {
-        vy_set_channel += chassis_move_rc_to_vector->vy_positive_max_speed;
-      }
       if (vtm_rc_data.key & KEY_PRESSED_OFFSET_D)
       {
-        vy_set_channel += chassis_move_rc_to_vector->vy_negative_max_speed;
+        vy_channel = KEY_MAX_Y_SPEED;
+      }
+      if (vtm_rc_data.key & KEY_PRESSED_OFFSET_A)
+      {
+        vy_channel = -KEY_MAX_Y_SPEED;
       }
   }
   else
   {
       if (vtm_rc_data.key & KEY_PRESSED_OFFSET_W)
       {
-        vx_set_channel += KEY_POSITIVE_X_SPEED;
+        vx_channel = KEY_POSITIVE_X_SPEED;
       }
       if (vtm_rc_data.key & KEY_PRESSED_OFFSET_S)
       {
-        vx_set_channel += KEY_NEGATIVE_X_SPEED;
+        vx_channel = KEY_NEGATIVE_X_SPEED;
       }
 
-      if (vtm_rc_data.key & KEY_PRESSED_OFFSET_A)
-      {
-        vy_set_channel += KEY_POSITIVE_Y_SPEED;
-      }
       if (vtm_rc_data.key & KEY_PRESSED_OFFSET_D)
       {
-        vy_set_channel += KEY_NEGATIVE_Y_SPEED;
+        vy_channel = KEY_POSITIVE_Y_SPEED;
+      }
+      if (vtm_rc_data.key & KEY_PRESSED_OFFSET_A)
+      {
+        vy_channel = KEY_NEGATIVE_Y_SPEED;
       }
   }
+
+
+  //下面是图传遥控器
+  if(vtm_rc_data.mode_sw == 1 || vtm_rc_data.mode_sw == 2)
+  {
+    rc_deadband_limit(vtm_rc_data.ch[1], vx_channel, CHASSIS_RC_DEADLINE);
+    rc_deadband_limit(vtm_rc_data.ch[0], vy_channel, CHASSIS_RC_DEADLINE);
+  }
+
 #endif
 
   vx_set_channel = vx_channel * CHASSIS_VX_RC_SEN;
@@ -218,25 +227,38 @@ void chassis_behaviour_mode_set(chassis_move_t *chassis_move_mode)
       if (r_key_current_state && !r_key_last_state)
       {
           // 切换到下一个模式（循环切换）
-          chassis_control_mode_index = (chassis_control_mode_index + 1) % 3; // 3种模式
+          chassis_control_mode_index = (chassis_control_mode_index + 1) % 2; // 2种模式
 
           // 根据索引设置底盘模式
           switch (chassis_control_mode_index)
           {
               case 0:
-                  chassis_move_mode->chassis_mode = CHASSIS_NO_FOLLOW_GIMBAL;
+                  chassis_move_mode->chassis_mode = CHASSIS_TOP;
                   break;
               case 1:
                   chassis_move_mode->chassis_mode = CHASSIS_FOLLOW_GIMBAL;
-                  break;
-              case 2:
-                  chassis_move_mode->chassis_mode = CHASSIS_TOP;
                   break;
           }
       }
 
       // 更新上一次R键状态
       r_key_last_state = r_key_current_state;
+      if(vtm_rc_data.key & KEY_PRESSED_OFFSET_G)
+      {
+          chassis_move_mode->chassis_mode = CHASSIS_NO_FOLLOW_GIMBAL;
+      }
+
+
+
+      //下面是图传遥控器的相关控制
+      if(vtm_rc_data.mode_sw == 1)
+      {
+        chassis_move_mode->chassis_mode = CHASSIS_FOLLOW_GIMBAL;
+      }
+      else if ( vtm_rc_data.mode_sw == 2)
+      {
+        chassis_move_mode->chassis_mode = CHASSIS_TOP;
+      }
   #endif
   // 当云台在某些模式下（如初始化），底盘不动
   if (gimbal_cmd_to_chassis_stop())
@@ -329,6 +351,7 @@ static void chassis_follow_gimbal_yaw_control(chassis_move_t *chassis_move_rc_to
       SpinTop_Angle *= 0.0174532f;
     }
 
+    SpinTop_Angle += 240.0f * 0.0174532f;
     chassis_move_rc_to_vector->vx_set = vx_set * cos(SpinTop_Angle) + vy_set * sin(SpinTop_Angle);
     chassis_move_rc_to_vector->vy_set = -vx_set * sin(SpinTop_Angle) + vy_set * cos(SpinTop_Angle);
   }
@@ -343,7 +366,7 @@ static void chassis_follow_gimbal_yaw_control(chassis_move_t *chassis_move_rc_to
                                                 chassis_move_rc_to_vector->chassis_relative_angle_set);
 
   // 速度限幅
-  chassis_move_rc_to_vector->wz_set = float_constrain(chassis_move_rc_to_vector->wz_set, -10.0f, 10.0f);
+  chassis_move_rc_to_vector->wz_set = float_constrain(chassis_move_rc_to_vector->wz_set, -CHASSIS_FOLLOW_SPEED, CHASSIS_FOLLOW_SPEED );
   chassis_move_rc_to_vector->vx_set = float_constrain(chassis_move_rc_to_vector->vx_set, 
                                                       chassis_move_rc_to_vector->vx_negative_max_speed, 
                                                       chassis_move_rc_to_vector->vx_positive_max_speed);

@@ -7,12 +7,16 @@ uint16_t referee_cmd;
 
 void referee_usart_task(void *argument)
 {
+    
     REFEREE_RX_TypeDef *pRecvUartData = NULL; /* 定义指向串口数据的指针 */
     REFEREE_RX_TypeDef *pRecvUartData1 = NULL; /* 定义指向串口数据的指针 */
     for(;;)
     {
         referee_usart_analyse(pRecvUartData, &referee_data);
+        dynamic_ui_speed_update();
+        dynamic_ui_mode_update();
         vTaskDelay(pdMS_TO_TICKS(2));
+        ui_key_init();
     }
 
 }
@@ -207,5 +211,74 @@ void referee_routine_analyse(referee_receive *referee_data)
             // 未识别的命令码，忽略
             referee_cmd = cmd_id;
             break;
+    }
+}
+
+void dynamic_ui_speed_update(void)
+{
+    if(vtm_rc_data.key & KEY_PRESSED_OFFSET_SHIFT)//疾跑
+    {
+        ui_init_dynamic_ui_group1();
+    }
+    else
+    {
+        ui_remove_dynamic_ui_group1();
+    }
+}
+
+void dynamic_ui_mode_update(void)
+{
+    if(chassis_move.chassis_mode == CHASSIS_NO_FOLLOW_GIMBAL )
+    {
+        ui_init_dynamic_ui_group2();
+        ui_remove_dynamic_ui_group3();
+        ui_remove_dynamic_ui_group4();
+    }
+    else if(chassis_move.chassis_mode == CHASSIS_FOLLOW_GIMBAL)
+    {
+        ui_remove_dynamic_ui_group2();
+        ui_init_dynamic_ui_group3();
+        ui_remove_dynamic_ui_group4();
+    }
+    else if(chassis_move.chassis_mode == CHASSIS_TOP)
+    {
+        ui_remove_dynamic_ui_group2();
+        ui_remove_dynamic_ui_group3();
+        ui_init_dynamic_ui_group4();
+    }
+
+    if(shoot_control.shoot_mode == SHOOT_STOP)
+    {
+        ui_init_dynamic_ui_group5();
+        ui_remove_dynamic_ui_group6();
+        ui_remove_dynamic_ui_group7();
+    }
+    else if(shoot_control.shoot_mode == SHOOT_READY)
+    {
+        ui_remove_dynamic_ui_group5();
+        ui_init_dynamic_ui_group6();
+        ui_remove_dynamic_ui_group7();
+    }
+    else if(shoot_control.shoot_mode == SHOOT_BULLET)
+    {
+        ui_remove_dynamic_ui_group5();
+        ui_remove_dynamic_ui_group6();
+        ui_init_dynamic_ui_group7();
+    }
+
+}
+
+void ui_key_init(void)
+{
+    if(vtm_rc_data.key & KEY_PRESSED_OFFSET_CTRL)
+    {
+        ui_init_static_ui_Ungroup();
+        ui_init_dynamic_ui_group1();
+        ui_init_dynamic_ui_group2();
+        ui_init_dynamic_ui_group3();
+        ui_init_dynamic_ui_group4();
+        ui_init_dynamic_ui_group5();
+        ui_init_dynamic_ui_group6();
+        ui_init_dynamic_ui_group7();
     }
 }

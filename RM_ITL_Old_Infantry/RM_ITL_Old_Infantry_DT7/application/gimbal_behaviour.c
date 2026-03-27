@@ -124,6 +124,11 @@ void gimbal_behaviour_mode_set(gimbal_control_t *gimbal_mode_set)
             gimbal_mode_set->gimbal_pitch_motor.gimbal_motor_mode = GIMBAL_MOTOR_ENCONDE;
             break;
 
+        case GIMBAL_AUTO:            // 自瞄模式
+            gimbal_mode_set->gimbal_yaw_motor.gimbal_motor_mode = GIMBAL_MOTOR_GYRO;
+            gimbal_mode_set->gimbal_pitch_motor.gimbal_motor_mode = GIMBAL_MOTOR_GYRO;
+            break;
+
         default:
             break;
     }
@@ -238,7 +243,7 @@ static void gimbal_behavour_set(gimbal_control_t *gimbal_mode_set)
         }
         else if (i6x_switch_is_up(i6x_ctrl.s[GIMBAL_MODE_CHANNEL]))  // 上
         {
-            gimbal_behaviour = GIMBAL_ZERO_FORCE;
+            gimbal_behaviour = GIMBAL_AUTO;
         }
     #endif
 
@@ -251,18 +256,15 @@ static void gimbal_behavour_set(gimbal_control_t *gimbal_mode_set)
         if (r_key_current_state && !r_key_last_state)
         {
             // 切换到下一个模式（循环切换）
-            gimbal_control_mode_index = (gimbal_control_mode_index + 1) % 3; // 3种模式
+            gimbal_control_mode_index = (gimbal_control_mode_index + 1) % 2; // 2种模式
 
             // 根据索引设置底盘模式
             switch (gimbal_control_mode_index)
             {
                 case 0:
-                    gimbal_behaviour = GIMBAL_ZERO_FORCE;
-                    break;
-                case 1:
                     gimbal_behaviour = GIMBAL_ABSOLUTE_ANGLE;
                     break;
-                case 2:
+                case 1:
                     gimbal_behaviour = GIMBAL_ABSOLUTE_ANGLE;
                     break;
             }
@@ -270,6 +272,11 @@ static void gimbal_behavour_set(gimbal_control_t *gimbal_mode_set)
         }
         // 更新上一次R键状态
         r_key_last_state = r_key_current_state;
+
+        if(vtm_rc_data.key & KEY_PRESSED_OFFSET_G)
+        {
+            gimbal_behaviour = GIMBAL_ABSOLUTE_ANGLE;
+        }
 
         if (open_fire(vtm_rc_data.mouse_right))
         {
@@ -279,6 +286,38 @@ static void gimbal_behavour_set(gimbal_control_t *gimbal_mode_set)
         {
             gimbal_behaviour = last_gimbal_behaviour;
         }
+
+
+        if(vtm_rc_data.mode_sw == 1 || vtm_rc_data.mode_sw == 2)
+        {
+            gimbal_behaviour = GIMBAL_ABSOLUTE_ANGLE;
+                // 检测FN2键是否按下（上升沿触发）
+                static uint8_t FN2_key_last_state = 0;
+                uint8_t FN2_key_current_state = vtm_rc_data.fn_2 ? 1 : 0;
+
+                // 上升沿检测：当前按下且上次未按下
+                if (FN2_key_current_state && !FN2_key_last_state)
+                {
+                    // 切换到下一个模式（循环切换）
+                    gimbal_control_mode_index = (gimbal_control_mode_index + 1) % 2; // 2种模式
+
+                    // 根据索引设置底盘模式
+                    switch (gimbal_control_mode_index)
+                    {
+                        case 0:
+                            gimbal_behaviour = GIMBAL_ABSOLUTE_ANGLE;
+                            break;
+                        case 1:
+                            gimbal_behaviour = GIMBAL_AUTO;
+                            break;
+                    }
+                    last_gimbal_behaviour = gimbal_behaviour;
+                }
+                // 更新上一次FN2键状态
+                FN2_key_last_state = FN2_key_current_state;
+        }
+
+
     #endif
 
     // 遥控器错误时进入无力模式
@@ -331,14 +370,54 @@ static void gimbal_absolute_angle_control(float *yaw, float *pitch, gimbal_contr
     #endif
 
     #ifdef vtm_rc_ctrl
-        rc_deadband_limit(vtm_rc_data.mouse_x, yaw_channel, RC_DEADBAND);
-        rc_deadband_limit(vtm_rc_data.mouse_y, pitch_channel, RC_DEADBAND);
-    #endif
+
+            rc_deadband_limit(vtm_rc_data.mouse_x, yaw_channel, RC_DEADBAND);
+            rc_deadband_limit(vtm_rc_data.mouse_y, pitch_channel, RC_DEADBAND);
+            static uint8_t q_last_key_state = 0;
+            static uint8_t e_last_key_state = 0;
+
+            // 获取当前按键状态
+            uint8_t q_current_key_state = (vtm_rc_data.key & KEY_PRESSED_OFFSET_Q) ? 1 : 0;
+            uint8_t e_current_key_state = (vtm_rc_data.key & KEY_PRESSED_OFFSET_E) ? 1 : 0;
+
+            // 检测 Q 键的上升沿（按下瞬间）
+            if (q_current_key_state && !q_last_key_state)
+            {
+                *yaw = KEY_RUN;
+                *pitch = 0.0f;
+            }
+            // 检测 E 键的上升沿（按下瞬间）
+            else if (e_current_key_state && !e_last_key_state)
+            {
+                *yaw = -KEY_RUN;
+                *pitch = 0.0f;
+            }
+            else
+            {
+                // 正常鼠标控制
+                *yaw = yaw_channel * YAW_RC_SEN;
+                *pitch = pitch_channel * PITCH_RC_SEN;
+            }
+
+            q_last_key_state = q_current_key_state;
+            e_last_key_state = e_current_key_state;
 
 
-    // 计算基础角度增量
-    *yaw = yaw_channel * YAW_RC_SEN;
-    *pitch = pitch_channel * PITCH_RC_SEN;
+
+            //下面是图传遥控器控制
+            if(vtm_rc_data.mode_sw == 1 || vtm_rc_data.mode_sw == 2)
+            {
+                rc_deadband_limit(vtm_rc_data.ch[3], yaw_channel, RC_DEADBAND);
+                rc_deadband_limit(vtm_rc_data.ch[2], pitch_channel, RC_DEADBAND);
+                *yaw = yaw_channel * YAW_RC_SEN;
+                *pitch = pitch_channel * PITCH_RC_SEN;
+            }
+
+        #else
+            // 非 vtm 遥控器时使用默认控制
+            *yaw = yaw_channel * YAW_RC_SEN;
+            *pitch = pitch_channel * PITCH_RC_SEN;
+        #endif
 
 }
 
@@ -401,11 +480,10 @@ static void gimbal_auto_control(float *yaw, float *pitch, gimbal_control_t *gimb
         return;
     }
 
-    // 检测是否受到上位机控制信号
-    if (toe_is_error(USER_USART_DATA_TOE))
+    if(auto_shoot.pitch_add == 0 && auto_shoot.yaw_add==0)
     {
-        *yaw = 0.0f;
-        *pitch = 0.0f;
+        *yaw = gimbal_control.gimbal_yaw_motor.absolute_angle_set;
+        *pitch = gimbal_control.gimbal_pitch_motor.absolute_angle_set;
     }
     else
     {

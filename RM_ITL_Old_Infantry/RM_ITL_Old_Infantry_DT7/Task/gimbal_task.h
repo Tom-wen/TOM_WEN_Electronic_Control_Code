@@ -65,7 +65,7 @@
  * 宏定义 - 控制灵敏度参数
  ****************************************************************** */
 /** Yaw轴遥控器灵敏度 */
-#define YAW_RC_SEN -0.000004f
+#define YAW_RC_SEN -0.000006f
 
 /** Pitch轴遥控器灵敏度 */
 #define PITCH_RC_SEN 0.000006f
@@ -75,6 +75,9 @@
 
 /** Pitch轴编码器灵敏度 */
 #define PITCH_ENCODE_SEN 0.01f
+
+//按键逃跑
+#define KEY_RUN 1.54f
 
 /* ******************************************************************
  * 宏定义 - 电机方向配置
@@ -96,7 +99,7 @@
 #define PITCH_ABSOLUTE_ANGLE_MAX_IOUT 1000.0f
 
 /* Pitch角速度环控制参数 */
-#define PITCH_GYRO_KP   7000.0f//500
+#define PITCH_GYRO_KP   10000.0f//500
 #define PITCH_GYRO_KI   15.0f
 #define PITCH_GYRO_KD   0.2f
 #define PITCH_GYRO_MAX_OUT   16000.0f
@@ -109,16 +112,16 @@
  * 宏定义 - Yaw轴PID参数
  ****************************************************************** */
 /* Yaw角度环控制参数 */
-#define YAW_ABSOLUTE_ANGLE_KP   -10.0f
-#define YAW_ABSOLUTE_ANGLE_KI   0.001f
-#define YAW_ABSOLUTE_ANGLE_KD   0.5f
+#define YAW_ABSOLUTE_ANGLE_KP   -30.0f //-30.0f
+#define YAW_ABSOLUTE_ANGLE_KI   -0.01f
+#define YAW_ABSOLUTE_ANGLE_KD   -0.8f
 #define YAW_ABSOLUTE_ANGLE_MAX_OUT  5.0f
-#define YAW_ABSOLUTE_ANGLE_MAX_IOUT 1.0f
+#define YAW_ABSOLUTE_ANGLE_MAX_IOUT 2.0f
 
 /* Yaw角速度环控制参数 */
-#define YAW_GYRO_KP   21000.0f
+#define YAW_GYRO_KP   21000.0f //21000.0f
 #define YAW_GYRO_KI   0.0f
-#define YAW_GYRO_KD   0.0f
+#define YAW_GYRO_KD   1.8f
 #define YAW_GYRO_MAX_OUT   16000.0f
 #define YAW_GYRO_MAX_IOUT 1000.0f
 
@@ -126,16 +129,16 @@
  * 宏定义 - 云台小陀螺模式PID参数
  ****************************************************************** */
 /* 小陀螺模式Yaw角度环控制参数 */
-#define YAW_TOP_ABSOLUTE_ANGLE_KP   -10.0f
-#define YAW_TOP_ABSOLUTE_ANGLE_KI   0.0f
-#define YAW_TOP_ABSOLUTE_ANGLE_KD   -0.497f
+#define YAW_TOP_ABSOLUTE_ANGLE_KP   -30.0f
+#define YAW_TOP_ABSOLUTE_ANGLE_KI   -0.01f
+#define YAW_TOP_ABSOLUTE_ANGLE_KD   -0.8f
 #define YAW_TOP_ABSOLUTE_ANGLE_MAX_OUT  5.0f
-#define YAW_TOP_ABSOLUTE_ANGLE_MAX_IOUT 1.0f
+#define YAW_TOP_ABSOLUTE_ANGLE_MAX_IOUT 2.0f
 
 /* 小陀螺模式Yaw角速度环控制参数 */
 #define YAW_TOP_GYRO_KP   21000.0f
 #define YAW_TOP_GYRO_KI   0.0f
-#define YAW_TOP_GYRO_KD   0.0f
+#define YAW_TOP_GYRO_KD   1.8f
 #define YAW_TOP_GYRO_MAX_OUT   16000.0f
 #define YAW_TOP_GYRO_MAX_IOUT 1000.0f
 
@@ -143,10 +146,10 @@
  * 宏定义 - 云台机械限位角度值设定
  ****************************************************************** */
 /** Yaw轴编码器偏置值 */
-#define GIMBAL_YAW_OFFSET_ECD       849.9f
+#define GIMBAL_YAW_OFFSET_ECD       847.8f
 
 /** Yaw轴小陀螺模式编码器偏置值 */
-#define GIMBAL_YAW_TOP_OFFSET_ECD   6851.0f
+#define GIMBAL_YAW_TOP_OFFSET_ECD   1400.0f
 
 /** Yaw轴最大角度值，单位：弧度 */
 #define GIMBAL_YAW_MAX_ECD          5.0f

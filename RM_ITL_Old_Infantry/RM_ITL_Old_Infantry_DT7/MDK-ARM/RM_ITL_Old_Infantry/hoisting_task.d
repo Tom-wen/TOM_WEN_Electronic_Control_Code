@@ -70,3 +70,5 @@ rm_itl_old_infantry\hoisting_task.o: ../application/GQ_Motor.h
 rm_itl_old_infantry\hoisting_task.o: ..\Task\detect_task.h
 rm_itl_old_infantry\hoisting_task.o: ../boards/bsp_led.h
 rm_itl_old_infantry\hoisting_task.o: ../Core/Inc/spi.h
+rm_itl_old_infantry\hoisting_task.o: ../boards/bsp_buzzer.h
+rm_itl_old_infantry\hoisting_task.o: ../Core/Inc/tim.h

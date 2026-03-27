@@ -9,6 +9,12 @@
 #include "string.h"
 #include "remote_control.h"
 #include "Circular_buffer.h"
+#include "ui_static_ui.h"
+#include "ui_dynamic_ui.h"
+#include "chassis_task.h"
+#include "shoot_task.h"
+
+
 
 //命令码定义
 #define CMD_ID_ROBOT_STATUS             0x0201   // 机器人性能体系数据
@@ -157,5 +163,10 @@ typedef struct
 void referee_usart_task(void *argument);
 void referee_usart_analyse(REFEREE_RX_TypeDef *pRecvUartData, referee_receive *referee_data);
 void referee_routine_analyse(referee_receive *referee_data);
+void dynamic_ui_speed_update(void);
+void dynamic_ui_mode_update(void);
+void ui_key_init(void);
+
+extern referee_receive referee_data;
 
 #endif

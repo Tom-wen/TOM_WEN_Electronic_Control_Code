@@ -11,10 +11,6 @@ extern FDCAN_HandleTypeDef hfdcan1;
 extern FDCAN_HandleTypeDef hfdcan2;
 extern FDCAN_HandleTypeDef hfdcan3;
 
-uint8_t rx_data_test[24]={0};
-
-
-
 float _207_angle[2];
 
 #define get_motor_measure(ptr, data)                               \
@@ -33,7 +29,12 @@ static FDCAN_TxHeaderTypeDef gimbal_tx_message;
 static uint8_t gimbal_can_send_data[8];
 static FDCAN_TxHeaderTypeDef chassis_tx_message;
 static uint8_t chassis_can_send_data[8];
-
+static FDCAN_TxHeaderTypeDef cap_tx_message;
+static uint8_t cap_can_send_data[8];
+static void parse_supercap_data(uint8_t *rx_data);
+limit_switch_t limit_switch;
+// 全局超级电容数据
+supercap_data_t supercap_data = {0};
 
 float PowerData[7];
 	
@@ -105,21 +106,7 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hcan, uint32_t RxFifo0ITs)
       break;
     }
 
-		case CAN_SUPERCAP_ID:
-    {
 
-    extern float PowerData[7];  
-    uint16_t *pPowerData = (uint16_t *)rx_data;
-    PowerData[0] = pPowerData[0];                        // pPowerData[0]
-    PowerData[1] = (rx_data[0]<<8|rx_data[1])/1000.0f ;  // capacitor_voltage
-			
-    PowerData[2] = (int16_t)(rx_data[2]<<8|rx_data[3])/1000.0f; //capacitor_current
-    PowerData[3] = rx_data[4];                           // battery_power
-    PowerData[4] = rx_data[5];                           // limit_power
-    PowerData[5] = rx_data[6];                           // capacitor_level
-
-    break;
-    }
 
     default:
     {
@@ -205,9 +192,20 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hcan, uint32_t RxFifo0ITs)
             detect_hook(HOISTING_MOTOR4_TOE);
             break;
           }
+          case CAN_SUPERCAP_ID:
+          {
+            parse_supercap_data(rx_data);
+            break;
+          }
+
+          case CAN_LIMIMT_ID:
+          {
+            limit_data_process(&limit_switch,rx_data);
+          } 
         }
       }
   }
+
 }
 
 /**
@@ -348,6 +346,29 @@ void CAN_cmd_chassis(int16_t motor1, int16_t motor2, int16_t motor3, int16_t mot
 }
 
 /**
+ * @brief     发送超级电容设定功率
+ * @param Power   30W~250W
+ * 10Hz
+ */
+void super_cap_send_power(uint16_t power)
+{
+   cap_tx_message.Identifier = CAN_SUPERCAP_ID;
+   cap_tx_message.IdType = FDCAN_STANDARD_ID;
+   cap_tx_message.TxFrameType = FDCAN_DATA_FRAME;
+   cap_tx_message.DataLength = 0x08;
+   cap_can_send_data[0]=(uint8_t)power; //整数部分
+   cap_can_send_data[1]=(uint8_t)(power*100.0f)%100; //小数部分
+   cap_can_send_data[2]=0;
+   cap_can_send_data[3]=0;
+   cap_can_send_data[4]=0;
+   cap_can_send_data[5]=0;
+   cap_can_send_data[6]=0;
+   cap_can_send_data[7]=0;
+   HAL_StatusTypeDef status = HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan3,&cap_tx_message, cap_can_send_data);
+
+}
+
+/**
  * @brief          返回yaw 6020电机数据指针
  * @param[in]      none
  * @retval         电机数据指针
@@ -395,5 +416,50 @@ const motor_measure_t *get_right_friction_motor_measure_point(void)
 const motor_measure_t *get_chassis_motor_measure_point(uint8_t i)
 {
   return &motor_chassis[(i & 0x03)];
+}
+
+void limit_data_process(limit_switch_t *limit_data ,uint8_t *data)
+{
+      // 检查帧头和帧尾
+    if (data[0] == 'F' && data[1] == 'E' && data[6] == 'F')
+    {
+        limit_data->hoisting_1 = data[2];
+        limit_data->hoisting_2 = data[3];
+        limit_data->hoisting_3 = data[4];
+        limit_data->hoisting_3 = data[5];
+    }
+
+}
+
+
+
+
+/**
+ * @brief          解析超级电容 CAN 数据
+ * @param[in]      rx_data: CAN 接收数据 (8 字节)
+ * @retval         none
+ */
+static void parse_supercap_data(uint8_t *rx_data)
+{
+    // 电容电压: 字节 0-1, 0~30000 对应 0~30V
+    uint16_t voltage_raw = (rx_data[0] << 8) | rx_data[1];
+    supercap_data.capacitor_voltage = voltage_raw / 1000.0f;
+    
+    // 电容电流: 字节 2-3, -12000~12000 对应 -12~12A
+    int16_t current_raw = (rx_data[2] << 8) | rx_data[3];
+    supercap_data.capacitor_current = current_raw / 1000.0f;
+    
+    // 电池功率: 字节 4
+    supercap_data.battery_power = rx_data[4];
+    
+    // 限制功率: 字节 5
+    supercap_data.limit_power = rx_data[5];
+    
+    // 电容电量百分比: 字节 6
+    supercap_data.capacitor_level = rx_data[6];
+    
+    // 状态指示: 字节 7
+    supercap_data.status_indicator = rx_data[7];
+    
 }
 

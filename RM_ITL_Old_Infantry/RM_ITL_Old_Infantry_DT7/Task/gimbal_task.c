@@ -235,8 +235,32 @@ static void gimbal_feedback_update(void)
 
   gimbal_control.gimbal_yaw_motor.absolute_angle = INS_data.angle_yaw;
   // 计算yaw轴角速度，考虑pitch角的影响
-  gimbal_control.gimbal_yaw_motor.motor_gyro = -(arm_cos_f32(gimbal_control.gimbal_pitch_motor.relative_angle) * INS_data.wz
-                                                 - arm_sin_f32(gimbal_control.gimbal_pitch_motor.relative_angle) * INS_data.wy);
+      // 原始计算值
+    float raw_gyro = arm_sin_f32(gimbal_control.gimbal_pitch_motor.relative_angle) * INS_data.wz
+                   - arm_cos_f32(gimbal_control.gimbal_pitch_motor.relative_angle) * INS_data.wy;
+    
+    // 一阶低通滤波系数 (0.0~1.0)，建议 0.2~0.5
+    #define YAW_GYRO_FILTER_ALPHA  0.15f
+    
+    // 静态变量保存上一次滤波结果
+    static float yaw_gyro_filtered = 0.0f;
+    static uint8_t filter_init_flag = 0;
+    
+    // 首次初始化直接赋值，避免跳变
+    if (filter_init_flag == 0)
+    {
+        yaw_gyro_filtered = raw_gyro;
+        filter_init_flag = 1;
+    }
+    else
+    {
+        // 一阶低通滤波
+        yaw_gyro_filtered = YAW_GYRO_FILTER_ALPHA * raw_gyro 
+                          + (1.0f - YAW_GYRO_FILTER_ALPHA) * yaw_gyro_filtered;
+    }
+    
+    gimbal_control.gimbal_yaw_motor.motor_gyro = yaw_gyro_filtered;
+                                                
 }
 
 /**
@@ -270,10 +294,6 @@ static void gimbal_set_control(void)
   float add_yaw_angle = 0.0f;
   float add_pitch_angle = 0.0f;
 
-    
-// //    // 使用自动射击模块的目标值 不要删除
-//     gimbal_control.gimbal_yaw_motor.absolute_angle_set = auto_shoot.yaw_add;
-//     gimbal_control.gimbal_pitch_motor.absolute_angle_set = auto_shoot.pitch_add;
 
  if (gimbal_behaviour == GIMBAL_AUTO)  // 检测状态
  {
@@ -396,11 +416,11 @@ static void gimbal_motor_absolute_angle_control(gimbal_motor_t *gimbal_motor)
     return;
   }
 
-  // 角度环计算目标角速度
-  gimbal_motor->motor_gyro_set = gimbal_PID_calc(&gimbal_motor->gimbal_motor_absolute_angle_pid,
-                                                 gimbal_motor->absolute_angle,
-                                                 gimbal_motor->absolute_angle_set,
-                                                 gimbal_motor->motor_gyro);
+    // 角度环计算目标角速度
+    gimbal_motor->motor_gyro_set = gimbal_PID_calc(&gimbal_motor->gimbal_motor_absolute_angle_pid,
+                                                  gimbal_motor->absolute_angle,
+                                                  gimbal_motor->absolute_angle_set,
+                                                  gimbal_motor->motor_gyro);
 
   // 速度环计算目标电流
   gimbal_motor->current_set = PID_calc(&gimbal_motor->gimbal_motor_gyro_pid,

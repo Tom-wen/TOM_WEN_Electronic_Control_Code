@@ -60,6 +60,8 @@ rm_itl_old_infantry\usart_receive.o: ../Middlewares/Third_Party/FreeRTOS/Source/
 rm_itl_old_infantry\usart_receive.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 rm_itl_old_infantry\usart_receive.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
 rm_itl_old_infantry\usart_receive.o: ../Task/detect_task.h
+rm_itl_old_infantry\usart_receive.o: ../boards/bsp_led.h
+rm_itl_old_infantry\usart_receive.o: ../Core/Inc/spi.h
 rm_itl_old_infantry\usart_receive.o: ../Task/chassis_task.h
 rm_itl_old_infantry\usart_receive.o: ../application/CAN_receive.h
 rm_itl_old_infantry\usart_receive.o: ../Task/gimbal_task.h

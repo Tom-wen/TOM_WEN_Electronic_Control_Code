@@ -22,12 +22,13 @@ void TripodCtrlTask(void *argument)
     user_usart_init();
     //Emm_V5_Restore_Motor(1,&hcan1);
     //Emm_V5_Restore_Motor(1,&hcan2);
-    //Emm_V5_Pos_Control(1, 1, 20, 0, 200, 0, 0,&hcan1);
+    
     //Emm_V5_Modify_Ctrl_Mode(1,true,1,&hcan1);
     //Emm_V5_Modify_Ctrl_Mode(1,true,1,&hcan2);
     //Emm_V5_Modify_PID_Params(1, true, 18000, 10, 18000,&hcan1);
     //Emm_V5_Modify_PID_Params(1, true, 18000, 10, 18000,&hcan2);
   //Emm_V5_Pos_Control(1, 1, 1, 1, 200, 0, 0,&hcan1);
+  //Emm_V5_Pos_Control(1, 0, 10, 40, 36, 0, 0,&hcan1);
   osDelay(10);
 
 
@@ -36,28 +37,29 @@ void TripodCtrlTask(void *argument)
 	{
     if (gimbal_motor_t_pitch.radar_add <0)
     {
-    Emm_V5_Pos_Control(1, 1, 2, 1, (int)fabsf(gimbal_motor_t_pitch.radar_add), 0, 0,&hcan1);
+    Emm_V5_Pos_Control(1, 1, 100, 40, (int)fabsf(gimbal_motor_t_pitch.radar_add), 0, 0,&hcan2);
     gimbal_motor_t_pitch.radar_add=0;
     }
     else
     {
-    Emm_V5_Pos_Control(1, 0, 2, 1, (int)gimbal_motor_t_pitch.radar_add, 0, 0,&hcan1);
+    Emm_V5_Pos_Control(1, 0, 100, 40, (int)gimbal_motor_t_pitch.radar_add, 0, 0,&hcan2);
     gimbal_motor_t_pitch.radar_add=0;
     }
      osDelay(50);
     if (gimbal_motor_t_yaw.radar_add <0)
     {
-    Emm_V5_Pos_Control(1, 1, 2, 1, (int)fabsf(gimbal_motor_t_yaw.radar_add), 0, 0,&hcan2);
+    Emm_V5_Pos_Control(1, 1, 100, 40, (int)fabsf(gimbal_motor_t_yaw.radar_add)*15, 0, 0,&hcan1);
     gimbal_motor_t_yaw.radar_add=0;
     }
     else
     {
-    Emm_V5_Pos_Control(1, 0, 2, 1, (int)gimbal_motor_t_yaw.radar_add, 0, 0,&hcan2);
+    Emm_V5_Pos_Control(1, 0, 100, 40, (int)gimbal_motor_t_yaw.radar_add*15, 0, 0,&hcan1);
     gimbal_motor_t_yaw.radar_add=0;
     }
     //handle_remote_disconnect();//¼ì²âÒ£¿ØÆ÷Á¬½Ó×´Ì¬
     osDelay(50);
-    // //VOFA_Send_Float_Data();
+    //VOFA_Send_Float_Data();
+    
     }
 }
 

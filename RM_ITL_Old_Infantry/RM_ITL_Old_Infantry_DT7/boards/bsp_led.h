@@ -10,5 +10,6 @@ void LED_Normal();
 void LED_Warning();
 void LED_RC_Disconnected();
 void LED_OFF();
+void LED_Warning_Motor();
 
 #endif
