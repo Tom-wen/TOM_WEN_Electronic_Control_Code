@@ -184,7 +184,6 @@ void shoot_init(void)
 uint8_t heat_flag; //1ÊÇ³¬ÈÈÁ¿
 static void shoot_set_mode(void)
  {
-
     if ((!toe_is_error(REFEREE_TOE)) && (referee_data.power_heat.shooter_17mm_1_barrel_heat + SHOOT_HEAT_REMAIN_VALUE > referee_data.robot.shooter_barrel_heat_limit))
     {
         if (shoot_control.shoot_mode == SHOOT_BULLET || shoot_control.shoot_mode == SHOOT_READY)

@@ -19,7 +19,7 @@ ui_5_frame_t _ui_5_frame;
 ui_7_frame_t _ui_7_frame;
 
 // 新增：内部辅助函数用于更新 ID
-static void ui_update_self_id(void) {
+void ui_update_self_id(void) {
     ui_self_id = referee_data.robot.robot_id;
 }
 
@@ -156,7 +156,6 @@ void ui_proc_delete_frame(ui_delete_frame_t *msg) {
 ui_delete_frame_t ui_delete_frame;
 
 void ui_delete_layer(const uint8_t delete_type, const uint8_t layer) {
-    ui_update_self_id();
     ui_delete_frame.delete_type = delete_type;
     ui_delete_frame.layer = layer;
     ui_proc_delete_frame(&ui_delete_frame);
@@ -166,7 +165,6 @@ void ui_delete_layer(const uint8_t delete_type, const uint8_t layer) {
 void ui_scan_and_send(const ui_interface_figure_t *ui_now_figures, uint8_t *ui_dirty_figure,
                       const ui_interface_string_t *ui_now_strings, uint8_t *ui_dirty_string, const int total_figures,
                       const int total_strings) {
-    ui_update_self_id(); // 每次发送前更新 ID，确保使用最新的 ID
     if (total_figures > 0) {
         int total_figure = 0;
         for (int i = 0; i < total_figures; i++) {

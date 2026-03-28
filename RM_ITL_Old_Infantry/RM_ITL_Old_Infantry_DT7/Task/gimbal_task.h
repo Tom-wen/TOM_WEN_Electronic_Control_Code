@@ -92,7 +92,7 @@
  * 宏定义 - Pitch轴PID参数
  ****************************************************************** */
 /* Pitch角度环控制参数 */
-#define PITCH_ABSOLUTE_ANGLE_KP  20.7f
+#define PITCH_ABSOLUTE_ANGLE_KP  15.7f
 #define PITCH_ABSOLUTE_ANGLE_KI  0.00001f
 #define PITCH_ABSOLUTE_ANGLE_KD  0.67f
 #define PITCH_ABSOLUTE_ANGLE_MAX_OUT  30.0f
@@ -112,7 +112,7 @@
  * 宏定义 - Yaw轴PID参数
  ****************************************************************** */
 /* Yaw角度环控制参数 */
-#define YAW_ABSOLUTE_ANGLE_KP   -30.0f //-30.0f
+#define YAW_ABSOLUTE_ANGLE_KP   -31.0f //-30.0f
 #define YAW_ABSOLUTE_ANGLE_KI   -0.01f
 #define YAW_ABSOLUTE_ANGLE_KD   -0.8f
 #define YAW_ABSOLUTE_ANGLE_MAX_OUT  5.0f

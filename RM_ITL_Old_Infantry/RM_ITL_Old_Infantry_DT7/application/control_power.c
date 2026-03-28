@@ -11,9 +11,9 @@
 void Power_Control(chassis_move_t *chassis_power_control)
 {
     float chassis_power_buffer = referee_data.power_heat.buffer_energy;
-	if(chassis_power_buffer<50&&chassis_power_buffer>=40)	limit_k=0.5;
+	if(chassis_power_buffer<50&&chassis_power_buffer>=40)	limit_k=0.75;
 	else if(chassis_power_buffer<40&&chassis_power_buffer>=35)	limit_k=0.5;
-	else if(chassis_power_buffer<35&&chassis_power_buffer>=30)	limit_k=0.5;
+	else if(chassis_power_buffer<35&&chassis_power_buffer>=30)	limit_k=0.25;
 	else if(chassis_power_buffer<30&&chassis_power_buffer>=20)	limit_k=0.25;
 	else if(chassis_power_buffer<20&&chassis_power_buffer>=10)	limit_k=0.125;
 	else if(chassis_power_buffer<10&&chassis_power_buffer>=0)	limit_k=0.05;

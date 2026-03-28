@@ -36,6 +36,9 @@ void ui_remove_dynamic_ui_group6();
 void ui_init_dynamic_ui_group7();
 void ui_update_dynamic_ui_group7();
 void ui_remove_dynamic_ui_group7();
+void ui_init_dynamic_ui_group8();
+void ui_update_dynamic_ui_group8();
+void ui_remove_dynamic_ui_group8();
 #include "ui_static_ui.h"
 
 void ui_init_static_ui_Ungroup();

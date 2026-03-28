@@ -27,4 +27,6 @@ void ui_delete_layer(const uint8_t delete_type, const uint8_t layer);
 
 void ui_scan_and_send(const ui_interface_figure_t* ui_now_figures, uint8_t* ui_dirty_figure, const ui_interface_string_t* ui_now_strings, uint8_t* ui_dirty_string, int total_figures, int total_strings);
 
+void ui_update_self_id(void);
+
 #endif //UI_INTERFACE_H

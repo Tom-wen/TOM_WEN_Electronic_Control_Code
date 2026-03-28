@@ -165,6 +165,7 @@ void referee_usart_analyse(REFEREE_RX_TypeDef *pRecvUartData, referee_receive *r
 void referee_routine_analyse(referee_receive *referee_data);
 void dynamic_ui_speed_update(void);
 void dynamic_ui_mode_update(void);
+void dynamic_ui_chassis_power_update(void);
 void ui_key_init(void);
 
 extern referee_receive referee_data;

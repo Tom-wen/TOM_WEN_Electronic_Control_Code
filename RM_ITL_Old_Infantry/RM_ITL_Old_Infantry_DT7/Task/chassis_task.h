@@ -112,7 +112,7 @@
 #define NORMAL_MAX_CHASSIS_SPEED_X 6.0f 
 #define NORMAL_MAX_CHASSIS_SPEED_Y 6.0f    // 底盘运动过程最大平移速度 
 #define NORMAL_MAX_CHASSIS_SPEED_Z 6.0f    // 
-#define CHASSIS_TOP_SPEED          10.0f       // 底盘小陀螺速度 
+#define CHASSIS_TOP_SPEED          7.0f       // 底盘小陀螺速度 
 #define CHASSIS_FOLLOW_SPEED       10.0f        // 底盘旋转云台速度
 #define TOP_MAX_CHASSIS_SPEED      6.0f    // 底盘小陀螺时最大平移速度
 

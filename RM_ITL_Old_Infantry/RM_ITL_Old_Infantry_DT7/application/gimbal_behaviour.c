@@ -288,9 +288,20 @@ static void gimbal_behavour_set(gimbal_control_t *gimbal_mode_set)
         }
 
 
+        // 记录上一次的 mode_sw 状态
+        static uint8_t last_mode_sw = 0;
         if(vtm_rc_data.mode_sw == 1 || vtm_rc_data.mode_sw == 2)
         {
-            gimbal_behaviour = GIMBAL_ABSOLUTE_ANGLE;
+
+                    // 检测 mode_sw 是否改变
+                if (vtm_rc_data.mode_sw != last_mode_sw)
+                {
+                    // mode_sw 改变时，设置为绝对角度模式
+                    gimbal_behaviour = GIMBAL_ABSOLUTE_ANGLE;
+                    gimbal_control_mode_index = 0;  // 同步更新索引
+                    last_gimbal_behaviour = gimbal_behaviour;
+                }
+
                 // 检测FN2键是否按下（上升沿触发）
                 static uint8_t FN2_key_last_state = 0;
                 uint8_t FN2_key_current_state = vtm_rc_data.fn_2 ? 1 : 0;
@@ -315,6 +326,9 @@ static void gimbal_behavour_set(gimbal_control_t *gimbal_mode_set)
                 }
                 // 更新上一次FN2键状态
                 FN2_key_last_state = FN2_key_current_state;
+
+                    // 更新上一次 mode_sw 状态
+                last_mode_sw = vtm_rc_data.mode_sw;
         }
 
 

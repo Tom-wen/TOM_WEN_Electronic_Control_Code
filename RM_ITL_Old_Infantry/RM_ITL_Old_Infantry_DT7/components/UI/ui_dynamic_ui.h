@@ -50,5 +50,11 @@ void ui_init_dynamic_ui_group7();
 void ui_update_dynamic_ui_group7();
 void ui_remove_dynamic_ui_group7();
 
+extern ui_interface_number_t *ui_dynamic_ui_group8_super_cap;
+
+void ui_init_dynamic_ui_group8();
+void ui_update_dynamic_ui_group8();
+void ui_remove_dynamic_ui_group8();
+
 
 #endif // UI_dynamic_ui_H

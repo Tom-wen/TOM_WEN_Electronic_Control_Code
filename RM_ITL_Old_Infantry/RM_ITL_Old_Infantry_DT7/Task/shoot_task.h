@@ -46,7 +46,7 @@
 
 
 //拨弹速度
-#define CONTINUE_TRIGGER_SPEED      2000.0f
+#define CONTINUE_TRIGGER_SPEED      2500.0f
 
 /*****************************摩擦轮速度*****************************/
 
@@ -59,7 +59,7 @@
 #define SPEED_WAVE_THRESHOLD        300.0f //计算发射子弹数量的速度波动阈值
 
 //热量预留值，防止超热量
-#define SHOOT_HEAT_REMAIN_VALUE 25
+#define SHOOT_HEAT_REMAIN_VALUE 50
 
 
 typedef enum

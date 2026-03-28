@@ -180,6 +180,18 @@ static void hoisting_behavour_set(void)
     {
       hoisting_control.hoisting_mode = SET_UP_HOISTING;
     }
+
+    if(vtm_rc_data.mode_sw == 1 || vtm_rc_data.mode_sw == 2)
+    {
+      if(vtm_rc_data.pause)//ÏÂ½µ
+      {
+        hoisting_control.hoisting_mode=AUTO_HOISTING;
+      }
+      else
+      {
+        hoisting_control.hoisting_mode = SET_UP_HOISTING;
+      }
+    }
   #endif
 
 }

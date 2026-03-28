@@ -6,6 +6,7 @@
 #include <string.h>
 
 #include "ui_interface.h"
+#include "CAN_receive.h"
 
 ui_1_frame_t ui_dynamic_ui_group1_0;
 
@@ -432,5 +433,66 @@ void ui_update_dynamic_ui_group7() {
 
 void ui_remove_dynamic_ui_group7() {
     _ui_remove_dynamic_ui_group7_0();
+}
+
+ui_1_frame_t ui_dynamic_ui_group8_0;
+
+ui_interface_number_t *ui_dynamic_ui_group8_super_cap = (ui_interface_number_t*)&(ui_dynamic_ui_group8_0.data[0]);
+
+void _ui_init_dynamic_ui_group8_0() {
+    for (int i = 0; i < 1; i++) {
+        ui_dynamic_ui_group8_0.data[i].figure_name[0] = 1;
+        ui_dynamic_ui_group8_0.data[i].figure_name[1] = 7;
+        ui_dynamic_ui_group8_0.data[i].figure_name[2] = i + 0;
+        ui_dynamic_ui_group8_0.data[i].operate_type = 1;
+    }
+    for (int i = 1; i < 1; i++) {
+        ui_dynamic_ui_group8_0.data[i].operate_type = 0;
+    }
+
+    ui_dynamic_ui_group8_super_cap->figure_type = 5;
+    ui_dynamic_ui_group8_super_cap->operate_type = 1;
+    ui_dynamic_ui_group8_super_cap->layer = 0;
+    ui_dynamic_ui_group8_super_cap->color = 0;
+    ui_dynamic_ui_group8_super_cap->start_x = 1480;
+    ui_dynamic_ui_group8_super_cap->start_y = 725;
+    ui_dynamic_ui_group8_super_cap->width = 2;
+    ui_dynamic_ui_group8_super_cap->font_size = 20;
+    ui_dynamic_ui_group8_super_cap->number = (uint16_t)(supercap_data.capacitor_level*10);
+
+
+    ui_proc_1_frame(&ui_dynamic_ui_group8_0);
+    SEND_MESSAGE((uint8_t *) &ui_dynamic_ui_group8_0, sizeof(ui_dynamic_ui_group8_0));
+}
+
+void _ui_update_dynamic_ui_group8_0() {
+    for (int i = 0; i < 1; i++) {
+        ui_dynamic_ui_group8_0.data[i].operate_type = 2;
+    }
+
+    ui_proc_1_frame(&ui_dynamic_ui_group8_0);
+    SEND_MESSAGE((uint8_t *) &ui_dynamic_ui_group8_0, sizeof(ui_dynamic_ui_group8_0));
+}
+
+void _ui_remove_dynamic_ui_group8_0() {
+    for (int i = 0; i < 1; i++) {
+        ui_dynamic_ui_group8_0.data[i].operate_type = 3;
+    }
+
+    ui_proc_1_frame(&ui_dynamic_ui_group8_0);
+    SEND_MESSAGE((uint8_t *) &ui_dynamic_ui_group8_0, sizeof(ui_dynamic_ui_group8_0));
+}
+
+
+void ui_init_dynamic_ui_group8() {
+    _ui_init_dynamic_ui_group8_0();
+}
+
+void ui_update_dynamic_ui_group8() {
+    _ui_update_dynamic_ui_group8_0();
+}
+
+void ui_remove_dynamic_ui_group8() {
+    _ui_remove_dynamic_ui_group8_0();
 }
 

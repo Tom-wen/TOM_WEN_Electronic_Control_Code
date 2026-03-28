@@ -33,6 +33,7 @@ extern ui_interface_string_t *ui_static_ui_Ungroup_CHASSIS_TOP;
 extern ui_interface_string_t *ui_static_ui_Ungroup_SHOOT_STOP;
 extern ui_interface_string_t *ui_static_ui_Ungroup_SHOOT_READY;
 extern ui_interface_string_t *ui_static_ui_Ungroup_SHOOT_BULLET;
+extern ui_interface_string_t *ui_static_ui_Ungroup_super_cap;
 
 void ui_init_static_ui_Ungroup();
 void ui_update_static_ui_Ungroup();

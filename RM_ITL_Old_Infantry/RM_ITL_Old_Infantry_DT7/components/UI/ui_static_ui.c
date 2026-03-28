@@ -589,6 +589,44 @@ void _ui_remove_static_ui_Ungroup_9() {
     SEND_MESSAGE((uint8_t *) &ui_static_ui_Ungroup_9, sizeof(ui_static_ui_Ungroup_9));
 }
 
+ui_string_frame_t ui_static_ui_Ungroup_10;
+ui_interface_string_t* ui_static_ui_Ungroup_super_cap = &(ui_static_ui_Ungroup_10.option);
+void _ui_init_static_ui_Ungroup_10() {
+    ui_static_ui_Ungroup_10.option.figure_name[0] = 2;
+    ui_static_ui_Ungroup_10.option.figure_name[1] = 0;
+    ui_static_ui_Ungroup_10.option.figure_name[2] = 25;
+    ui_static_ui_Ungroup_10.option.operate_type = 1;
+
+    ui_static_ui_Ungroup_super_cap->figure_type = 7;
+    ui_static_ui_Ungroup_super_cap->operate_type = 1;
+    ui_static_ui_Ungroup_super_cap->layer = 0;
+    ui_static_ui_Ungroup_super_cap->color = 0;
+    ui_static_ui_Ungroup_super_cap->start_x = 1480;
+    ui_static_ui_Ungroup_super_cap->start_y = 775;
+    ui_static_ui_Ungroup_super_cap->width = 2;
+    ui_static_ui_Ungroup_super_cap->font_size = 20;
+    ui_static_ui_Ungroup_super_cap->str_length = 11;
+    strcpy(ui_static_ui_Ungroup_super_cap->string, "SUPER_POWER");
+
+
+    ui_proc_string_frame(&ui_static_ui_Ungroup_10);
+    SEND_MESSAGE((uint8_t *) &ui_static_ui_Ungroup_10, sizeof(ui_static_ui_Ungroup_10));
+}
+
+void _ui_update_static_ui_Ungroup_10() {
+    ui_static_ui_Ungroup_10.option.operate_type = 2;
+
+    ui_proc_string_frame(&ui_static_ui_Ungroup_10);
+    SEND_MESSAGE((uint8_t *) &ui_static_ui_Ungroup_10, sizeof(ui_static_ui_Ungroup_10));
+}
+
+void _ui_remove_static_ui_Ungroup_10() {
+    ui_static_ui_Ungroup_10.option.operate_type = 3;
+
+    ui_proc_string_frame(&ui_static_ui_Ungroup_10);
+    SEND_MESSAGE((uint8_t *) &ui_static_ui_Ungroup_10, sizeof(ui_static_ui_Ungroup_10));
+}
+
 void ui_init_static_ui_Ungroup() {
     _ui_init_static_ui_Ungroup_0();
     _ui_init_static_ui_Ungroup_1();
@@ -600,6 +638,7 @@ void ui_init_static_ui_Ungroup() {
     _ui_init_static_ui_Ungroup_7();
     _ui_init_static_ui_Ungroup_8();
     _ui_init_static_ui_Ungroup_9();
+    _ui_init_static_ui_Ungroup_10();
 }
 
 void ui_update_static_ui_Ungroup() {
@@ -613,6 +652,7 @@ void ui_update_static_ui_Ungroup() {
     _ui_update_static_ui_Ungroup_7();
     _ui_update_static_ui_Ungroup_8();
     _ui_update_static_ui_Ungroup_9();
+    _ui_update_static_ui_Ungroup_10();
 }
 
 void ui_remove_static_ui_Ungroup() {
@@ -626,5 +666,6 @@ void ui_remove_static_ui_Ungroup() {
     _ui_remove_static_ui_Ungroup_7();
     _ui_remove_static_ui_Ungroup_8();
     _ui_remove_static_ui_Ungroup_9();
+    _ui_remove_static_ui_Ungroup_10();
 }
 
