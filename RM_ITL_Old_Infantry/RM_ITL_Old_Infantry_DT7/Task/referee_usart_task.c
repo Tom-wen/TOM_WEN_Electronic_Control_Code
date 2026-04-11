@@ -17,7 +17,11 @@ void referee_usart_task(void *argument)
         dynamic_ui_speed_update();
         dynamic_ui_mode_update();
         dynamic_ui_chassis_power_update();
+        dynamic_ui_top_mode_update();
         ui_key_init();
+        dynamic_ui_power_update();
+        dynamic_ui_speed_mode_update();
+        dynamic_ui_pitch_update(&INS);
         vTaskDelay(pdMS_TO_TICKS(2));
     }
 
@@ -281,22 +285,111 @@ void ui_key_init(void)
     if(vtm_rc_data.key & KEY_PRESSED_OFFSET_CTRL)
     {
         ui_init_static_ui_Ungroup();
-        osDelay(10);
+        osDelay(1);
         ui_init_dynamic_ui_group1();
-        osDelay(10);
+        osDelay(1);
         ui_init_dynamic_ui_group2();
-        osDelay(10);
+        osDelay(1);
         ui_init_dynamic_ui_group3();
-        osDelay(10);
+        osDelay(1);
         ui_init_dynamic_ui_group4();
-        osDelay(10);
+        osDelay(1);
         ui_init_dynamic_ui_group5();
-        osDelay(10);
+        osDelay(1);
         ui_init_dynamic_ui_group6();
-        osDelay(10);
+        osDelay(1);
         ui_init_dynamic_ui_group7();
-        osDelay(10);
+        osDelay(1);
         ui_init_dynamic_ui_group8();
-        osDelay(10);
+        osDelay(1);
+        ui_init_dynamic_ui_group9();
+        osDelay(1);
+        ui_init_dynamic_ui_group10();
+        osDelay(1);
+        ui_init_dynamic_ui_group11();
+        osDelay(1);
+        ui_init_dynamic_ui_group12();
+        osDelay(1);
+        ui_init_dynamic_ui_group13();
+        osDelay(1);
+        ui_init_dynamic_ui_group14();
+        osDelay(1);
+    }
+}
+
+// 超电容量UI显示
+void dynamic_ui_power_update(void)
+{
+    float power = supercap_data.capacitor_level;
+    
+    // 限幅 0~100
+    if (power < 0.0f) power = 0.0f;
+    if (power > 100.0f) power = 100.0f;
+    
+    // 线性映射: 0 → angle 232, 100W → angle 270
+    ui_dynamic_ui_group9_power->start_angle = 232;
+    ui_dynamic_ui_group9_power->end_angle = (int16_t)(233.0f + (power / 120.0f) * 38.0f);
+    ui_update_dynamic_ui_group9();
+}
+
+//pitch角度更新
+void dynamic_ui_pitch_update(INS_t *ins)
+{
+    float pitch = ins->Pitch;
+    
+    // 限幅 ±30°
+    if (pitch > 30.0f) pitch = 30.0f;
+    if (pitch < -30.0f) pitch = -30.0f;
+    
+    // 弧形刻度参数（从UI刻度位置拟合得出）
+    // 弧心约 (931, 540)，指示器半径约 364
+    // pitch角度到弧角度缩放比约 1.37
+    float arc_angle = pitch * 1.37f * 3.14159265f / 180.0f;
+    
+    // 计算指示器中心在弧上的位置
+    float center_x = 931.0f + 364.0f * cosf(arc_angle);
+    float center_y = 540.0f + 364.0f * sinf(arc_angle);
+    
+    // 线段长度保持22像素，水平放置
+    ui_dynamic_ui_group10_current_angle->start_x = (int16_t)(center_x - 11.0f);
+    ui_dynamic_ui_group10_current_angle->end_x   = (int16_t)(center_x + 11.0f);
+    ui_dynamic_ui_group10_current_angle->start_y  = (int16_t)center_y;
+    ui_dynamic_ui_group10_current_angle->end_y    = (int16_t)center_y;
+    ui_update_dynamic_ui_group10();
+}
+
+
+//小陀螺速度
+void dynamic_ui_top_mode_update()
+{
+    if(chassis_top_level){
+        ui_dynamic_ui_group11_high_speed_TOP_mode->color = 2;
+        ui_update_dynamic_ui_group11();
+        ui_dynamic_ui_group12_low_speed_TOP_mode->color = 8;
+        ui_update_dynamic_ui_group12();
+    }
+    else{
+        ui_dynamic_ui_group11_high_speed_TOP_mode->color = 8;
+        ui_update_dynamic_ui_group11();
+        ui_dynamic_ui_group12_low_speed_TOP_mode->color = 2;
+        ui_update_dynamic_ui_group12();      
+    }
+}
+
+//主动速度限制
+
+void dynamic_ui_speed_mode_update()
+{
+    if(key_speed_mod == 0){
+        ui_dynamic_ui_group13_normal_speed_mode->color = 2;
+        ui_update_dynamic_ui_group13();
+        ui_dynamic_ui_group14_low_speed_mode->color = 8;
+        ui_update_dynamic_ui_group14();
+    }
+    else{
+        ui_dynamic_ui_group13_normal_speed_mode->color = 8;
+        ui_update_dynamic_ui_group13();
+        ui_dynamic_ui_group14_low_speed_mode->color = 2;
+        ui_update_dynamic_ui_group14();      
     }
 }

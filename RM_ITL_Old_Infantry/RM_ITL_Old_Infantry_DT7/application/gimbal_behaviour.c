@@ -273,7 +273,7 @@ static void gimbal_behavour_set(gimbal_control_t *gimbal_mode_set)
         // 更新上一次R键状态
         r_key_last_state = r_key_current_state;
 
-        if(vtm_rc_data.key & KEY_PRESSED_OFFSET_G)
+        if(vtm_rc_data.key & KEY_PRESSED_OFFSET_X)
         {
             gimbal_behaviour = GIMBAL_ABSOLUTE_ANGLE;
         }

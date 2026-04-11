@@ -1,0 +1,37 @@
+2025.10.3
+增加USB,可以通过bsp_usb.c里的usb_send进行串口打印,波特率随便,因为是虚拟串口
+usb串口发送函数增加里等待延时,防止进行连续发送时,数据丢失
+uint8_t CDC_Transmit_HS(uint8_t* Buf, uint16_t Len)
+{
+  uint8_t result = USBD_OK;
+  /* USER CODE BEGIN 12 */
+  USBD_CDC_HandleTypeDef *hcdc = (USBD_CDC_HandleTypeDef*)hUsbDeviceHS.pClassData;
+  // if (hcdc->TxState != 0){
+  //   return USBD_BUSY;
+  // }
+
+  uint32_t timeStart = HAL_GetTick();
+  while(hcdc->TxState)
+  {
+      if(HAL_GetTick() - timeStart > 10)
+      {
+          return USBD_BUSY;
+      }
+  }
+  USBD_CDC_SetTxBuffer(&hUsbDeviceHS, Buf, Len);
+  result = USBD_CDC_TransmitPacket(&hUsbDeviceHS);
+  /* USER CODE END 12 */
+  return result;
+}
+
+2025.10.6
+增加底盘舵轮运动控制,可以通过遥控器离线来给车的电机断电,遥控器增加死区和低通滤波进行消抖处理（但是目前死区会造成遥控器归中后电机仍以某个低速转动）
+
+2025.10.11
+增加CAN3,修改遥控器接收
+
+2025.10.14
+开始写机械臂,主要在arm.c里进行了修改
+
+问题:
+大疆电机如3508电机用ID1,2,然后2006电机用ID3,接在同一条CAN线上,用不同的控制函数,会出现后面的控制函数覆盖上一个控制函数的问题

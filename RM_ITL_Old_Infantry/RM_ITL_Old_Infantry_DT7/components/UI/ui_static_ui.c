@@ -325,6 +325,7 @@ void _ui_remove_static_ui_Ungroup_2() {
 ui_string_frame_t ui_static_ui_Ungroup_3;
 ui_interface_string_t* ui_static_ui_Ungroup_speed = &(ui_static_ui_Ungroup_3.option);
 
+
 void _ui_init_static_ui_Ungroup_3() {
     ui_static_ui_Ungroup_3.option.figure_name[0] = 3;
     ui_static_ui_Ungroup_3.option.figure_name[1] = 0;
@@ -334,7 +335,7 @@ void _ui_init_static_ui_Ungroup_3() {
     ui_static_ui_Ungroup_speed->figure_type = 7;
     ui_static_ui_Ungroup_speed->operate_type = 1;
     ui_static_ui_Ungroup_speed->layer = 0;
-    ui_static_ui_Ungroup_speed->color = 0;
+    ui_static_ui_Ungroup_speed->color = 6;
     ui_static_ui_Ungroup_speed->start_x = 1364;
     ui_static_ui_Ungroup_speed->start_y = 614;
     ui_static_ui_Ungroup_speed->width = 2;
@@ -372,7 +373,7 @@ void _ui_init_static_ui_Ungroup_4() {
     ui_static_ui_Ungroup_CHASSIS_NO_FOLLOW_GIMBAL->figure_type = 7;
     ui_static_ui_Ungroup_CHASSIS_NO_FOLLOW_GIMBAL->operate_type = 1;
     ui_static_ui_Ungroup_CHASSIS_NO_FOLLOW_GIMBAL->layer = 0;
-    ui_static_ui_Ungroup_CHASSIS_NO_FOLLOW_GIMBAL->color = 0;
+    ui_static_ui_Ungroup_CHASSIS_NO_FOLLOW_GIMBAL->color = 6;
     ui_static_ui_Ungroup_CHASSIS_NO_FOLLOW_GIMBAL->start_x = 62;
     ui_static_ui_Ungroup_CHASSIS_NO_FOLLOW_GIMBAL->start_y = 810;
     ui_static_ui_Ungroup_CHASSIS_NO_FOLLOW_GIMBAL->width = 2;
@@ -410,7 +411,7 @@ void _ui_init_static_ui_Ungroup_5() {
     ui_static_ui_Ungroup_CHASSIS_FOLLOW_GIMBAL->figure_type = 7;
     ui_static_ui_Ungroup_CHASSIS_FOLLOW_GIMBAL->operate_type = 1;
     ui_static_ui_Ungroup_CHASSIS_FOLLOW_GIMBAL->layer = 0;
-    ui_static_ui_Ungroup_CHASSIS_FOLLOW_GIMBAL->color = 0;
+    ui_static_ui_Ungroup_CHASSIS_FOLLOW_GIMBAL->color = 6;
     ui_static_ui_Ungroup_CHASSIS_FOLLOW_GIMBAL->start_x = 62;
     ui_static_ui_Ungroup_CHASSIS_FOLLOW_GIMBAL->start_y = 765;
     ui_static_ui_Ungroup_CHASSIS_FOLLOW_GIMBAL->width = 2;
@@ -448,7 +449,7 @@ void _ui_init_static_ui_Ungroup_6() {
     ui_static_ui_Ungroup_CHASSIS_TOP->figure_type = 7;
     ui_static_ui_Ungroup_CHASSIS_TOP->operate_type = 1;
     ui_static_ui_Ungroup_CHASSIS_TOP->layer = 0;
-    ui_static_ui_Ungroup_CHASSIS_TOP->color = 0;
+    ui_static_ui_Ungroup_CHASSIS_TOP->color = 6;
     ui_static_ui_Ungroup_CHASSIS_TOP->start_x = 62;
     ui_static_ui_Ungroup_CHASSIS_TOP->start_y = 720;
     ui_static_ui_Ungroup_CHASSIS_TOP->width = 2;
@@ -486,7 +487,7 @@ void _ui_init_static_ui_Ungroup_7() {
     ui_static_ui_Ungroup_SHOOT_STOP->figure_type = 7;
     ui_static_ui_Ungroup_SHOOT_STOP->operate_type = 1;
     ui_static_ui_Ungroup_SHOOT_STOP->layer = 0;
-    ui_static_ui_Ungroup_SHOOT_STOP->color = 0;
+    ui_static_ui_Ungroup_SHOOT_STOP->color = 6;
     ui_static_ui_Ungroup_SHOOT_STOP->start_x = 62;
     ui_static_ui_Ungroup_SHOOT_STOP->start_y = 600;
     ui_static_ui_Ungroup_SHOOT_STOP->width = 2;
@@ -524,7 +525,7 @@ void _ui_init_static_ui_Ungroup_8() {
     ui_static_ui_Ungroup_SHOOT_READY->figure_type = 7;
     ui_static_ui_Ungroup_SHOOT_READY->operate_type = 1;
     ui_static_ui_Ungroup_SHOOT_READY->layer = 0;
-    ui_static_ui_Ungroup_SHOOT_READY->color = 0;
+    ui_static_ui_Ungroup_SHOOT_READY->color = 6;
     ui_static_ui_Ungroup_SHOOT_READY->start_x = 62;
     ui_static_ui_Ungroup_SHOOT_READY->start_y = 555;
     ui_static_ui_Ungroup_SHOOT_READY->width = 2;
@@ -562,7 +563,7 @@ void _ui_init_static_ui_Ungroup_9() {
     ui_static_ui_Ungroup_SHOOT_BULLET->figure_type = 7;
     ui_static_ui_Ungroup_SHOOT_BULLET->operate_type = 1;
     ui_static_ui_Ungroup_SHOOT_BULLET->layer = 0;
-    ui_static_ui_Ungroup_SHOOT_BULLET->color = 0;
+    ui_static_ui_Ungroup_SHOOT_BULLET->color = 6;
     ui_static_ui_Ungroup_SHOOT_BULLET->start_x = 62;
     ui_static_ui_Ungroup_SHOOT_BULLET->start_y = 510;
     ui_static_ui_Ungroup_SHOOT_BULLET->width = 2;
@@ -600,7 +601,7 @@ void _ui_init_static_ui_Ungroup_10() {
     ui_static_ui_Ungroup_super_cap->figure_type = 7;
     ui_static_ui_Ungroup_super_cap->operate_type = 1;
     ui_static_ui_Ungroup_super_cap->layer = 0;
-    ui_static_ui_Ungroup_super_cap->color = 0;
+    ui_static_ui_Ungroup_super_cap->color = 6;
     ui_static_ui_Ungroup_super_cap->start_x = 1480;
     ui_static_ui_Ungroup_super_cap->start_y = 775;
     ui_static_ui_Ungroup_super_cap->width = 2;
@@ -627,6 +628,123 @@ void _ui_remove_static_ui_Ungroup_10() {
     SEND_MESSAGE((uint8_t *) &ui_static_ui_Ungroup_10, sizeof(ui_static_ui_Ungroup_10));
 }
 
+ui_7_frame_t ui_static_ui_Ungroup_11;
+
+ui_interface_number_t *ui_static_ui_Ungroup_angle_0 = (ui_interface_number_t*)&(ui_static_ui_Ungroup_11.data[0]);
+ui_interface_number_t *ui_static_ui_Ungroup_angle_5 = (ui_interface_number_t*)&(ui_static_ui_Ungroup_11.data[1]);
+ui_interface_number_t *ui_static_ui_Ungroup_angle_10 = (ui_interface_number_t*)&(ui_static_ui_Ungroup_11.data[2]);
+ui_interface_number_t *ui_static_ui_Ungroup_angle_15 = (ui_interface_number_t*)&(ui_static_ui_Ungroup_11.data[3]);
+ui_interface_number_t *ui_static_ui_Ungroup_angle_20 = (ui_interface_number_t*)&(ui_static_ui_Ungroup_11.data[4]);
+ui_interface_number_t *ui_static_ui_Ungroup_angle_25 = (ui_interface_number_t*)&(ui_static_ui_Ungroup_11.data[5]);
+ui_interface_number_t *ui_static_ui_Ungroup_angle_30 = (ui_interface_number_t*)&(ui_static_ui_Ungroup_11.data[6]);
+
+void _ui_init_static_ui_Ungroup_11() {
+    for (int i = 0; i < 7; i++) {
+        ui_static_ui_Ungroup_11.data[i].figure_name[0] = 2;
+        ui_static_ui_Ungroup_11.data[i].figure_name[1] = 0;
+        ui_static_ui_Ungroup_11.data[i].figure_name[2] = i + 26;
+        ui_static_ui_Ungroup_11.data[i].operate_type = 1;
+    }
+    for (int i = 7; i < 7; i++) {
+        ui_static_ui_Ungroup_11.data[i].operate_type = 0;
+    }
+
+
+    ui_static_ui_Ungroup_angle_0->figure_type = 6;
+    ui_static_ui_Ungroup_angle_0->operate_type = 1;
+    ui_static_ui_Ungroup_angle_0->layer = 0;
+    ui_static_ui_Ungroup_angle_0->color = 8;
+    ui_static_ui_Ungroup_angle_0->start_x = 1308;
+    ui_static_ui_Ungroup_angle_0->start_y = 551;
+    ui_static_ui_Ungroup_angle_0->width = 2;
+    ui_static_ui_Ungroup_angle_0->font_size = 15;
+    ui_static_ui_Ungroup_angle_0->number = 0;
+
+    ui_static_ui_Ungroup_angle_5->figure_type = 6;
+    ui_static_ui_Ungroup_angle_5->operate_type = 1;
+    ui_static_ui_Ungroup_angle_5->layer = 0;
+    ui_static_ui_Ungroup_angle_5->color = 8;
+    ui_static_ui_Ungroup_angle_5->start_x = 1309;
+    ui_static_ui_Ungroup_angle_5->start_y = 597;
+    ui_static_ui_Ungroup_angle_5->width = 2;
+    ui_static_ui_Ungroup_angle_5->font_size = 15;
+    ui_static_ui_Ungroup_angle_5->number = 5;
+
+    ui_static_ui_Ungroup_angle_10->figure_type = 6;
+    ui_static_ui_Ungroup_angle_10->operate_type = 1;
+    ui_static_ui_Ungroup_angle_10->layer = 0;
+    ui_static_ui_Ungroup_angle_10->color = 8;
+    ui_static_ui_Ungroup_angle_10->start_x = 1289;
+    ui_static_ui_Ungroup_angle_10->start_y = 641;
+    ui_static_ui_Ungroup_angle_10->width = 1;
+    ui_static_ui_Ungroup_angle_10->font_size = 13;
+    ui_static_ui_Ungroup_angle_10->number = 10;
+
+    ui_static_ui_Ungroup_angle_15->figure_type = 6;
+    ui_static_ui_Ungroup_angle_15->operate_type = 1;
+    ui_static_ui_Ungroup_angle_15->layer = 0;
+    ui_static_ui_Ungroup_angle_15->color = 8;
+    ui_static_ui_Ungroup_angle_15->start_x = 1275;
+    ui_static_ui_Ungroup_angle_15->start_y = 685;
+    ui_static_ui_Ungroup_angle_15->width = 1;
+    ui_static_ui_Ungroup_angle_15->font_size = 13;
+    ui_static_ui_Ungroup_angle_15->number = 15;
+
+    ui_static_ui_Ungroup_angle_20->figure_type = 6;
+    ui_static_ui_Ungroup_angle_20->operate_type = 1;
+    ui_static_ui_Ungroup_angle_20->layer = 0;
+    ui_static_ui_Ungroup_angle_20->color = 8;
+    ui_static_ui_Ungroup_angle_20->start_x = 1257;
+    ui_static_ui_Ungroup_angle_20->start_y = 729;
+    ui_static_ui_Ungroup_angle_20->width = 1;
+    ui_static_ui_Ungroup_angle_20->font_size = 13;
+    ui_static_ui_Ungroup_angle_20->number = 20;
+
+    ui_static_ui_Ungroup_angle_25->figure_type = 6;
+    ui_static_ui_Ungroup_angle_25->operate_type = 1;
+    ui_static_ui_Ungroup_angle_25->layer = 0;
+    ui_static_ui_Ungroup_angle_25->color = 8;
+    ui_static_ui_Ungroup_angle_25->start_x = 1232;
+    ui_static_ui_Ungroup_angle_25->start_y = 774;
+    ui_static_ui_Ungroup_angle_25->width = 1;
+    ui_static_ui_Ungroup_angle_25->font_size = 13;
+    ui_static_ui_Ungroup_angle_25->number = 25;
+
+    ui_static_ui_Ungroup_angle_30->figure_type = 6;
+    ui_static_ui_Ungroup_angle_30->operate_type = 1;
+    ui_static_ui_Ungroup_angle_30->layer = 0;
+    ui_static_ui_Ungroup_angle_30->color = 8;
+    ui_static_ui_Ungroup_angle_30->start_x = 1202;
+    ui_static_ui_Ungroup_angle_30->start_y = 821;
+    ui_static_ui_Ungroup_angle_30->width = 1;
+    ui_static_ui_Ungroup_angle_30->font_size = 13;
+    ui_static_ui_Ungroup_angle_30->number = 30;
+
+
+    ui_proc_7_frame(&ui_static_ui_Ungroup_11);
+    SEND_MESSAGE((uint8_t *) &ui_static_ui_Ungroup_11, sizeof(ui_static_ui_Ungroup_11));
+}
+
+void _ui_update_static_ui_Ungroup_11() {
+    for (int i = 0; i < 7; i++) {
+        ui_static_ui_Ungroup_11.data[i].operate_type = 2;
+    }
+
+    ui_proc_7_frame(&ui_static_ui_Ungroup_11);
+    SEND_MESSAGE((uint8_t *) &ui_static_ui_Ungroup_11, sizeof(ui_static_ui_Ungroup_11));
+}
+
+void _ui_remove_static_ui_Ungroup_11() {
+    for (int i = 0; i < 7; i++) {
+        ui_static_ui_Ungroup_11.data[i].operate_type = 3;
+    }
+
+    ui_proc_7_frame(&ui_static_ui_Ungroup_11);
+    SEND_MESSAGE((uint8_t *) &ui_static_ui_Ungroup_11, sizeof(ui_static_ui_Ungroup_11));
+}
+
+
+
 void ui_init_static_ui_Ungroup() {
     _ui_init_static_ui_Ungroup_0();
     _ui_init_static_ui_Ungroup_1();
@@ -639,6 +757,7 @@ void ui_init_static_ui_Ungroup() {
     _ui_init_static_ui_Ungroup_8();
     _ui_init_static_ui_Ungroup_9();
     _ui_init_static_ui_Ungroup_10();
+    _ui_init_static_ui_Ungroup_11();
 }
 
 void ui_update_static_ui_Ungroup() {
@@ -653,6 +772,7 @@ void ui_update_static_ui_Ungroup() {
     _ui_update_static_ui_Ungroup_8();
     _ui_update_static_ui_Ungroup_9();
     _ui_update_static_ui_Ungroup_10();
+    _ui_update_static_ui_Ungroup_11();
 }
 
 void ui_remove_static_ui_Ungroup() {
@@ -667,5 +787,6 @@ void ui_remove_static_ui_Ungroup() {
     _ui_remove_static_ui_Ungroup_8();
     _ui_remove_static_ui_Ungroup_9();
     _ui_remove_static_ui_Ungroup_10();
+    _ui_remove_static_ui_Ungroup_11();
 }
 

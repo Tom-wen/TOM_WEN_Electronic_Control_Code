@@ -54,6 +54,7 @@
 #define DETECT_TASK_H
 #include "struct_typedef.h"
 #include "bsp_led.h"
+#include "remote_control.h"
 
 
 #define DETECT_TASK_INIT_TIME 57

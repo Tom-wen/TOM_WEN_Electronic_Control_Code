@@ -39,6 +39,26 @@ void ui_remove_dynamic_ui_group7();
 void ui_init_dynamic_ui_group8();
 void ui_update_dynamic_ui_group8();
 void ui_remove_dynamic_ui_group8();
+void ui_init_dynamic_ui_group9();
+void ui_update_dynamic_ui_group9();
+void ui_remove_dynamic_ui_group9();
+void ui_init_dynamic_ui_group10();
+void ui_update_dynamic_ui_group10();
+void ui_remove_dynamic_ui_group10();
+void ui_init_dynamic_ui_group11();
+void ui_update_dynamic_ui_group11();
+void ui_remove_dynamic_ui_group11();
+void ui_init_dynamic_ui_group12();
+void ui_update_dynamic_ui_group12();
+void ui_remove_dynamic_ui_group12();
+void ui_init_dynamic_ui_group13();
+void ui_update_dynamic_ui_group13();
+void ui_remove_dynamic_ui_group13();
+void ui_init_dynamic_ui_group14();
+void ui_update_dynamic_ui_group14();
+void ui_remove_dynamic_ui_group14();
+
+
 #include "ui_static_ui.h"
 
 void ui_init_static_ui_Ungroup();

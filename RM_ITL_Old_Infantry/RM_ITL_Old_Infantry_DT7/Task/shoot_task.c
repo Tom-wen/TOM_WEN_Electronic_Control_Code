@@ -188,7 +188,7 @@ static void shoot_set_mode(void)
     {
         if (shoot_control.shoot_mode == SHOOT_BULLET || shoot_control.shoot_mode == SHOOT_READY)
         {
-            heat_flag=1;
+            heat_flag=0;//设置为1是对热量的限制
         }
     }
     else
@@ -238,30 +238,32 @@ static void shoot_set_mode(void)
   #endif
 
   #ifdef vtm_rc_ctrl
-        // 检测F键是否按下（上升沿触发）
-        static uint8_t f_key_last_state = 0;
-        uint8_t f_key_current_state = (vtm_rc_data.key & KEY_PRESSED_OFFSET_F) ? 1 : 0;
+          // 检测 F 键是否按下（开启摩擦轮 - 上升沿触发）
+          static uint8_t f_key_last_state = 0;
+          uint8_t f_key_current_state = (vtm_rc_data.key & KEY_PRESSED_OFFSET_F) ? 1 : 0;
 
-        // 上升沿检测：当前按下且上次未按下
-        if (f_key_current_state && !f_key_last_state)
-        {
-            // 切换到下一个模式（循环切换）
-            shoot_mode_index = (shoot_mode_index + 1) % 2; // 2种模式
+          // 上升沿检测：当前按下且上次未按下
+          if (f_key_current_state && !f_key_last_state)
+          {
+              shoot_control.shoot_mode = SHOOT_READY;  // F 键开启摩擦轮
+          }
+          // 更新上一次 F 键状态
+          f_key_last_state = f_key_current_state;
 
-            // 根据索引设置底盘模式
-            switch (shoot_mode_index)
-            {
-                case 0:
-                    shoot_control.shoot_mode = SHOOT_STOP;
-                    break;
-                case 1:
-                    shoot_control.shoot_mode = SHOOT_READY; 
-                    break;
-            }
-        }
+          // 检测 G 键是否按下（关闭摩擦轮 - 上升沿触发）
+          static uint8_t g_key_last_state = 0;
+          uint8_t g_key_current_state = (vtm_rc_data.key & KEY_PRESSED_OFFSET_G) ? 1 : 0;
 
-        // 更新上一次F键状态
-        f_key_last_state = f_key_current_state;
+          // 上升沿检测：当前按下且上次未按下
+          if (g_key_current_state && !g_key_last_state)
+          {
+              shoot_control.shoot_mode = SHOOT_STOP;  // G 键关闭摩擦轮
+          }
+          // 更新上一次 G 键状态
+          g_key_last_state = g_key_current_state;
+
+
+          
 
         if(shoot_control.shoot_mode == SHOOT_READY || shoot_control.shoot_mode == SHOOT_BULLET )
         {
@@ -284,7 +286,8 @@ static void shoot_set_mode(void)
           //自动开火
           if (open_fire(vtm_rc_data.mouse_right))
           {
-            if(auto_shoot.mode == 2)//把开火权交给自瞄
+            //if(auto_shoot.mode == 2)//把开火权交给自瞄
+            if(open_fire(vtm_rc_data.mouse_left))
             {
               if(heat_flag==0)//如果未超热量，就开火
               {

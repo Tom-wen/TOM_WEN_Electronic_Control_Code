@@ -13,6 +13,8 @@
 #include "ui_dynamic_ui.h"
 #include "chassis_task.h"
 #include "shoot_task.h"
+#include "ins_task.h"
+#include "chassis_behaviour.h"
 
 
 
@@ -167,6 +169,10 @@ void dynamic_ui_speed_update(void);
 void dynamic_ui_mode_update(void);
 void dynamic_ui_chassis_power_update(void);
 void ui_key_init(void);
+void dynamic_ui_power_update(void);
+void dynamic_ui_pitch_update(INS_t *ins);
+void dynamic_ui_top_mode_update(void);
+void dynamic_ui_speed_mode_update(void);
 
 extern referee_receive referee_data;
 

@@ -34,6 +34,13 @@ extern ui_interface_string_t *ui_static_ui_Ungroup_SHOOT_STOP;
 extern ui_interface_string_t *ui_static_ui_Ungroup_SHOOT_READY;
 extern ui_interface_string_t *ui_static_ui_Ungroup_SHOOT_BULLET;
 extern ui_interface_string_t *ui_static_ui_Ungroup_super_cap;
+extern ui_interface_number_t *ui_static_ui_Ungroup_angle_0;
+extern ui_interface_number_t *ui_static_ui_Ungroup_angle_5;
+extern ui_interface_number_t *ui_static_ui_Ungroup_angle_10;
+extern ui_interface_number_t *ui_static_ui_Ungroup_angle_15;
+extern ui_interface_number_t *ui_static_ui_Ungroup_angle_20;
+extern ui_interface_number_t *ui_static_ui_Ungroup_angle_25;
+extern ui_interface_number_t *ui_static_ui_Ungroup_angle_30;
 
 void ui_init_static_ui_Ungroup();
 void ui_update_static_ui_Ungroup();

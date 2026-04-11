@@ -204,6 +204,7 @@ targets:
         - RTE/_Sentry
       libList: []
     excludeList: []
+    settings: {}
     toolchain: AC5
     toolchainConfigMap:
       AC5:
@@ -213,7 +214,8 @@ targets:
         options:
           version: 4
           afterBuildTasks: []
-          asm-compiler: {}
+          asm-compiler:
+            defines: []
           beforeBuildTasks: []
           c/cpp-compiler:
             CXX_FLAGS: --diag_suppress=1 --diag_suppress=1295

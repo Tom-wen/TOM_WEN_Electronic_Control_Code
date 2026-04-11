@@ -105,7 +105,7 @@ extern hoisting_t hoisting_control;
 
 
 #define HOISTING_AUTO_FORWARD_ANGLE_OFFSET 3.0f//3.0
-#define HOISTING_AUTO_BACKWARD_ANGLE_OFFSET 7.0f//7.0
+#define HOISTING_AUTO_BACKWARD_ANGLE_OFFSET 9.0f//
 
 //Ò£¿ØÆ÷
 #define FORWARD_CHANNEL 2

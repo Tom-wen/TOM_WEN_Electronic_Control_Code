@@ -76,12 +76,12 @@ typedef struct __attribute__((packed))
 #define KEY_PRESSED_OFFSET_E ((uint16_t)1 << 7)//右转90°
 #define KEY_PRESSED_OFFSET_R ((uint16_t)1 << 8)//模式切换,底盘与云台分离模式，云台与底盘跟随模式
 #define KEY_PRESSED_OFFSET_F ((uint16_t)1 << 9)//开摩擦轮
-#define KEY_PRESSED_OFFSET_G ((uint16_t)1 << 10)//云台不跟随
-#define KEY_PRESSED_OFFSET_Z ((uint16_t)1 << 11)
-#define KEY_PRESSED_OFFSET_X ((uint16_t)1 << 12)
-#define KEY_PRESSED_OFFSET_C ((uint16_t)1 << 13)
+#define KEY_PRESSED_OFFSET_G ((uint16_t)1 << 10)//关摩擦轮
+#define KEY_PRESSED_OFFSET_Z ((uint16_t)1 << 11)//调整小陀螺速度
+#define KEY_PRESSED_OFFSET_X ((uint16_t)1 << 12)//云台不跟随
+#define KEY_PRESSED_OFFSET_C ((uint16_t)1 << 13)//复位
 #define KEY_PRESSED_OFFSET_V ((uint16_t)1 << 14)//摆臂保护
-#define KEY_PRESSED_OFFSET_B ((uint16_t)1 << 15)
+#define KEY_PRESSED_OFFSET_B ((uint16_t)1 << 15)//调整速度用于超电断了的情况
 /* ----------------------- Data Struct ------------------------------------- */
 
 extern RC_ctrl_t rc_ctrl;

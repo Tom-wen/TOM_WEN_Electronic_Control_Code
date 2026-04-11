@@ -15,12 +15,17 @@
 /* 底盘运动数据 */
 chassis_move_t chassis_move;
 
+uint16_t super_cap_send_count = 0;
+uint8_t super_cap_send_flag = 0;            // 发送标志位
+uint8_t key_speed_mod = 0;//按键控制速度模式标志位，0为正常速度，1为低速
+
 /* 函数声明 */
 static void chassis_init(void);
 static void chassis_set_mode(void);
 static void chassis_feedback_update(void);
 static void chassis_set_contorl(void);
 static void chassis_control_loop(void);
+static void key_speed_limit(chassis_move_t *chassis_power_control);
 
 /**
  * @brief 底盘任务，间隔 CHASSIS_CONTROL_TIME_MS 2ms
@@ -73,7 +78,19 @@ void chassis_task(void const *pvParameters)
             CAN_cmd_chassis(0, 0, 0, 0);
         }
 
-        super_cap_send_power(referee_data.robot.chassis_power_limit);
+        /* 超级电容功率发送 - 计数延时 */
+        super_cap_send_count++;
+        if (super_cap_send_count >= SUPER_CAP_SEND_DELAY_COUNT)
+        {
+            super_cap_send_count = 0;
+            super_cap_send_flag = 1;
+        }
+
+        if (super_cap_send_flag)
+        {
+            super_cap_send_flag = 0;
+            super_cap_send_power(90.0-POWER_LIMIT_MARGIN );//referee_data.robot.chassis_power_limit按道理是这个放在里面，但是比赛结束开始会有延迟因此这边我固定75w
+        }
 
         /* 系统延时 */
         vTaskDelay(CHASSIS_CONTROL_TIME_MS);
@@ -249,11 +266,46 @@ static void chassis_control_loop(void)
 
     Power_Control(&chassis_move);//底盘功率限制
 
+    key_speed_limit(&chassis_move);//按键速度限制
+
     super_power_limit(&chassis_move);//超级电容功率限制
 
     /* 赋值电流值 */
     for (uint8_t i = 0; i < 4; i++)
     {
-        chassis_move.motor_chassis[i].give_current = (int16_t)(chassis_move.motor_speed_pid[i].out);//*Chassis_3508_Get_Limited_Number(i) ;
+        chassis_move.motor_chassis[i].give_current = (int16_t)(chassis_move.motor_speed_pid[i].out);
     }
+}
+
+static void key_speed_limit(chassis_move_t *chassis_power_control)
+{
+    float limit_key_K = 1.0f;
+    static uint8_t key_speed_index = 0; 
+
+    #ifdef vtm_rc_ctrl 
+    static uint8_t b_key_last_state = 0;
+    uint8_t b_key_current_state = (vtm_rc_data.key & KEY_PRESSED_OFFSET_B) ? 1 : 0;
+    
+    if (b_key_current_state && !b_key_last_state)
+    {
+        key_speed_index = 1 - key_speed_index;
+    }
+    b_key_last_state = b_key_current_state;
+    #endif
+    if (key_speed_index == 1) 
+    {
+        limit_key_K = 0.25f; // 设置低速挡系数，可根据需求调整（0.0~1.0）
+        key_speed_mod = 1;
+    }
+    else
+    {
+        limit_key_K = 1.0f; // 默认正常档系数
+        key_speed_mod = 0;
+    }
+    
+
+    chassis_power_control->motor_speed_pid[0].out *= limit_key_K;
+    chassis_power_control->motor_speed_pid[1].out *= limit_key_K;
+    chassis_power_control->motor_speed_pid[2].out *= limit_key_K;
+    chassis_power_control->motor_speed_pid[3].out *= limit_key_K;
 }

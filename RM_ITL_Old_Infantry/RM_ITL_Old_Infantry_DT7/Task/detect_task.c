@@ -71,6 +71,11 @@ error_t error_list[ERROR_LIST_LENGHT + 1];
 uint32_t detect_task_stack;
 #endif
 
+/* =========================== 全局变量 =========================== */
+#ifdef vtm_rc_ctrl
+  uint8_t reset_key_last_state = 0;        // C 键上次状态，用于检测按键上升沿
+#endif
+
 /**
  * @brief          detect task
  * @param[in]      pvParameters: NULL
@@ -181,6 +186,28 @@ void detect_task(void const *pvParameters)
             }
 
         }
+    #ifdef vtm_rc_ctrl
+    // ========== C 键系统复位检测 ==========
+    uint8_t reset_key_current_state = (vtm_rc_data.key & KEY_PRESSED_OFFSET_C) ? 1 : 0;
+    
+    // 按键上升沿检测：当前按下且上次未按下
+    if (reset_key_current_state && !reset_key_last_state)
+    {
+        // 延时消抖确认 (可选)
+        for (volatile uint32_t i = 0; i < 100000; i++);
+        
+        // 再次确认按键状态
+        if (vtm_rc_data.key & KEY_PRESSED_OFFSET_C)
+        {
+            // 执行系统复位
+            HAL_NVIC_SystemReset();
+        }
+    }
+    
+    // 更新上次按键状态
+    reset_key_last_state = reset_key_current_state;
+    // ====================================
+    #endif
 
         vTaskDelay(DETECT_CONTROL_TIME);
 #if INCLUDE_uxTaskGetStackHighWaterMark

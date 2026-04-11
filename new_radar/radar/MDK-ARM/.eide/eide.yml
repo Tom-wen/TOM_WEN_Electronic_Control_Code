@@ -139,6 +139,7 @@ targets:
         - RTE/_radar
       libList: []
     excludeList: []
+    settings: {}
     toolchain: AC5
     toolchainConfigMap:
       AC5:

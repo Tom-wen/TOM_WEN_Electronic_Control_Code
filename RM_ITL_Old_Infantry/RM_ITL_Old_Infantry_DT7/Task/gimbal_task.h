@@ -65,10 +65,10 @@
  * 宏定义 - 控制灵敏度参数
  ****************************************************************** */
 /** Yaw轴遥控器灵敏度 */
-#define YAW_RC_SEN -0.000006f
+#define YAW_RC_SEN -0.000012f
 
 /** Pitch轴遥控器灵敏度 */
-#define PITCH_RC_SEN 0.000006f
+#define PITCH_RC_SEN 0.000012f
 
 /** Yaw轴编码器灵敏度 */
 #define YAW_ENCODE_SEN 0.01f
@@ -92,53 +92,53 @@
  * 宏定义 - Pitch轴PID参数
  ****************************************************************** */
 /* Pitch角度环控制参数 */
-#define PITCH_ABSOLUTE_ANGLE_KP  15.7f
-#define PITCH_ABSOLUTE_ANGLE_KI  0.00001f
-#define PITCH_ABSOLUTE_ANGLE_KD  0.67f
-#define PITCH_ABSOLUTE_ANGLE_MAX_OUT  30.0f
-#define PITCH_ABSOLUTE_ANGLE_MAX_IOUT 1000.0f
+#define PITCH_ABSOLUTE_ANGLE_KP  5.0f //15.7f
+#define PITCH_ABSOLUTE_ANGLE_KI  0.00001f //0.00001f
+#define PITCH_ABSOLUTE_ANGLE_KD  0.67f //0.67f
+#define PITCH_ABSOLUTE_ANGLE_MAX_OUT  30.0f //30.0f
+#define PITCH_ABSOLUTE_ANGLE_MAX_IOUT 1000.0f //1000.0f
 
 /* Pitch角速度环控制参数 */
-#define PITCH_GYRO_KP   10000.0f//500
-#define PITCH_GYRO_KI   15.0f
-#define PITCH_GYRO_KD   0.2f
-#define PITCH_GYRO_MAX_OUT   16000.0f
-#define PITCH_GYRO_MAX_IOUT 30000.0f
+#define PITCH_GYRO_KP   7000.0f //10000.0f
+#define PITCH_GYRO_KI   18.0f //15.0f
+#define PITCH_GYRO_KD   0.2f //0.2f
+#define PITCH_GYRO_MAX_OUT   16000.0f //16000.0f
+#define PITCH_GYRO_MAX_IOUT 30000.0f //30000.0f
 
 /* Pitch前馈电流参数 */
-#define PITCH_CURRENT_FEEDFORWARD -6500.0f
+#define PITCH_CURRENT_FEEDFORWARD -7000.0f
 
 /* ******************************************************************
  * 宏定义 - Yaw轴PID参数
  ****************************************************************** */
 /* Yaw角度环控制参数 */
-#define YAW_ABSOLUTE_ANGLE_KP   -31.0f //-30.0f
-#define YAW_ABSOLUTE_ANGLE_KI   -0.01f
-#define YAW_ABSOLUTE_ANGLE_KD   -0.8f
-#define YAW_ABSOLUTE_ANGLE_MAX_OUT  5.0f
-#define YAW_ABSOLUTE_ANGLE_MAX_IOUT 2.0f
+#define YAW_ABSOLUTE_ANGLE_KP   -10.0f //-30.0f
+#define YAW_ABSOLUTE_ANGLE_KI   -0.01f //-0.01f
+#define YAW_ABSOLUTE_ANGLE_KD   -0.8f //-0.8f
+#define YAW_ABSOLUTE_ANGLE_MAX_OUT  5.0f //5.0f
+#define YAW_ABSOLUTE_ANGLE_MAX_IOUT 2.0f //2.0f
 
 /* Yaw角速度环控制参数 */
-#define YAW_GYRO_KP   21000.0f //21000.0f
-#define YAW_GYRO_KI   0.0f
-#define YAW_GYRO_KD   1.8f
-#define YAW_GYRO_MAX_OUT   16000.0f
-#define YAW_GYRO_MAX_IOUT 1000.0f
+#define YAW_GYRO_KP   12000.0f //21000.0f
+#define YAW_GYRO_KI   0.01f //0.0f
+#define YAW_GYRO_KD   2.0f//1.8f
+#define YAW_GYRO_MAX_OUT   16000.0f//16000.0f
+#define YAW_GYRO_MAX_IOUT 1000.0f //1000.0f
 
 /* ******************************************************************
  * 宏定义 - 云台小陀螺模式PID参数
  ****************************************************************** */
 /* 小陀螺模式Yaw角度环控制参数 */
-#define YAW_TOP_ABSOLUTE_ANGLE_KP   -30.0f
+#define YAW_TOP_ABSOLUTE_ANGLE_KP   -10.0f
 #define YAW_TOP_ABSOLUTE_ANGLE_KI   -0.01f
 #define YAW_TOP_ABSOLUTE_ANGLE_KD   -0.8f
 #define YAW_TOP_ABSOLUTE_ANGLE_MAX_OUT  5.0f
 #define YAW_TOP_ABSOLUTE_ANGLE_MAX_IOUT 2.0f
 
 /* 小陀螺模式Yaw角速度环控制参数 */
-#define YAW_TOP_GYRO_KP   21000.0f
-#define YAW_TOP_GYRO_KI   0.0f
-#define YAW_TOP_GYRO_KD   1.8f
+#define YAW_TOP_GYRO_KP   12000.0f
+#define YAW_TOP_GYRO_KI   0.01f
+#define YAW_TOP_GYRO_KD   2.0f
 #define YAW_TOP_GYRO_MAX_OUT   16000.0f
 #define YAW_TOP_GYRO_MAX_IOUT 1000.0f
 

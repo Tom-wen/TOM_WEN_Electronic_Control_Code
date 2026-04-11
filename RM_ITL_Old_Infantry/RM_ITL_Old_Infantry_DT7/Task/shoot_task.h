@@ -38,10 +38,10 @@
 #define FRICTION_MAX_IOUT 6000.0f
 //拨盘
 //2006电机拨弹盘的pid
-#define TRIGGER_KP     16.0f
-#define TRIGGER_KI     0.0f
+#define TRIGGER_KP     15.0f
+#define TRIGGER_KI     0.01f
 #define TRIGGER_KD     0.4f
-#define TRIGGER_MAX_OUT  9500.0f
+#define TRIGGER_MAX_OUT  12000.0f
 #define TRIGGER_MAX_IOUT 6000.0f
 
 
@@ -59,7 +59,7 @@
 #define SPEED_WAVE_THRESHOLD        300.0f //计算发射子弹数量的速度波动阈值
 
 //热量预留值，防止超热量
-#define SHOOT_HEAT_REMAIN_VALUE 50
+#define SHOOT_HEAT_REMAIN_VALUE 10
 
 
 typedef enum

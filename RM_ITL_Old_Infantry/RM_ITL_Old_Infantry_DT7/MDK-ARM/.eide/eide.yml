@@ -239,6 +239,7 @@ targets:
         - RTE/_RM_ITL_Old_Infantry
       libList: []
     excludeList: []
+    settings: {}
     toolchain: AC5
     toolchainConfigMap:
       AC5:

@@ -9,6 +9,8 @@ extern "C" {
 /* =========================== 包含头文件 =========================== */
 #include "struct_typedef.h"
 #include "chassis_task.h"
+
+extern uint8_t chassis_top_level;
 /* =========================== 函数声明 =========================== */
 /**
  * @brief 设置底盘行为模式

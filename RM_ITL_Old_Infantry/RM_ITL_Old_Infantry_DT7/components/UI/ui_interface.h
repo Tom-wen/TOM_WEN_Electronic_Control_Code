@@ -14,7 +14,7 @@ extern int ui_self_id;
 
 void print_message(const uint8_t* message, int length);
 
-#define SEND_MESSAGE(message, length) usart_tx_dma_send(&huart10, message, length); vTaskDelay(pdMS_TO_TICKS(20));
+#define SEND_MESSAGE(message, length) usart_tx_dma_send(&huart10, message, length); vTaskDelay(pdMS_TO_TICKS(30));
 
 void ui_proc_1_frame(ui_1_frame_t *msg);
 void ui_proc_2_frame(ui_2_frame_t *msg);

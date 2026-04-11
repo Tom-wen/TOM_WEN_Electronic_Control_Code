@@ -10,6 +10,7 @@
 #ifdef vtm_rc_ctrl
   uint8_t chassis_control_mode_index=0;
 #endif
+  uint8_t chassis_top_level=0;//默认0为低速小陀螺
 /* ==================== 宏定义 ==================== */
 
 #define rc_deadband_limit(input, output, dealine)    \
@@ -34,7 +35,7 @@
 static void chassis_zero_force_control(chassis_move_t *chassis_move_rc_to_vector);
 
 /**
- * @brief 底盘不移动控制 - 底盘模式不跟随角度
+ * @brief 底盘不移动控制 - 底盘模式不跟随s角度
  * @param[in] chassis_move_rc_to_vector 底盘数据
  * @retval 返回空
  */
@@ -243,7 +244,7 @@ void chassis_behaviour_mode_set(chassis_move_t *chassis_move_mode)
 
       // 更新上一次R键状态
       r_key_last_state = r_key_current_state;
-      if(vtm_rc_data.key & KEY_PRESSED_OFFSET_G)
+      if(vtm_rc_data.key & KEY_PRESSED_OFFSET_X)
       {
           chassis_move_mode->chassis_mode = CHASSIS_NO_FOLLOW_GIMBAL;
       }
@@ -408,16 +409,56 @@ static void chassis_top_control(chassis_move_t *chassis_move_rc_to_vector)
     chassis_move_rc_to_vector->vx_set = vx_set * cos(SpinTop_Angle) - vy_set * sin(SpinTop_Angle);
     chassis_move_rc_to_vector->vy_set = vx_set * sin(SpinTop_Angle) + vy_set * cos(SpinTop_Angle);
   }
+
   // 设置小陀螺转速
+
+    // 小陀螺挡位切换逻辑 (按下 Z 键切换)
+  // 小陀螺挡位切换逻辑 (按下 Z 键切换)
+
+  
+  #ifdef vtm_rc_ctrl
+  static uint8_t z_key_last_state = 0;
+  static uint8_t chassis_top_gear_index = 0; 
+  uint8_t z_key_current_state = (vtm_rc_data.key & KEY_PRESSED_OFFSET_Z) ? 1 : 0;
+  
+  if (z_key_current_state && !z_key_last_state)
+  {
+      chassis_top_gear_index = 1 - chassis_top_gear_index;
+  }
+  z_key_last_state = z_key_current_state;
+  #endif
+
+
+  // 设置小陀螺转速 - 根据挡位
+  #ifdef vtm_rc_ctrl
+  if(chassis_top_gear_index == 0)
+  {
+    if (vx_set == 0 && vy_set == 0)
+    {
+      chassis_move_rc_to_vector->wz_set = CHASSIS_TOP_SPEED_GEAR_LOW;
+    }
+    else
+    {
+      chassis_move_rc_to_vector->wz_set = 0.7f * CHASSIS_TOP_SPEED_GEAR_LOW;
+    }
+    chassis_top_level = 0;
+  }
+  else
+  {
+    chassis_move_rc_to_vector->wz_set = CHASSIS_TOP_SPEED_GEAR_HIGH;
+    chassis_top_level = 1;
+  }
+  #else
+  // 非 vtm 遥控器保持原有逻辑
   if (vx_set == 0 && vy_set == 0)
   {
     chassis_move_rc_to_vector->wz_set = CHASSIS_TOP_SPEED;
   }
   else
   {
-    // 平移时小陀螺速度变慢，限制功率
-    chassis_move_rc_to_vector->wz_set = 1.2 * CHASSIS_TOP_SPEED;
+    chassis_move_rc_to_vector->wz_set = 1.2f * CHASSIS_TOP_SPEED;
   }
+  #endif
 
   // 速度限幅（小陀螺时移动速度变慢）
   chassis_move_rc_to_vector->vx_set = float_constrain(chassis_move_rc_to_vector->vx_set, 

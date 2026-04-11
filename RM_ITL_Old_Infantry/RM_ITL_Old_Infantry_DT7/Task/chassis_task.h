@@ -48,9 +48,9 @@
    #define KEY_POSITIVE_X_SPEED 150.0f
    #define KEY_NEGATIVE_X_SPEED -150.0f
    #define KEY_POSITIVE_Y_SPEED 150.0f
-   #define KEY_NEGATIVE_Y_SPEED -150.0f
-   #define KEY_MAX_X_SPEED 400.0f
-   #define KEY_MAX_Y_SPEED 400.0f
+   #define KEY_NEGATIVE_Y_SPEED -150.0f//150
+   #define KEY_MAX_X_SPEED 300.0f
+   #define KEY_MAX_Y_SPEED 300.0f//400
 
 
 #endif
@@ -112,10 +112,21 @@
 #define NORMAL_MAX_CHASSIS_SPEED_X 6.0f 
 #define NORMAL_MAX_CHASSIS_SPEED_Y 6.0f    // 底盘运动过程最大平移速度 
 #define NORMAL_MAX_CHASSIS_SPEED_Z 6.0f    // 
-#define CHASSIS_TOP_SPEED          7.0f       // 底盘小陀螺速度 
+#define CHASSIS_TOP_SPEED          6.5f       // 底盘小陀螺速度 
+#define CHASSIS_TOP_SPEED_GEAR_LOW   CHASSIS_TOP_SPEED//低速小陀螺
+#define CHASSIS_TOP_SPEED_GEAR_HIGH  (1.5f * CHASSIS_TOP_SPEED)//高速小陀螺
 #define CHASSIS_FOLLOW_SPEED       10.0f        // 底盘旋转云台速度
 #define TOP_MAX_CHASSIS_SPEED      6.0f    // 底盘小陀螺时最大平移速度
 
+
+
+
+
+#define POWER_LIMIT_MARGIN      5.0f       // 功率限制余量 (W)
+
+/** 发送超电延时计数 */
+#define SUPER_CAP_SEND_DELAY_COUNT  20      // 发送延时计数 (单位：任务周期)
+#define SUPER_CAP_SEND_ENABLE       1       // 使能标志
 /* =========================== 底盘模式枚举 =========================== */
 
 typedef enum
@@ -181,6 +192,8 @@ typedef struct
 
 
 
+
+
 /* =========================== 函数声明 =========================== */
 
 /**
@@ -197,6 +210,6 @@ const gimbal_motor_t* get_pitch_motor_point(void);
 const gimbal_motor_t* get_yaw_motor_point(void);
 
 extern chassis_move_t chassis_move;
-
+extern uint8_t key_speed_mod;
 
 #endif
