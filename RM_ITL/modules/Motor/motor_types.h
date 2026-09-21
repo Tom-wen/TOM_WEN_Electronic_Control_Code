@@ -24,12 +24,15 @@ typedef struct
 {
     uint8_t id;                       // 电机ID
     uint8_t motor_enable;             // 电机使能状态，1为使能，0为未使能
-    float pos;                        //电机反馈的位置
+    float pos;                        //电机反馈的位置单位
+    float vel;                        //目标速度(DM电机用, rad/s)
     float speed;                        //电机反馈线速度m/s
-    float tor;                 
+    float tor;
     float cur;
+    float kp;                         //MIT模式位置增益(DM电机用)
+    float kd;                         //MIT模式速度增益(DM电机用)
     float target_velocity;          // 目标角速度rpm
-    float target_position;          // 目标位置
+    float target_position;          // 目标位置(单位度)
     float target_current;           // 目标电流
     float total_angle;                // 永久累加的总角度（度）
     float last_angle;                 // 上一次单圈角度（度）

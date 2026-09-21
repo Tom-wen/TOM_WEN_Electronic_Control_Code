@@ -196,6 +196,69 @@ void DJI6020_PosSpdClose_mode2(MotorInstance *motors)
 
 
 
+/**
+ * @brief 6020云台陀螺仪模式：外环IMU绝对角度，内环陀螺仪角速度
+ * @param motors 电机实例数组指针（Gimbal_6020[2]，i=0为YAW，i=1为PITCH）
+ * @details 与 DJI6020_PosSpdClose_mode2 的区别：
+ *          - 外环反馈使用IMU绝对角度（INS.Yaw / INS.Pitch）而非编码器
+ *          - 内环反馈使用陀螺仪角速度（INS.Gyro）而非编码器速度
+ *          - 支持角度回环处理（YAW轴 -180~180 跨越）
+ *          - target_position: 目标角度（度），由gimbal_control_loop设置
+ *          - target_current: 附加电流（如重力补偿），叠加到PID输出上
+ *          - 每个电机独立发送CAN帧（支持不同CAN总线）
+ */
+void DJI6020_GimbalGyro_mode(MotorInstance *motors)
+{
+    /* ===== PID计算阶段 ===== */
+    for(int i = 0; i < motors[0].motor_count; i++)
+    {
+        float target = motors[i].motor_data->target_position; // 目标角度（度）
+        float current;
+        float inner_fdb;
+
+        if(i == 0)
+        {
+            // YAW轴：使用IMU Yaw角度和Z轴陀螺仪
+            current = INS.Yaw;
+            inner_fdb = (arm_sin_f32(motors[i+1].motor_data->feedback->pos) * INS.Gyro[Zt]
+                - arm_cos_f32(motors[i+1].motor_data->feedback->pos) * INS.Gyro[Yt])* 57.29578f;// rad/s -> deg/s
+        }
+        else
+        {
+            // PITCH轴：使用IMU Pitch角度和X轴陀螺仪
+            current = INS.Pitch;
+            inner_fdb = INS.Gyro[Xt] * 57.29578f; // rad/s -> deg/s
+        }
+
+        // 计算角度误差，处理 -180~180 回环
+        float error = target - current;
+        while(error > 180.0f)  error -= 360.0f;
+        while(error < -180.0f) error += 360.0f;
+
+        // 串级PID：外环(角度误差->目标角速度)，内环(目标角速度->输出电流)
+        PID_CascadeCalc(motors[i].motor_data->pid, error, 0, inner_fdb);
+    }
+
+    /* ===== CAN发送阶段（每个电机独立发送，支持不同CAN总线） ===== */
+    for(int i = 0; i < motors[0].motor_count; i++)
+    {
+        uint8_t data[8] = {0};
+        uint8_t id = DJI_ID(motors[i].motor_data->id);
+
+        if(motors[i].motor_data->motor_enable != 0)
+        {
+            // PID输出 + 附加电流（重力补偿等）
+            int16_t output = (int16_t)(motors[i].motor_data->pid[cascade_inner].Out
+                           + motors[i].motor_data->target_current);
+            data[2 * id] = output >> 8;
+            data[2 * id + 1] = output;
+        }
+
+        uint16_t can_id = id_change(motors[i].type, motors[i].motor_data->id);
+        fdcanx_send_data(motors[i].motor_data->hfdcan, can_id, data, 8);
+    }
+}
+
 //单环速度环2006控制
 void DJI2006_SpdClose_mode(MotorInstance *motors)
 {

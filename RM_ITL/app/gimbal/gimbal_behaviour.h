@@ -1,38 +1,29 @@
-#ifndef GIMBAL_BEHAVIOUR_H
-#define GIMBAL_BEHAVIOUR_H
+/**
+ * @file    gimbal_behaviour.h
+ * @brief   云台行为控制头文件
+ * @details 包含云台行为模式设置和控制量设置的函数声明
+ */
 
+#ifndef __GIMBAL_BEHAVIOUR_H__
+#define __GIMBAL_BEHAVIOUR_H__
+
+/* =========================== 包含头文件 =========================== */
 #include "gimbal.h"
 
-typedef enum
-{
-  GIMBAL_ZERO_FORCE = 0,
-  GIMBAL_INIT,
-  GIMBAL_ABSOLUTE_ANGLE,
-  GIMBAL_RELATIVE_ANGLE,
-  GIMBAL_MOTIONLESS,
-  GIMBAL_AUTO,
-  GIMBAL_POLE
-} gimbal_behaviour_e;
-
+/* =========================== 函数声明 =========================== */
 
 /**
- * @brief          被gimbal_set_mode函数调用在gimbal_task.c,云台行为状态机以及电机状态机设置
- * @param[out]     gimbal_mode_set: 云台数据指针
- * @retval         none
+ * @brief 设置云台行为模式
+ * @details 通过遥控器拨杆/按键判断，设置云台运动模式和自瞄标志位
+ * @param[in,out] gimbal_mode_set 云台控制数据指针
  */
-extern void gimbal_behaviour_mode_set(Gimbal_Ctrl_Cmd_s *gimbal_mode_set);
+void gimbal_behaviour_mode_set(Gimbal_Ctrl_Cmd_s *gimbal_mode_set);
 
 /**
- * @brief          云台行为控制，根据不同行为采用不同控制函数
- * @param[out]     add_yaw:设置的yaw角度增加值，单位 rad
- * @param[out]     add_pitch:设置的pitch角度增加值，单位 rad
- * @param[in]      gimbal_mode_set:云台数据指针
- * @retval         none
+ * @brief 设置云台控制量
+ * @details 根据当前云台模式，将遥控器/鼠标输入映射到云台yaw和pitch控制参数
+ * @param[in,out] gimbal_control_set 云台控制数据指针
  */
-extern void gimbal_behaviour_control_set(float *add_yaw, float *add_pitch, Gimbal_Ctrl_Cmd_s *gimbal_control_set);
+void gimbal_behaviour_control_set(Gimbal_Ctrl_Cmd_s *gimbal_control_set);
 
-
-extern gimbal_behaviour_e gimbal_behaviour;
-
-
-#endif
+#endif /* __GIMBAL_BEHAVIOUR_H__ */

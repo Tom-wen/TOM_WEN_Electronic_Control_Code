@@ -120,6 +120,11 @@ typedef __packed struct
     float frame_period; //??¤?????????é??é??é?? ?????? s
 } first_order_filter_type_t;
 
+//一阶低通滤波初始化
+void first_order_filter_init(first_order_filter_type_t *first_order_filter_type, float frame_period, const float num[1]);
+//一阶低通滤波计算
+void first_order_filter_cali(first_order_filter_type_t *first_order_filter_type, float input);
+
 //快速开方
 float Sqrt(float x);
 

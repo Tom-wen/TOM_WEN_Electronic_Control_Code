@@ -3,10 +3,17 @@
 #define CHASSIS_BEHAVIOUR_H
 
 /* =========================== 包含头文件 =========================== */
-#include "mecanum_chassis.h"
 #include "Pid.h"
+#include "gimbal.h"
 
-extern uint8_t chassis_top_level;
+/* 前向声明，避免与 mecanum_chassis.h 的循环包含 */
+struct Chassis_Ctrl_Cmd_s;
+typedef struct Chassis_Ctrl_Cmd_s Chassis_Ctrl_Cmd_s;
+
+#define GIMBAL_YAW_OFFSET_ECD       847.8f
+#define GIMBAL_YAW_TOP_OFFSET_ECD   1400.0f
+
+
 /* =========================== 函数声明 =========================== */
 /**
  * @brief 设置底盘行为模式
@@ -28,6 +35,8 @@ void chassis_behaviour_mode_set(Chassis_Ctrl_Cmd_s *chassis_move_mode);
  */
 void chassis_behaviour_control_set(Chassis_Ctrl_Cmd_s *chassis_move_rc_to_vector);
 /** @} */
+
+
 
 
 #endif /* CHASSIS_BEHAVIOUR_H */

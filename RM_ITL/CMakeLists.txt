@@ -78,7 +78,8 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/app/Init/Init.c
     ${CMAKE_SOURCE_DIR}/app/chassis/mecanum_chassis.c
     ${CMAKE_SOURCE_DIR}/app/chassis/chassis_behaviour.c
-    ${CMAKE_SOURCE_DIR}/app/gimbal/gimbal.c  
+    ${CMAKE_SOURCE_DIR}/app/gimbal/gimbal.c
+    ${CMAKE_SOURCE_DIR}/app/gimbal/gimbal_behaviour.c
     ${CMAKE_SOURCE_DIR}/app/ins/ins.c 
     ${CMAKE_SOURCE_DIR}/app/detect/detect.c  
     ${CMAKE_SOURCE_DIR}/app/shoot/shoot.c

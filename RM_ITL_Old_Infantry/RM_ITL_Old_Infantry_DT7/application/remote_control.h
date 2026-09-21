@@ -5,9 +5,9 @@
 #include "bsp_usart.h"
 #include "stdlib.h"
 
-//#define DT7_rc_ctrl
+#define DT7_rc_ctrl
 //#define i6x_rc_ctrl
-#define vtm_rc_ctrl
+//#define vtm_rc_ctrl
 
 
 

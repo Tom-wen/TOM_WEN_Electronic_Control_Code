@@ -347,27 +347,31 @@ static void chassis_power_control_update(void)
 {
     // 电容未充电至阈值电压，保持底盘静止
     
-        if ( PowerData[1] >= CAP_CHARGE_VOLTAGE_THRESHOLD) {
+        if ( PowerData[1] >= CAP_CHARGE_VOLTAGE_THRESHOLD) 
+        {
 //            super_cap_send_power(PowerData[4]); // 设置初始功率限制
 
-			float power = 0;
-            switch (robot_state.robot_level) {
-                case 0: power = 60.0f; break;//20s
-			    case 1: power = 45.0f; break;
-                case 2: power = 45.0f; break;//12s
-                case 3: power = 45.0f; break;
-                case 4: power = 45.0f; break;
-                case 5: power = 45.0f; break;
-                case 6: power = 45.0f; break;
-                case 7: power = 45.0f; break;
-                case 8: power = 45.0f; break;
-                case 9: power = 45.0f; break;
-                case 10: power = 45.0f; break;
-							
-                default: break;
-            }
-            super_cap_send_power(power);
-        } else {
+                    float power = 0;
+                    switch (robot_state.robot_level) 
+                    {
+                        case 0: power = 60.0f; break;//20s
+                        case 1: power = 45.0f; break;
+                        case 2: power = 45.0f; break;//12s
+                        case 3: power = 45.0f; break;
+                        case 4: power = 45.0f; break;
+                        case 5: power = 45.0f; break;
+                        case 6: power = 45.0f; break;
+                        case 7: power = 45.0f; break;
+                        case 8: power = 45.0f; break;
+                        case 9: power = 45.0f; break;
+                        case 10: power = 45.0f; break;
+                      
+                        default: break;
+                    }
+                    super_cap_send_power(power);
+        } 
+        else 
+        {
             chassis_power_scale = 0.8f;
 					  super_cap_send_power(0);
             return;

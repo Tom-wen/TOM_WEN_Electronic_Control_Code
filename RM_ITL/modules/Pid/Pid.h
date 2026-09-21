@@ -4,6 +4,13 @@
 #include "main.h"
 #include "Lowpass.h"
 #define _constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
+#define LimitMax(input, max)   \
+    do {                       \
+        if ((input) > (max))   \
+            (input) = (max);   \
+        else if ((input) < -(max)) \
+            (input) = -(max);  \
+    } while(0)
 
 //条件编译
 

@@ -1,0 +1,1038 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: μVision V5.36.0.0
+Copyright (C) 2021 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: a 沈文滔, a, LIC=HN0AE-5GNSQ-CXMU6-DWLR6-Y7SG1-NJRPB
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Plus  Version: 5.36.0.0
+Toolchain Path:  D:\Keil5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 7 (build 960)
+Assembler:       Armasm.exe V5.06 update 7 (build 960)
+Linker/Locator:  ArmLink.exe V5.06 update 7 (build 960)
+Library Manager: ArmAr.exe V5.06 update 7 (build 960)
+Hex Converter:   FromElf.exe V5.06 update 7 (build 960)
+CPU DLL:         SARMCM3.DLL V5.36.0.0
+Dialog DLL:      DCM.DLL V1.17.3.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.9.0
+Dialog DLL:      TCM.DLL V1.53.0.0
+ 
+<h2>Project:</h2>
+D:\git_push\TOM_WEN_Electronic_Control_Code\RM_ITL_Old_Infantry\RM_ITL_Old_Infantry_DT7\MDK-ARM\RM_ITL_Old_Infantry.uvprojx
+Project File Date:  06/09/2026
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 7 (build 960)', folder: 'D:\Keil5\ARM\ARMCC\Bin'
+Build target 'RM_ITL_Old_Infantry'
+assembling startup_stm32h723xx.s...
+compiling spi.c...
+compiling tim.c...
+compiling stm32h7xx_hal_msp.c...
+compiling gpio.c...
+compiling stm32h7xx_it.c...
+compiling fdcan.c...
+compiling dma.c...
+compiling stm32h7xx_hal_timebase_tim.c...
+compiling usart.c...
+compiling usbd_cdc_if.c...
+compiling usbd_desc.c...
+compiling freertos.c...
+compiling usb_device.c...
+compiling usbd_conf.c...
+compiling main.c...
+../boards/bsp_buzzer.h(7): warning:  #1295-D: Deprecated declaration buzzer_init - give arg types
+  void buzzer_init();
+../boards/bsp_buzzer.h(8): warning:  #1295-D: Deprecated declaration buzzer_warning - give arg types
+  void buzzer_warning();
+../boards/bsp_buzzer.h(9): warning:  #1295-D: Deprecated declaration buzzer_on - give arg types
+  void buzzer_on();
+../boards/bsp_buzzer.h(10): warning:  #1295-D: Deprecated declaration buzzer_off - give arg types
+  void buzzer_off();
+../application/GQ_Motor.h(26): warning:  #1-D: last line of file ends without a newline
+  #endif
+../Core/Src/main.c: 5 warnings, 0 errors
+compiling stm32h7xx_hal_pwr.c...
+compiling stm32h7xx_hal_gpio.c...
+compiling stm32h7xx_hal_pcd_ex.c...
+compiling stm32h7xx_hal_flash.c...
+compiling stm32h7xx_hal_flash_ex.c...
+compiling stm32h7xx_hal_dma_ex.c...
+compiling stm32h7xx_hal_pcd.c...
+compiling stm32h7xx_hal_hsem.c...
+compiling stm32h7xx_ll_usb.c...
+compiling stm32h7xx_hal_mdma.c...
+compiling stm32h7xx_hal_rcc.c...
+compiling stm32h7xx_hal_tim_ex.c...
+compiling stm32h7xx_hal_rcc_ex.c...
+compiling stm32h7xx_hal_tim.c...
+compiling stm32h7xx_hal_dma.c...
+compiling croutine.c...
+compiling event_groups.c...
+compiling list.c...
+compiling queue.c...
+compiling stream_buffer.c...
+compiling tasks.c...
+compiling timers.c...
+compiling heap_4.c...
+compiling port.c...
+compiling stm32h7xx_hal_spi_ex.c...
+compiling stm32h7xx_hal_i2c_ex.c...
+compiling stm32h7xx_hal_exti.c...
+compiling stm32h7xx_hal_spi.c...
+compiling stm32h7xx_hal_cortex.c...
+compiling system_stm32h7xx.c...
+compiling stm32h7xx_hal_fdcan.c...
+compiling stm32h7xx_hal.c...
+compiling stm32h7xx_hal_pwr_ex.c...
+compiling stm32h7xx_hal_uart_ex.c...
+compiling usbd_ctlreq.c...
+compiling usbd_core.c...
+compiling stm32h7xx_hal_i2c.c...
+compiling cmsis_os2.c...
+compiling stm32h7xx_hal_uart.c...
+compiling bsp_can.c...
+compiling bsp_delay.c...
+compiling usbd_cdc.c...
+compiling bsp_imu_pwm.c...
+compiling usbd_ioreq.c...
+compiling detect_task.c...
+../boards/bsp_led.h(9): warning:  #1295-D: Deprecated declaration LED_Normal - give arg types
+  void LED_Normal();
+../boards/bsp_led.h(10): warning:  #1295-D: Deprecated declaration LED_Warning - give arg types
+  void LED_Warning();
+../boards/bsp_led.h(11): warning:  #1295-D: Deprecated declaration LED_RC_Disconnected - give arg types
+  void LED_RC_Disconnected();
+../boards/bsp_led.h(12): warning:  #1295-D: Deprecated declaration LED_OFF - give arg types
+  void LED_OFF();
+../boards/bsp_led.h(13): warning:  #1295-D: Deprecated declaration LED_Warning_Motor - give arg types
+  void LED_Warning_Motor();
+..\Task\detect_task.c: 5 warnings, 0 errors
+compiling bsp_dwt.c...
+compiling bsp_pwm.c...
+compiling bsp_usart.c...
+../boards/bsp_led.h(9): warning:  #1295-D: Deprecated declaration LED_Normal - give arg types
+  void LED_Normal();
+../boards/bsp_led.h(10): warning:  #1295-D: Deprecated declaration LED_Warning - give arg types
+  void LED_Warning();
+../boards/bsp_led.h(11): warning:  #1295-D: Deprecated declaration LED_RC_Disconnected - give arg types
+  void LED_RC_Disconnected();
+../boards/bsp_led.h(12): warning:  #1295-D: Deprecated declaration LED_OFF - give arg types
+  void LED_OFF();
+../boards/bsp_led.h(13): warning:  #1295-D: Deprecated declaration LED_Warning_Motor - give arg types
+  void LED_Warning_Motor();
+../components/Circular_buffer/Circular_buffer.h(9): warning:  #1295-D: Deprecated declaration Command_GetLength - give arg types
+  uint16_t Command_GetLength();
+../components/Circular_buffer/Circular_buffer.h(10): warning:  #1295-D: Deprecated declaration Command_GetRemain - give arg types
+  uint16_t Command_GetRemain();
+..\boards\bsp_usart.c: 7 warnings, 0 errors
+compiling hoisting_task.c...
+..\Task\gimbal_task.h(274): warning:  #1-D: last line of file ends without a newline
+  #endif
+../application/GQ_Motor.h(26): warning:  #1-D: last line of file ends without a newline
+  #endif
+../boards/bsp_led.h(9): warning:  #1295-D: Deprecated declaration LED_Normal - give arg types
+  void LED_Normal();
+../boards/bsp_led.h(10): warning:  #1295-D: Deprecated declaration LED_Warning - give arg types
+  void LED_Warning();
+../boards/bsp_led.h(11): warning:  #1295-D: Deprecated declaration LED_RC_Disconnected - give arg types
+  void LED_RC_Disconnected();
+../boards/bsp_led.h(12): warning:  #1295-D: Deprecated declaration LED_OFF - give arg types
+  void LED_OFF();
+../boards/bsp_led.h(13): warning:  #1295-D: Deprecated declaration LED_Warning_Motor - give arg types
+  void LED_Warning_Motor();
+../boards/bsp_buzzer.h(7): warning:  #1295-D: Deprecated declaration buzzer_init - give arg types
+  void buzzer_init();
+../boards/bsp_buzzer.h(8): warning:  #1295-D: Deprecated declaration buzzer_warning - give arg types
+  void buzzer_warning();
+../boards/bsp_buzzer.h(9): warning:  #1295-D: Deprecated declaration buzzer_on - give arg types
+  void buzzer_on();
+../boards/bsp_buzzer.h(10): warning:  #1295-D: Deprecated declaration buzzer_off - give arg types
+  void buzzer_off();
+..\Task\hoisting_task.c: 11 warnings, 0 errors
+compiling user_lib.c...
+..\components\algorithm\user_lib.c(195): warning:  #2532-D: support for trigraphs is disabled
+  //??§???????????????-PI~PI
+..\components\algorithm\user_lib.c: 1 warning, 0 errors
+compiling referee_usart_task.c...
+../components/Circular_buffer/Circular_buffer.h(9): warning:  #1295-D: Deprecated declaration Command_GetLength - give arg types
+  uint16_t Command_GetLength();
+../components/Circular_buffer/Circular_buffer.h(10): warning:  #1295-D: Deprecated declaration Command_GetRemain - give arg types
+  uint16_t Command_GetRemain();
+../components/UI/ui_static_ui.h(45): warning:  #1295-D: Deprecated declaration ui_init_static_ui_Ungroup - give arg types
+  void ui_init_static_ui_Ungroup();
+../components/UI/ui_static_ui.h(46): warning:  #1295-D: Deprecated declaration ui_update_static_ui_Ungroup - give arg types
+  void ui_update_static_ui_Ungroup();
+../components/UI/ui_static_ui.h(47): warning:  #1295-D: Deprecated declaration ui_remove_static_ui_Ungroup - give arg types
+  void ui_remove_static_ui_Ungroup();
+../components/UI/ui_dynamic_ui.h(13): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group1 - give arg types
+  void ui_init_dynamic_ui_group1();
+../components/UI/ui_dynamic_ui.h(14): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group1 - give arg types
+  void ui_update_dynamic_ui_group1();
+../components/UI/ui_dynamic_ui.h(15): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group1 - give arg types
+  void ui_remove_dynamic_ui_group1();
+../components/UI/ui_dynamic_ui.h(19): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group2 - give arg types
+  void ui_init_dynamic_ui_group2();
+../components/UI/ui_dynamic_ui.h(20): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group2 - give arg types
+  void ui_update_dynamic_ui_group2();
+../components/UI/ui_dynamic_ui.h(21): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group2 - give arg types
+  void ui_remove_dynamic_ui_group2();
+../components/UI/ui_dynamic_ui.h(25): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group3 - give arg types
+  void ui_init_dynamic_ui_group3();
+../components/UI/ui_dynamic_ui.h(26): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group3 - give arg types
+  void ui_update_dynamic_ui_group3();
+../components/UI/ui_dynamic_ui.h(27): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group3 - give arg types
+  void ui_remove_dynamic_ui_group3();
+../components/UI/ui_dynamic_ui.h(31): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group4 - give arg types
+  void ui_init_dynamic_ui_group4();
+../components/UI/ui_dynamic_ui.h(32): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group4 - give arg types
+  void ui_update_dynamic_ui_group4();
+../components/UI/ui_dynamic_ui.h(33): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group4 - give arg types
+  void ui_remove_dynamic_ui_group4();
+../components/UI/ui_dynamic_ui.h(37): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group5 - give arg types
+  void ui_init_dynamic_ui_group5();
+../components/UI/ui_dynamic_ui.h(38): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group5 - give arg types
+  void ui_update_dynamic_ui_group5();
+../components/UI/ui_dynamic_ui.h(39): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group5 - give arg types
+  void ui_remove_dynamic_ui_group5();
+../components/UI/ui_dynamic_ui.h(43): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group6 - give arg types
+  void ui_init_dynamic_ui_group6();
+../components/UI/ui_dynamic_ui.h(44): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group6 - give arg types
+  void ui_update_dynamic_ui_group6();
+../components/UI/ui_dynamic_ui.h(45): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group6 - give arg types
+  void ui_remove_dynamic_ui_group6();
+../components/UI/ui_dynamic_ui.h(49): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group7 - give arg types
+  void ui_init_dynamic_ui_group7();
+../components/UI/ui_dynamic_ui.h(50): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group7 - give arg types
+  void ui_update_dynamic_ui_group7();
+../components/UI/ui_dynamic_ui.h(51): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group7 - give arg types
+  void ui_remove_dynamic_ui_group7();
+../components/UI/ui_dynamic_ui.h(55): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group8 - give arg types
+  void ui_init_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(56): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group8 - give arg types
+  void ui_update_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(57): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group8 - give arg types
+  void ui_remove_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(61): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group8 - give arg types
+  void ui_init_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(62): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group8 - give arg types
+  void ui_update_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(63): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group8 - give arg types
+  void ui_remove_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(67): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group9 - give arg types
+  void ui_init_dynamic_ui_group9();
+../components/UI/ui_dynamic_ui.h(68): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group9 - give arg types
+  void ui_update_dynamic_ui_group9();
+../components/UI/ui_dynamic_ui.h(69): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group9 - give arg types
+  void ui_remove_dynamic_ui_group9();
+../components/UI/ui_dynamic_ui.h(73): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group10 - give arg types
+  void ui_init_dynamic_ui_group10();
+../components/UI/ui_dynamic_ui.h(74): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group10 - give arg types
+  void ui_update_dynamic_ui_group10();
+../components/UI/ui_dynamic_ui.h(75): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group10 - give arg types
+  void ui_remove_dynamic_ui_group10();
+../components/UI/ui_dynamic_ui.h(78): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group11 - give arg types
+  void ui_init_dynamic_ui_group11();
+../components/UI/ui_dynamic_ui.h(79): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group11 - give arg types
+  void ui_update_dynamic_ui_group11();
+../components/UI/ui_dynamic_ui.h(80): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group11 - give arg types
+  void ui_remove_dynamic_ui_group11();
+../components/UI/ui_dynamic_ui.h(83): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group12 - give arg types
+  void ui_init_dynamic_ui_group12();
+../components/UI/ui_dynamic_ui.h(84): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group12 - give arg types
+  void ui_update_dynamic_ui_group12();
+../components/UI/ui_dynamic_ui.h(85): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group12 - give arg types
+  void ui_remove_dynamic_ui_group12();
+../components/UI/ui_dynamic_ui.h(88): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group13 - give arg types
+  void ui_init_dynamic_ui_group13();
+../components/UI/ui_dynamic_ui.h(89): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group13 - give arg types
+  void ui_update_dynamic_ui_group13();
+../components/UI/ui_dynamic_ui.h(90): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group13 - give arg types
+  void ui_remove_dynamic_ui_group13();
+../components/UI/ui_dynamic_ui.h(93): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group14 - give arg types
+  void ui_init_dynamic_ui_group14();
+../components/UI/ui_dynamic_ui.h(94): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group14 - give arg types
+  void ui_update_dynamic_ui_group14();
+../components/UI/ui_dynamic_ui.h(95): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group14 - give arg types
+  void ui_remove_dynamic_ui_group14();
+../components/UI/ui_dynamic_ui.h(97): warning:  #1-D: last line of file ends without a newline
+  #endif // UI_dynamic_ui_H
+..\Task\gimbal_task.h(274): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Task\shoot_task.h(126): warning:  #1-D: last line of file ends without a newline
+  /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+..\Task\ins_task.h(120): warning:  #1295-D: Deprecated declaration IMU_Temperature_Ctrl - give arg types
+  void IMU_Temperature_Ctrl();
+..\Task\referee_usart_task.c(12): warning:  #177-D: variable "pRecvUartData1"  was declared but never referenced
+      REFEREE_RX_TypeDef *pRecvUartData1 = NULL; /* 定义指向串口数据的指针 */
+..\Task\referee_usart_task.c(395): warning:  #1-D: last line of file ends without a newline
+  }
+..\Task\referee_usart_task.c: 56 warnings, 0 errors
+compiling gimbal_task.c...
+..\Task\gimbal_task.h(274): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Task\INS_task.h(120): warning:  #1295-D: Deprecated declaration IMU_Temperature_Ctrl - give arg types
+  void IMU_Temperature_Ctrl();
+../boards/bsp_led.h(9): warning:  #1295-D: Deprecated declaration LED_Normal - give arg types
+  void LED_Normal();
+../boards/bsp_led.h(10): warning:  #1295-D: Deprecated declaration LED_Warning - give arg types
+  void LED_Warning();
+../boards/bsp_led.h(11): warning:  #1295-D: Deprecated declaration LED_RC_Disconnected - give arg types
+  void LED_RC_Disconnected();
+../boards/bsp_led.h(12): warning:  #1295-D: Deprecated declaration LED_OFF - give arg types
+  void LED_OFF();
+../boards/bsp_led.h(13): warning:  #1295-D: Deprecated declaration LED_Warning_Motor - give arg types
+  void LED_Warning_Motor();
+..\Task\gimbal_task.c(342): warning:  #177-D: function "gimbal_relative_angle_limit"  was declared but never referenced
+  static void gimbal_relative_angle_limit(gimbal_motor_t *gimbal_motor, float add)
+..\Task\gimbal_task.c(438): warning:  #177-D: function "gimbal_motor_relative_angle_control"  was declared but never referenced
+  static void gimbal_motor_relative_angle_control(gimbal_motor_t *gimbal_motor)
+..\Task\gimbal_task.c: 9 warnings, 0 errors
+compiling INS_task.c...
+..\Task\INS_Task.h(120): warning:  #1295-D: Deprecated declaration IMU_Temperature_Ctrl - give arg types
+  void IMU_Temperature_Ctrl();
+../boards/bsp_led.h(9): warning:  #1295-D: Deprecated declaration LED_Normal - give arg types
+  void LED_Normal();
+../boards/bsp_led.h(10): warning:  #1295-D: Deprecated declaration LED_Warning - give arg types
+  void LED_Warning();
+../boards/bsp_led.h(11): warning:  #1295-D: Deprecated declaration LED_RC_Disconnected - give arg types
+  void LED_RC_Disconnected();
+../boards/bsp_led.h(12): warning:  #1295-D: Deprecated declaration LED_OFF - give arg types
+  void LED_OFF();
+../boards/bsp_led.h(13): warning:  #1295-D: Deprecated declaration LED_Warning_Motor - give arg types
+  void LED_Warning_Motor();
+..\Task\INS_task.c: 6 warnings, 0 errors
+compiling chassis_task.c...
+..\Task\gimbal_task.h(274): warning:  #1-D: last line of file ends without a newline
+  #endif
+../boards/bsp_led.h(9): warning:  #1295-D: Deprecated declaration LED_Normal - give arg types
+  void LED_Normal();
+../boards/bsp_led.h(10): warning:  #1295-D: Deprecated declaration LED_Warning - give arg types
+  void LED_Warning();
+../boards/bsp_led.h(11): warning:  #1295-D: Deprecated declaration LED_RC_Disconnected - give arg types
+  void LED_RC_Disconnected();
+../boards/bsp_led.h(12): warning:  #1295-D: Deprecated declaration LED_OFF - give arg types
+  void LED_OFF();
+../boards/bsp_led.h(13): warning:  #1295-D: Deprecated declaration LED_Warning_Motor - give arg types
+  void LED_Warning_Motor();
+..\Task\INS_task.h(120): warning:  #1295-D: Deprecated declaration IMU_Temperature_Ctrl - give arg types
+  void IMU_Temperature_Ctrl();
+../components/Circular_buffer/Circular_buffer.h(9): warning:  #1295-D: Deprecated declaration Command_GetLength - give arg types
+  uint16_t Command_GetLength();
+../components/Circular_buffer/Circular_buffer.h(10): warning:  #1295-D: Deprecated declaration Command_GetRemain - give arg types
+  uint16_t Command_GetRemain();
+../components/UI/ui_static_ui.h(45): warning:  #1295-D: Deprecated declaration ui_init_static_ui_Ungroup - give arg types
+  void ui_init_static_ui_Ungroup();
+../components/UI/ui_static_ui.h(46): warning:  #1295-D: Deprecated declaration ui_update_static_ui_Ungroup - give arg types
+  void ui_update_static_ui_Ungroup();
+../components/UI/ui_static_ui.h(47): warning:  #1295-D: Deprecated declaration ui_remove_static_ui_Ungroup - give arg types
+  void ui_remove_static_ui_Ungroup();
+../components/UI/ui_dynamic_ui.h(13): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group1 - give arg types
+  void ui_init_dynamic_ui_group1();
+../components/UI/ui_dynamic_ui.h(14): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group1 - give arg types
+  void ui_update_dynamic_ui_group1();
+../components/UI/ui_dynamic_ui.h(15): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group1 - give arg types
+  void ui_remove_dynamic_ui_group1();
+../components/UI/ui_dynamic_ui.h(19): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group2 - give arg types
+  void ui_init_dynamic_ui_group2();
+../components/UI/ui_dynamic_ui.h(20): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group2 - give arg types
+  void ui_update_dynamic_ui_group2();
+../components/UI/ui_dynamic_ui.h(21): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group2 - give arg types
+  void ui_remove_dynamic_ui_group2();
+../components/UI/ui_dynamic_ui.h(25): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group3 - give arg types
+  void ui_init_dynamic_ui_group3();
+../components/UI/ui_dynamic_ui.h(26): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group3 - give arg types
+  void ui_update_dynamic_ui_group3();
+../components/UI/ui_dynamic_ui.h(27): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group3 - give arg types
+  void ui_remove_dynamic_ui_group3();
+../components/UI/ui_dynamic_ui.h(31): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group4 - give arg types
+  void ui_init_dynamic_ui_group4();
+../components/UI/ui_dynamic_ui.h(32): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group4 - give arg types
+  void ui_update_dynamic_ui_group4();
+../components/UI/ui_dynamic_ui.h(33): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group4 - give arg types
+  void ui_remove_dynamic_ui_group4();
+../components/UI/ui_dynamic_ui.h(37): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group5 - give arg types
+  void ui_init_dynamic_ui_group5();
+../components/UI/ui_dynamic_ui.h(38): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group5 - give arg types
+  void ui_update_dynamic_ui_group5();
+../components/UI/ui_dynamic_ui.h(39): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group5 - give arg types
+  void ui_remove_dynamic_ui_group5();
+../components/UI/ui_dynamic_ui.h(43): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group6 - give arg types
+  void ui_init_dynamic_ui_group6();
+../components/UI/ui_dynamic_ui.h(44): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group6 - give arg types
+  void ui_update_dynamic_ui_group6();
+../components/UI/ui_dynamic_ui.h(45): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group6 - give arg types
+  void ui_remove_dynamic_ui_group6();
+../components/UI/ui_dynamic_ui.h(49): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group7 - give arg types
+  void ui_init_dynamic_ui_group7();
+../components/UI/ui_dynamic_ui.h(50): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group7 - give arg types
+  void ui_update_dynamic_ui_group7();
+../components/UI/ui_dynamic_ui.h(51): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group7 - give arg types
+  void ui_remove_dynamic_ui_group7();
+../components/UI/ui_dynamic_ui.h(55): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group8 - give arg types
+  void ui_init_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(56): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group8 - give arg types
+  void ui_update_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(57): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group8 - give arg types
+  void ui_remove_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(61): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group8 - give arg types
+  void ui_init_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(62): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group8 - give arg types
+  void ui_update_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(63): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group8 - give arg types
+  void ui_remove_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(67): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group9 - give arg types
+  void ui_init_dynamic_ui_group9();
+../components/UI/ui_dynamic_ui.h(68): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group9 - give arg types
+  void ui_update_dynamic_ui_group9();
+../components/UI/ui_dynamic_ui.h(69): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group9 - give arg types
+  void ui_remove_dynamic_ui_group9();
+../components/UI/ui_dynamic_ui.h(73): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group10 - give arg types
+  void ui_init_dynamic_ui_group10();
+../components/UI/ui_dynamic_ui.h(74): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group10 - give arg types
+  void ui_update_dynamic_ui_group10();
+../components/UI/ui_dynamic_ui.h(75): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group10 - give arg types
+  void ui_remove_dynamic_ui_group10();
+../components/UI/ui_dynamic_ui.h(78): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group11 - give arg types
+  void ui_init_dynamic_ui_group11();
+../components/UI/ui_dynamic_ui.h(79): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group11 - give arg types
+  void ui_update_dynamic_ui_group11();
+../components/UI/ui_dynamic_ui.h(80): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group11 - give arg types
+  void ui_remove_dynamic_ui_group11();
+../components/UI/ui_dynamic_ui.h(83): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group12 - give arg types
+  void ui_init_dynamic_ui_group12();
+../components/UI/ui_dynamic_ui.h(84): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group12 - give arg types
+  void ui_update_dynamic_ui_group12();
+../components/UI/ui_dynamic_ui.h(85): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group12 - give arg types
+  void ui_remove_dynamic_ui_group12();
+../components/UI/ui_dynamic_ui.h(88): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group13 - give arg types
+  void ui_init_dynamic_ui_group13();
+../components/UI/ui_dynamic_ui.h(89): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group13 - give arg types
+  void ui_update_dynamic_ui_group13();
+../components/UI/ui_dynamic_ui.h(90): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group13 - give arg types
+  void ui_remove_dynamic_ui_group13();
+../components/UI/ui_dynamic_ui.h(93): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group14 - give arg types
+  void ui_init_dynamic_ui_group14();
+../components/UI/ui_dynamic_ui.h(94): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group14 - give arg types
+  void ui_update_dynamic_ui_group14();
+../components/UI/ui_dynamic_ui.h(95): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group14 - give arg types
+  void ui_remove_dynamic_ui_group14();
+../components/UI/ui_dynamic_ui.h(97): warning:  #1-D: last line of file ends without a newline
+  #endif // UI_dynamic_ui_H
+..\Task\shoot_task.h(126): warning:  #1-D: last line of file ends without a newline
+  /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+..\Task\chassis_task.c(92): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+              super_cap_send_power(90.0-POWER_LIMIT_MARGIN );//referee_data.robot.chassis_power_limit按道理是这个放在里面，但是比赛结束开始会有延迟因此这边我固定75w
+..\Task\chassis_task.c: 60 warnings, 0 errors
+compiling shoot_task.c...
+..\Task\gimbal_task.h(274): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Task\shoot_task.h(126): warning:  #1-D: last line of file ends without a newline
+  /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+../boards/bsp_led.h(9): warning:  #1295-D: Deprecated declaration LED_Normal - give arg types
+  void LED_Normal();
+../boards/bsp_led.h(10): warning:  #1295-D: Deprecated declaration LED_Warning - give arg types
+  void LED_Warning();
+../boards/bsp_led.h(11): warning:  #1295-D: Deprecated declaration LED_RC_Disconnected - give arg types
+  void LED_RC_Disconnected();
+../boards/bsp_led.h(12): warning:  #1295-D: Deprecated declaration LED_OFF - give arg types
+  void LED_OFF();
+../boards/bsp_led.h(13): warning:  #1295-D: Deprecated declaration LED_Warning_Motor - give arg types
+  void LED_Warning_Motor();
+../components/Circular_buffer/Circular_buffer.h(9): warning:  #1295-D: Deprecated declaration Command_GetLength - give arg types
+  uint16_t Command_GetLength();
+../components/Circular_buffer/Circular_buffer.h(10): warning:  #1295-D: Deprecated declaration Command_GetRemain - give arg types
+  uint16_t Command_GetRemain();
+../components/UI/ui_static_ui.h(45): warning:  #1295-D: Deprecated declaration ui_init_static_ui_Ungroup - give arg types
+  void ui_init_static_ui_Ungroup();
+../components/UI/ui_static_ui.h(46): warning:  #1295-D: Deprecated declaration ui_update_static_ui_Ungroup - give arg types
+  void ui_update_static_ui_Ungroup();
+../components/UI/ui_static_ui.h(47): warning:  #1295-D: Deprecated declaration ui_remove_static_ui_Ungroup - give arg types
+  void ui_remove_static_ui_Ungroup();
+../components/UI/ui_dynamic_ui.h(13): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group1 - give arg types
+  void ui_init_dynamic_ui_group1();
+../components/UI/ui_dynamic_ui.h(14): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group1 - give arg types
+  void ui_update_dynamic_ui_group1();
+../components/UI/ui_dynamic_ui.h(15): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group1 - give arg types
+  void ui_remove_dynamic_ui_group1();
+../components/UI/ui_dynamic_ui.h(19): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group2 - give arg types
+  void ui_init_dynamic_ui_group2();
+../components/UI/ui_dynamic_ui.h(20): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group2 - give arg types
+  void ui_update_dynamic_ui_group2();
+../components/UI/ui_dynamic_ui.h(21): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group2 - give arg types
+  void ui_remove_dynamic_ui_group2();
+../components/UI/ui_dynamic_ui.h(25): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group3 - give arg types
+  void ui_init_dynamic_ui_group3();
+../components/UI/ui_dynamic_ui.h(26): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group3 - give arg types
+  void ui_update_dynamic_ui_group3();
+../components/UI/ui_dynamic_ui.h(27): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group3 - give arg types
+  void ui_remove_dynamic_ui_group3();
+../components/UI/ui_dynamic_ui.h(31): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group4 - give arg types
+  void ui_init_dynamic_ui_group4();
+../components/UI/ui_dynamic_ui.h(32): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group4 - give arg types
+  void ui_update_dynamic_ui_group4();
+../components/UI/ui_dynamic_ui.h(33): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group4 - give arg types
+  void ui_remove_dynamic_ui_group4();
+../components/UI/ui_dynamic_ui.h(37): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group5 - give arg types
+  void ui_init_dynamic_ui_group5();
+../components/UI/ui_dynamic_ui.h(38): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group5 - give arg types
+  void ui_update_dynamic_ui_group5();
+../components/UI/ui_dynamic_ui.h(39): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group5 - give arg types
+  void ui_remove_dynamic_ui_group5();
+../components/UI/ui_dynamic_ui.h(43): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group6 - give arg types
+  void ui_init_dynamic_ui_group6();
+../components/UI/ui_dynamic_ui.h(44): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group6 - give arg types
+  void ui_update_dynamic_ui_group6();
+../components/UI/ui_dynamic_ui.h(45): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group6 - give arg types
+  void ui_remove_dynamic_ui_group6();
+../components/UI/ui_dynamic_ui.h(49): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group7 - give arg types
+  void ui_init_dynamic_ui_group7();
+../components/UI/ui_dynamic_ui.h(50): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group7 - give arg types
+  void ui_update_dynamic_ui_group7();
+../components/UI/ui_dynamic_ui.h(51): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group7 - give arg types
+  void ui_remove_dynamic_ui_group7();
+../components/UI/ui_dynamic_ui.h(55): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group8 - give arg types
+  void ui_init_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(56): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group8 - give arg types
+  void ui_update_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(57): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group8 - give arg types
+  void ui_remove_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(61): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group8 - give arg types
+  void ui_init_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(62): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group8 - give arg types
+  void ui_update_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(63): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group8 - give arg types
+  void ui_remove_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(67): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group9 - give arg types
+  void ui_init_dynamic_ui_group9();
+../components/UI/ui_dynamic_ui.h(68): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group9 - give arg types
+  void ui_update_dynamic_ui_group9();
+../components/UI/ui_dynamic_ui.h(69): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group9 - give arg types
+  void ui_remove_dynamic_ui_group9();
+../components/UI/ui_dynamic_ui.h(73): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group10 - give arg types
+  void ui_init_dynamic_ui_group10();
+../components/UI/ui_dynamic_ui.h(74): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group10 - give arg types
+  void ui_update_dynamic_ui_group10();
+../components/UI/ui_dynamic_ui.h(75): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group10 - give arg types
+  void ui_remove_dynamic_ui_group10();
+../components/UI/ui_dynamic_ui.h(78): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group11 - give arg types
+  void ui_init_dynamic_ui_group11();
+../components/UI/ui_dynamic_ui.h(79): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group11 - give arg types
+  void ui_update_dynamic_ui_group11();
+../components/UI/ui_dynamic_ui.h(80): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group11 - give arg types
+  void ui_remove_dynamic_ui_group11();
+../components/UI/ui_dynamic_ui.h(83): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group12 - give arg types
+  void ui_init_dynamic_ui_group12();
+../components/UI/ui_dynamic_ui.h(84): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group12 - give arg types
+  void ui_update_dynamic_ui_group12();
+../components/UI/ui_dynamic_ui.h(85): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group12 - give arg types
+  void ui_remove_dynamic_ui_group12();
+../components/UI/ui_dynamic_ui.h(88): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group13 - give arg types
+  void ui_init_dynamic_ui_group13();
+../components/UI/ui_dynamic_ui.h(89): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group13 - give arg types
+  void ui_update_dynamic_ui_group13();
+../components/UI/ui_dynamic_ui.h(90): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group13 - give arg types
+  void ui_remove_dynamic_ui_group13();
+../components/UI/ui_dynamic_ui.h(93): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group14 - give arg types
+  void ui_init_dynamic_ui_group14();
+../components/UI/ui_dynamic_ui.h(94): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group14 - give arg types
+  void ui_update_dynamic_ui_group14();
+../components/UI/ui_dynamic_ui.h(95): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group14 - give arg types
+  void ui_remove_dynamic_ui_group14();
+../components/UI/ui_dynamic_ui.h(97): warning:  #1-D: last line of file ends without a newline
+  #endif // UI_dynamic_ui_H
+..\Task\ins_task.h(120): warning:  #1295-D: Deprecated declaration IMU_Temperature_Ctrl - give arg types
+  void IMU_Temperature_Ctrl();
+..\Task\shoot_task.c: 59 warnings, 0 errors
+compiling bsp_buzzer.c...
+..\boards\bsp_buzzer.h(7): warning:  #1295-D: Deprecated declaration buzzer_init - give arg types
+  void buzzer_init();
+..\boards\bsp_buzzer.h(8): warning:  #1295-D: Deprecated declaration buzzer_warning - give arg types
+  void buzzer_warning();
+..\boards\bsp_buzzer.h(9): warning:  #1295-D: Deprecated declaration buzzer_on - give arg types
+  void buzzer_on();
+..\boards\bsp_buzzer.h(10): warning:  #1295-D: Deprecated declaration buzzer_off - give arg types
+  void buzzer_off();
+..\boards\bsp_buzzer.c(170): warning:  #1-D: last line of file ends without a newline
+  }
+..\boards\bsp_buzzer.c: 5 warnings, 0 errors
+compiling BMI088driver.c...
+compiling BMI088Middleware.c...
+compiling Circular_buffer.c...
+..\components\Circular_buffer\Circular_buffer.h(9): warning:  #1295-D: Deprecated declaration Command_GetLength - give arg types
+  uint16_t Command_GetLength();
+..\components\Circular_buffer\Circular_buffer.h(10): warning:  #1295-D: Deprecated declaration Command_GetRemain - give arg types
+  uint16_t Command_GetRemain();
+..\components\Circular_buffer\Circular_buffer.c: 2 warnings, 0 errors
+compiling bsp_led.c...
+..\boards\bsp_led.h(9): warning:  #1295-D: Deprecated declaration LED_Normal - give arg types
+  void LED_Normal();
+..\boards\bsp_led.h(10): warning:  #1295-D: Deprecated declaration LED_Warning - give arg types
+  void LED_Warning();
+..\boards\bsp_led.h(11): warning:  #1295-D: Deprecated declaration LED_RC_Disconnected - give arg types
+  void LED_RC_Disconnected();
+..\boards\bsp_led.h(12): warning:  #1295-D: Deprecated declaration LED_OFF - give arg types
+  void LED_OFF();
+..\boards\bsp_led.h(13): warning:  #1295-D: Deprecated declaration LED_Warning_Motor - give arg types
+  void LED_Warning_Motor();
+..\boards\bsp_led.c(50): warning:  #1-D: last line of file ends without a newline
+  }
+..\boards\bsp_led.c: 6 warnings, 0 errors
+compiling CRC.c...
+compiling pid.c...
+../Task/gimbal_task.h(274): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\components\controller\pid.c(251): warning:  #940-D: missing return statement at end of non-void function "PID_deadline_limit" 
+  }
+..\components\controller\pid.c: 2 warnings, 0 errors
+compiling kalman_filter.c...
+compiling QuaternionEKF.c...
+compiling ui_default.c...
+compiling ui_static_ui.c...
+compiling CAN_receive.c...
+../Task/gimbal_task.h(274): warning:  #1-D: last line of file ends without a newline
+  #endif
+../boards/bsp_led.h(9): warning:  #1295-D: Deprecated declaration LED_Normal - give arg types
+  void LED_Normal();
+../boards/bsp_led.h(10): warning:  #1295-D: Deprecated declaration LED_Warning - give arg types
+  void LED_Warning();
+../boards/bsp_led.h(11): warning:  #1295-D: Deprecated declaration LED_RC_Disconnected - give arg types
+  void LED_RC_Disconnected();
+../boards/bsp_led.h(12): warning:  #1295-D: Deprecated declaration LED_OFF - give arg types
+  void LED_OFF();
+../boards/bsp_led.h(13): warning:  #1295-D: Deprecated declaration LED_Warning_Motor - give arg types
+  void LED_Warning_Motor();
+..\application\GQ_Motor.h(26): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\application\CAN_receive.c: 7 warnings, 0 errors
+compiling controller.c...
+compiling ui_interface.c...
+../components/Circular_buffer/Circular_buffer.h(9): warning:  #1295-D: Deprecated declaration Command_GetLength - give arg types
+  uint16_t Command_GetLength();
+../components/Circular_buffer/Circular_buffer.h(10): warning:  #1295-D: Deprecated declaration Command_GetRemain - give arg types
+  uint16_t Command_GetRemain();
+../components/UI/ui_static_ui.h(45): warning:  #1295-D: Deprecated declaration ui_init_static_ui_Ungroup - give arg types
+  void ui_init_static_ui_Ungroup();
+../components/UI/ui_static_ui.h(46): warning:  #1295-D: Deprecated declaration ui_update_static_ui_Ungroup - give arg types
+  void ui_update_static_ui_Ungroup();
+../components/UI/ui_static_ui.h(47): warning:  #1295-D: Deprecated declaration ui_remove_static_ui_Ungroup - give arg types
+  void ui_remove_static_ui_Ungroup();
+../components/UI/ui_dynamic_ui.h(13): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group1 - give arg types
+  void ui_init_dynamic_ui_group1();
+../components/UI/ui_dynamic_ui.h(14): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group1 - give arg types
+  void ui_update_dynamic_ui_group1();
+../components/UI/ui_dynamic_ui.h(15): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group1 - give arg types
+  void ui_remove_dynamic_ui_group1();
+../components/UI/ui_dynamic_ui.h(19): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group2 - give arg types
+  void ui_init_dynamic_ui_group2();
+../components/UI/ui_dynamic_ui.h(20): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group2 - give arg types
+  void ui_update_dynamic_ui_group2();
+../components/UI/ui_dynamic_ui.h(21): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group2 - give arg types
+  void ui_remove_dynamic_ui_group2();
+../components/UI/ui_dynamic_ui.h(25): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group3 - give arg types
+  void ui_init_dynamic_ui_group3();
+../components/UI/ui_dynamic_ui.h(26): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group3 - give arg types
+  void ui_update_dynamic_ui_group3();
+../components/UI/ui_dynamic_ui.h(27): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group3 - give arg types
+  void ui_remove_dynamic_ui_group3();
+../components/UI/ui_dynamic_ui.h(31): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group4 - give arg types
+  void ui_init_dynamic_ui_group4();
+../components/UI/ui_dynamic_ui.h(32): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group4 - give arg types
+  void ui_update_dynamic_ui_group4();
+../components/UI/ui_dynamic_ui.h(33): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group4 - give arg types
+  void ui_remove_dynamic_ui_group4();
+../components/UI/ui_dynamic_ui.h(37): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group5 - give arg types
+  void ui_init_dynamic_ui_group5();
+../components/UI/ui_dynamic_ui.h(38): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group5 - give arg types
+  void ui_update_dynamic_ui_group5();
+../components/UI/ui_dynamic_ui.h(39): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group5 - give arg types
+  void ui_remove_dynamic_ui_group5();
+../components/UI/ui_dynamic_ui.h(43): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group6 - give arg types
+  void ui_init_dynamic_ui_group6();
+../components/UI/ui_dynamic_ui.h(44): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group6 - give arg types
+  void ui_update_dynamic_ui_group6();
+../components/UI/ui_dynamic_ui.h(45): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group6 - give arg types
+  void ui_remove_dynamic_ui_group6();
+../components/UI/ui_dynamic_ui.h(49): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group7 - give arg types
+  void ui_init_dynamic_ui_group7();
+../components/UI/ui_dynamic_ui.h(50): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group7 - give arg types
+  void ui_update_dynamic_ui_group7();
+../components/UI/ui_dynamic_ui.h(51): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group7 - give arg types
+  void ui_remove_dynamic_ui_group7();
+../components/UI/ui_dynamic_ui.h(55): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group8 - give arg types
+  void ui_init_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(56): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group8 - give arg types
+  void ui_update_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(57): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group8 - give arg types
+  void ui_remove_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(61): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group8 - give arg types
+  void ui_init_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(62): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group8 - give arg types
+  void ui_update_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(63): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group8 - give arg types
+  void ui_remove_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(67): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group9 - give arg types
+  void ui_init_dynamic_ui_group9();
+../components/UI/ui_dynamic_ui.h(68): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group9 - give arg types
+  void ui_update_dynamic_ui_group9();
+../components/UI/ui_dynamic_ui.h(69): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group9 - give arg types
+  void ui_remove_dynamic_ui_group9();
+../components/UI/ui_dynamic_ui.h(73): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group10 - give arg types
+  void ui_init_dynamic_ui_group10();
+../components/UI/ui_dynamic_ui.h(74): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group10 - give arg types
+  void ui_update_dynamic_ui_group10();
+../components/UI/ui_dynamic_ui.h(75): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group10 - give arg types
+  void ui_remove_dynamic_ui_group10();
+../components/UI/ui_dynamic_ui.h(78): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group11 - give arg types
+  void ui_init_dynamic_ui_group11();
+../components/UI/ui_dynamic_ui.h(79): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group11 - give arg types
+  void ui_update_dynamic_ui_group11();
+../components/UI/ui_dynamic_ui.h(80): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group11 - give arg types
+  void ui_remove_dynamic_ui_group11();
+../components/UI/ui_dynamic_ui.h(83): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group12 - give arg types
+  void ui_init_dynamic_ui_group12();
+../components/UI/ui_dynamic_ui.h(84): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group12 - give arg types
+  void ui_update_dynamic_ui_group12();
+../components/UI/ui_dynamic_ui.h(85): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group12 - give arg types
+  void ui_remove_dynamic_ui_group12();
+../components/UI/ui_dynamic_ui.h(88): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group13 - give arg types
+  void ui_init_dynamic_ui_group13();
+../components/UI/ui_dynamic_ui.h(89): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group13 - give arg types
+  void ui_update_dynamic_ui_group13();
+../components/UI/ui_dynamic_ui.h(90): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group13 - give arg types
+  void ui_remove_dynamic_ui_group13();
+../components/UI/ui_dynamic_ui.h(93): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group14 - give arg types
+  void ui_init_dynamic_ui_group14();
+../components/UI/ui_dynamic_ui.h(94): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group14 - give arg types
+  void ui_update_dynamic_ui_group14();
+../components/UI/ui_dynamic_ui.h(95): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group14 - give arg types
+  void ui_remove_dynamic_ui_group14();
+../components/UI/ui_dynamic_ui.h(97): warning:  #1-D: last line of file ends without a newline
+  #endif // UI_dynamic_ui_H
+../Task/gimbal_task.h(274): warning:  #1-D: last line of file ends without a newline
+  #endif
+../Task/shoot_task.h(126): warning:  #1-D: last line of file ends without a newline
+  /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+../Task/ins_task.h(120): warning:  #1295-D: Deprecated declaration IMU_Temperature_Ctrl - give arg types
+  void IMU_Temperature_Ctrl();
+..\components\UI\ui_interface.c: 54 warnings, 0 errors
+compiling ui_dynamic_ui.c...
+..\components\UI\ui_dynamic_ui.c(833): warning:  #1-D: last line of file ends without a newline
+  }
+..\components\UI\ui_dynamic_ui.c: 1 warning, 0 errors
+compiling remote_control.c...
+../boards/bsp_led.h(9): warning:  #1295-D: Deprecated declaration LED_Normal - give arg types
+  void LED_Normal();
+../boards/bsp_led.h(10): warning:  #1295-D: Deprecated declaration LED_Warning - give arg types
+  void LED_Warning();
+../boards/bsp_led.h(11): warning:  #1295-D: Deprecated declaration LED_RC_Disconnected - give arg types
+  void LED_RC_Disconnected();
+../boards/bsp_led.h(12): warning:  #1295-D: Deprecated declaration LED_OFF - give arg types
+  void LED_OFF();
+../boards/bsp_led.h(13): warning:  #1295-D: Deprecated declaration LED_Warning_Motor - give arg types
+  void LED_Warning_Motor();
+..\application\remote_control.c(307): warning:  #1-D: last line of file ends without a newline
+  }
+..\application\remote_control.c: 6 warnings, 0 errors
+compiling GQ_Motor.c...
+..\application\GQ_Motor.h(26): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\application\GQ_Motor.c(12): warning:  #223-D: function "memcpy" declared implicitly
+          memcpy(&tdata[5], &cur, sizeof(uint16_t));
+..\application\GQ_Motor.c(130): warning:  #1-D: last line of file ends without a newline
+  }
+..\application\GQ_Motor.c: 3 warnings, 0 errors
+compiling gimbal_behaviour.c...
+../Task/gimbal_task.h(274): warning:  #1-D: last line of file ends without a newline
+  #endif
+../boards/bsp_led.h(9): warning:  #1295-D: Deprecated declaration LED_Normal - give arg types
+  void LED_Normal();
+../boards/bsp_led.h(10): warning:  #1295-D: Deprecated declaration LED_Warning - give arg types
+  void LED_Warning();
+../boards/bsp_led.h(11): warning:  #1295-D: Deprecated declaration LED_RC_Disconnected - give arg types
+  void LED_RC_Disconnected();
+../boards/bsp_led.h(12): warning:  #1295-D: Deprecated declaration LED_OFF - give arg types
+  void LED_OFF();
+../boards/bsp_led.h(13): warning:  #1295-D: Deprecated declaration LED_Warning_Motor - give arg types
+  void LED_Warning_Motor();
+..\application\gimbal_behaviour.c: 6 warnings, 0 errors
+compiling USART_receive.c...
+../boards/bsp_led.h(9): warning:  #1295-D: Deprecated declaration LED_Normal - give arg types
+  void LED_Normal();
+../boards/bsp_led.h(10): warning:  #1295-D: Deprecated declaration LED_Warning - give arg types
+  void LED_Warning();
+../boards/bsp_led.h(11): warning:  #1295-D: Deprecated declaration LED_RC_Disconnected - give arg types
+  void LED_RC_Disconnected();
+../boards/bsp_led.h(12): warning:  #1295-D: Deprecated declaration LED_OFF - give arg types
+  void LED_OFF();
+../boards/bsp_led.h(13): warning:  #1295-D: Deprecated declaration LED_Warning_Motor - give arg types
+  void LED_Warning_Motor();
+../Task/gimbal_task.h(274): warning:  #1-D: last line of file ends without a newline
+  #endif
+../Task/INS_task.h(120): warning:  #1295-D: Deprecated declaration IMU_Temperature_Ctrl - give arg types
+  void IMU_Temperature_Ctrl();
+../components/Circular_buffer/Circular_buffer.h(9): warning:  #1295-D: Deprecated declaration Command_GetLength - give arg types
+  uint16_t Command_GetLength();
+../components/Circular_buffer/Circular_buffer.h(10): warning:  #1295-D: Deprecated declaration Command_GetRemain - give arg types
+  uint16_t Command_GetRemain();
+../components/UI/ui_static_ui.h(45): warning:  #1295-D: Deprecated declaration ui_init_static_ui_Ungroup - give arg types
+  void ui_init_static_ui_Ungroup();
+../components/UI/ui_static_ui.h(46): warning:  #1295-D: Deprecated declaration ui_update_static_ui_Ungroup - give arg types
+  void ui_update_static_ui_Ungroup();
+../components/UI/ui_static_ui.h(47): warning:  #1295-D: Deprecated declaration ui_remove_static_ui_Ungroup - give arg types
+  void ui_remove_static_ui_Ungroup();
+../components/UI/ui_dynamic_ui.h(13): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group1 - give arg types
+  void ui_init_dynamic_ui_group1();
+../components/UI/ui_dynamic_ui.h(14): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group1 - give arg types
+  void ui_update_dynamic_ui_group1();
+../components/UI/ui_dynamic_ui.h(15): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group1 - give arg types
+  void ui_remove_dynamic_ui_group1();
+../components/UI/ui_dynamic_ui.h(19): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group2 - give arg types
+  void ui_init_dynamic_ui_group2();
+../components/UI/ui_dynamic_ui.h(20): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group2 - give arg types
+  void ui_update_dynamic_ui_group2();
+../components/UI/ui_dynamic_ui.h(21): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group2 - give arg types
+  void ui_remove_dynamic_ui_group2();
+../components/UI/ui_dynamic_ui.h(25): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group3 - give arg types
+  void ui_init_dynamic_ui_group3();
+../components/UI/ui_dynamic_ui.h(26): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group3 - give arg types
+  void ui_update_dynamic_ui_group3();
+../components/UI/ui_dynamic_ui.h(27): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group3 - give arg types
+  void ui_remove_dynamic_ui_group3();
+../components/UI/ui_dynamic_ui.h(31): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group4 - give arg types
+  void ui_init_dynamic_ui_group4();
+../components/UI/ui_dynamic_ui.h(32): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group4 - give arg types
+  void ui_update_dynamic_ui_group4();
+../components/UI/ui_dynamic_ui.h(33): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group4 - give arg types
+  void ui_remove_dynamic_ui_group4();
+../components/UI/ui_dynamic_ui.h(37): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group5 - give arg types
+  void ui_init_dynamic_ui_group5();
+../components/UI/ui_dynamic_ui.h(38): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group5 - give arg types
+  void ui_update_dynamic_ui_group5();
+../components/UI/ui_dynamic_ui.h(39): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group5 - give arg types
+  void ui_remove_dynamic_ui_group5();
+../components/UI/ui_dynamic_ui.h(43): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group6 - give arg types
+  void ui_init_dynamic_ui_group6();
+../components/UI/ui_dynamic_ui.h(44): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group6 - give arg types
+  void ui_update_dynamic_ui_group6();
+../components/UI/ui_dynamic_ui.h(45): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group6 - give arg types
+  void ui_remove_dynamic_ui_group6();
+../components/UI/ui_dynamic_ui.h(49): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group7 - give arg types
+  void ui_init_dynamic_ui_group7();
+../components/UI/ui_dynamic_ui.h(50): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group7 - give arg types
+  void ui_update_dynamic_ui_group7();
+../components/UI/ui_dynamic_ui.h(51): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group7 - give arg types
+  void ui_remove_dynamic_ui_group7();
+../components/UI/ui_dynamic_ui.h(55): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group8 - give arg types
+  void ui_init_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(56): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group8 - give arg types
+  void ui_update_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(57): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group8 - give arg types
+  void ui_remove_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(61): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group8 - give arg types
+  void ui_init_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(62): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group8 - give arg types
+  void ui_update_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(63): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group8 - give arg types
+  void ui_remove_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(67): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group9 - give arg types
+  void ui_init_dynamic_ui_group9();
+../components/UI/ui_dynamic_ui.h(68): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group9 - give arg types
+  void ui_update_dynamic_ui_group9();
+../components/UI/ui_dynamic_ui.h(69): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group9 - give arg types
+  void ui_remove_dynamic_ui_group9();
+../components/UI/ui_dynamic_ui.h(73): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group10 - give arg types
+  void ui_init_dynamic_ui_group10();
+../components/UI/ui_dynamic_ui.h(74): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group10 - give arg types
+  void ui_update_dynamic_ui_group10();
+../components/UI/ui_dynamic_ui.h(75): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group10 - give arg types
+  void ui_remove_dynamic_ui_group10();
+../components/UI/ui_dynamic_ui.h(78): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group11 - give arg types
+  void ui_init_dynamic_ui_group11();
+../components/UI/ui_dynamic_ui.h(79): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group11 - give arg types
+  void ui_update_dynamic_ui_group11();
+../components/UI/ui_dynamic_ui.h(80): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group11 - give arg types
+  void ui_remove_dynamic_ui_group11();
+../components/UI/ui_dynamic_ui.h(83): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group12 - give arg types
+  void ui_init_dynamic_ui_group12();
+../components/UI/ui_dynamic_ui.h(84): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group12 - give arg types
+  void ui_update_dynamic_ui_group12();
+../components/UI/ui_dynamic_ui.h(85): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group12 - give arg types
+  void ui_remove_dynamic_ui_group12();
+../components/UI/ui_dynamic_ui.h(88): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group13 - give arg types
+  void ui_init_dynamic_ui_group13();
+../components/UI/ui_dynamic_ui.h(89): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group13 - give arg types
+  void ui_update_dynamic_ui_group13();
+../components/UI/ui_dynamic_ui.h(90): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group13 - give arg types
+  void ui_remove_dynamic_ui_group13();
+../components/UI/ui_dynamic_ui.h(93): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group14 - give arg types
+  void ui_init_dynamic_ui_group14();
+../components/UI/ui_dynamic_ui.h(94): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group14 - give arg types
+  void ui_update_dynamic_ui_group14();
+../components/UI/ui_dynamic_ui.h(95): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group14 - give arg types
+  void ui_remove_dynamic_ui_group14();
+../components/UI/ui_dynamic_ui.h(97): warning:  #1-D: last line of file ends without a newline
+  #endif // UI_dynamic_ui_H
+../Task/shoot_task.h(126): warning:  #1-D: last line of file ends without a newline
+  /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+..\application\USART_receive.c(35): warning:  #167-D: argument of type "const volatile uint8_t *" is incompatible with parameter of type "const void *__restrict__"
+          memcpy(&auto_shoot->yaw_add, &buf[3], sizeof(float));
+..\application\USART_receive.c(37): warning:  #167-D: argument of type "const volatile uint8_t *" is incompatible with parameter of type "const void *__restrict__"
+          memcpy(&auto_shoot->yaw_vel, &buf[7], sizeof(float));
+..\application\USART_receive.c(39): warning:  #167-D: argument of type "const volatile uint8_t *" is incompatible with parameter of type "const void *__restrict__"
+          memcpy(&auto_shoot->yaw_acc, &buf[11], sizeof(float));
+..\application\USART_receive.c(41): warning:  #167-D: argument of type "const volatile uint8_t *" is incompatible with parameter of type "const void *__restrict__"
+          memcpy(&auto_shoot->pitch_add, &buf[15], sizeof(float));
+..\application\USART_receive.c(44): warning:  #167-D: argument of type "const volatile uint8_t *" is incompatible with parameter of type "const void *__restrict__"
+          memcpy(&auto_shoot->pitch_vel, &buf[19], sizeof(float));
+..\application\USART_receive.c(46): warning:  #167-D: argument of type "const volatile uint8_t *" is incompatible with parameter of type "const void *__restrict__"
+          memcpy(&auto_shoot->pitch_acc, &buf[23], sizeof(float));
+..\application\USART_receive.c(121): warning:  #2748-D: null argument provided for parameter marked with attribute "nonnull"
+      memcpy(&sendBuffer[offset], 0, 2);
+..\application\USART_receive.c: 66 warnings, 0 errors
+compiling chassis_behaviour.c...
+../Task/gimbal_task.h(274): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\application\chassis_behaviour.c: 1 warning, 0 errors
+compiling control_power.c...
+../Task/gimbal_task.h(274): warning:  #1-D: last line of file ends without a newline
+  #endif
+../components/Circular_buffer/Circular_buffer.h(9): warning:  #1295-D: Deprecated declaration Command_GetLength - give arg types
+  uint16_t Command_GetLength();
+../components/Circular_buffer/Circular_buffer.h(10): warning:  #1295-D: Deprecated declaration Command_GetRemain - give arg types
+  uint16_t Command_GetRemain();
+../components/UI/ui_static_ui.h(45): warning:  #1295-D: Deprecated declaration ui_init_static_ui_Ungroup - give arg types
+  void ui_init_static_ui_Ungroup();
+../components/UI/ui_static_ui.h(46): warning:  #1295-D: Deprecated declaration ui_update_static_ui_Ungroup - give arg types
+  void ui_update_static_ui_Ungroup();
+../components/UI/ui_static_ui.h(47): warning:  #1295-D: Deprecated declaration ui_remove_static_ui_Ungroup - give arg types
+  void ui_remove_static_ui_Ungroup();
+../components/UI/ui_dynamic_ui.h(13): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group1 - give arg types
+  void ui_init_dynamic_ui_group1();
+../components/UI/ui_dynamic_ui.h(14): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group1 - give arg types
+  void ui_update_dynamic_ui_group1();
+../components/UI/ui_dynamic_ui.h(15): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group1 - give arg types
+  void ui_remove_dynamic_ui_group1();
+../components/UI/ui_dynamic_ui.h(19): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group2 - give arg types
+  void ui_init_dynamic_ui_group2();
+../components/UI/ui_dynamic_ui.h(20): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group2 - give arg types
+  void ui_update_dynamic_ui_group2();
+../components/UI/ui_dynamic_ui.h(21): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group2 - give arg types
+  void ui_remove_dynamic_ui_group2();
+../components/UI/ui_dynamic_ui.h(25): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group3 - give arg types
+  void ui_init_dynamic_ui_group3();
+../components/UI/ui_dynamic_ui.h(26): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group3 - give arg types
+  void ui_update_dynamic_ui_group3();
+../components/UI/ui_dynamic_ui.h(27): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group3 - give arg types
+  void ui_remove_dynamic_ui_group3();
+../components/UI/ui_dynamic_ui.h(31): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group4 - give arg types
+  void ui_init_dynamic_ui_group4();
+../components/UI/ui_dynamic_ui.h(32): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group4 - give arg types
+  void ui_update_dynamic_ui_group4();
+../components/UI/ui_dynamic_ui.h(33): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group4 - give arg types
+  void ui_remove_dynamic_ui_group4();
+../components/UI/ui_dynamic_ui.h(37): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group5 - give arg types
+  void ui_init_dynamic_ui_group5();
+../components/UI/ui_dynamic_ui.h(38): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group5 - give arg types
+  void ui_update_dynamic_ui_group5();
+../components/UI/ui_dynamic_ui.h(39): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group5 - give arg types
+  void ui_remove_dynamic_ui_group5();
+../components/UI/ui_dynamic_ui.h(43): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group6 - give arg types
+  void ui_init_dynamic_ui_group6();
+../components/UI/ui_dynamic_ui.h(44): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group6 - give arg types
+  void ui_update_dynamic_ui_group6();
+../components/UI/ui_dynamic_ui.h(45): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group6 - give arg types
+  void ui_remove_dynamic_ui_group6();
+../components/UI/ui_dynamic_ui.h(49): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group7 - give arg types
+  void ui_init_dynamic_ui_group7();
+../components/UI/ui_dynamic_ui.h(50): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group7 - give arg types
+  void ui_update_dynamic_ui_group7();
+../components/UI/ui_dynamic_ui.h(51): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group7 - give arg types
+  void ui_remove_dynamic_ui_group7();
+../components/UI/ui_dynamic_ui.h(55): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group8 - give arg types
+  void ui_init_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(56): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group8 - give arg types
+  void ui_update_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(57): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group8 - give arg types
+  void ui_remove_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(61): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group8 - give arg types
+  void ui_init_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(62): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group8 - give arg types
+  void ui_update_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(63): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group8 - give arg types
+  void ui_remove_dynamic_ui_group8();
+../components/UI/ui_dynamic_ui.h(67): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group9 - give arg types
+  void ui_init_dynamic_ui_group9();
+../components/UI/ui_dynamic_ui.h(68): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group9 - give arg types
+  void ui_update_dynamic_ui_group9();
+../components/UI/ui_dynamic_ui.h(69): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group9 - give arg types
+  void ui_remove_dynamic_ui_group9();
+../components/UI/ui_dynamic_ui.h(73): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group10 - give arg types
+  void ui_init_dynamic_ui_group10();
+../components/UI/ui_dynamic_ui.h(74): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group10 - give arg types
+  void ui_update_dynamic_ui_group10();
+../components/UI/ui_dynamic_ui.h(75): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group10 - give arg types
+  void ui_remove_dynamic_ui_group10();
+../components/UI/ui_dynamic_ui.h(78): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group11 - give arg types
+  void ui_init_dynamic_ui_group11();
+../components/UI/ui_dynamic_ui.h(79): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group11 - give arg types
+  void ui_update_dynamic_ui_group11();
+../components/UI/ui_dynamic_ui.h(80): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group11 - give arg types
+  void ui_remove_dynamic_ui_group11();
+../components/UI/ui_dynamic_ui.h(83): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group12 - give arg types
+  void ui_init_dynamic_ui_group12();
+../components/UI/ui_dynamic_ui.h(84): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group12 - give arg types
+  void ui_update_dynamic_ui_group12();
+../components/UI/ui_dynamic_ui.h(85): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group12 - give arg types
+  void ui_remove_dynamic_ui_group12();
+../components/UI/ui_dynamic_ui.h(88): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group13 - give arg types
+  void ui_init_dynamic_ui_group13();
+../components/UI/ui_dynamic_ui.h(89): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group13 - give arg types
+  void ui_update_dynamic_ui_group13();
+../components/UI/ui_dynamic_ui.h(90): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group13 - give arg types
+  void ui_remove_dynamic_ui_group13();
+../components/UI/ui_dynamic_ui.h(93): warning:  #1295-D: Deprecated declaration ui_init_dynamic_ui_group14 - give arg types
+  void ui_init_dynamic_ui_group14();
+../components/UI/ui_dynamic_ui.h(94): warning:  #1295-D: Deprecated declaration ui_update_dynamic_ui_group14 - give arg types
+  void ui_update_dynamic_ui_group14();
+../components/UI/ui_dynamic_ui.h(95): warning:  #1295-D: Deprecated declaration ui_remove_dynamic_ui_group14 - give arg types
+  void ui_remove_dynamic_ui_group14();
+../components/UI/ui_dynamic_ui.h(97): warning:  #1-D: last line of file ends without a newline
+  #endif // UI_dynamic_ui_H
+../Task/shoot_task.h(126): warning:  #1-D: last line of file ends without a newline
+  /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+../Task/ins_task.h(120): warning:  #1295-D: Deprecated declaration IMU_Temperature_Ctrl - give arg types
+  void IMU_Temperature_Ctrl();
+..\application\control_power.c: 54 warnings, 0 errors
+linking...
+Program Size: Code=124348 RO-data=5488 RW-data=1868 ZI-data=70204  
+FromELF: creating hex file...
+"RM_ITL_Old_Infantry\RM_ITL_Old_Infantry.axf" - 0 Error(s), 432 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.8.0.pack
+                ARM.CMSIS.5.8.0
+                CMSIS (Common Microcontroller Software Interface Standard)
+   * Component: CORE Version: 5.5.0
+
+Package Vendor: Keil
+                https://www.keil.com/pack/Keil.STM32H7xx_DFP.4.0.0.pack
+                Keil.STM32H7xx_DFP.4.0.0
+                STMicroelectronics STM32H7 Series Device Support
+
+<h2>Collection of Component include folders:</h2>
+  .\RTE\_RM_ITL_Old_Infantry
+  D:\Keil5\ARM\CMSIS\5.8.0\CMSIS\Core\Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:5.5.0
+      Include file:  CMSIS\Core\Include\tz_context.h
+Build Time Elapsed:  00:01:04
+</pre>
+</body>
+</html>

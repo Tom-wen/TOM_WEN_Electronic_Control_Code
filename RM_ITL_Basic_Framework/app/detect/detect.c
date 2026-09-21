@@ -1,0 +1,82 @@
+#include "detect.h"
+#include "bsp_led.h"
+#include "DM_Motor.h"
+uint16_t error_code = 0x140;
+static uint16_t last_key_state_reset = 0;
+void detect_task(void *argument)
+{
+    uint32_t current_time;
+    for(;;)
+    {
+        #ifdef AUTO_SENTRY
+        DM_Motor_TimeoutCheck(CAN3, DM_LOST_THRESHOLD);
+        #endif
+        #ifdef DJI_REMOTE
+            current_time = xTaskGetTickCount();
+            // 检查是否超时（遥控器离线检测）
+            if(sbus_online && (current_time - last_sbus_recv_time > pdMS_TO_TICKS(SBUS_TIMEOUT_MS)))
+            {
+                sbus_online = 0;  // 标记离线
+            }
+        #endif
+        #ifdef FS_REMOTE
+            if(rc_ctrl.rc.frame_lost == 1)
+            {
+                sbus_online = 0;  // 标记离线
+            }
+        #endif
+        #ifdef VT_03_REMOTE
+        current_time = xTaskGetTickCount();
+        // 检查是否超时（遥控器离线检测）
+        if(sbus_online && (current_time - last_sbus_recv_time > pdMS_TO_TICKS(SBUS_TIMEOUT_MS)))
+        {
+            sbus_online = 0;  // 标记离线
+        }
+        #endif
+        if(sbus_online == 0)
+        {
+            error_code = remote_offline;
+        }
+        else 
+        {
+            error_code = normal_runing;
+        }
+        //错误码更新
+        find_error(error_code);
+        if (KEY_C && !(last_key_state_reset & (1 << 13)))
+        {
+            HAL_NVIC_SystemReset();
+        }
+        last_key_state_reset = rc_ctrl.key;
+
+        vTaskDelay(pdMS_TO_TICKS(2));
+    }
+}
+
+void find_error(uint16_t error)
+{
+    switch (error)
+    {
+    case normal_runing:
+        WS2812_Ctrl(0,20,0);//绿色
+        break;
+    case HardFault:
+        WS2812_Ctrl(20,0,0);//红色
+        break;   
+    case remote_offline:
+        WS2812_Ctrl(0,0,20);//蓝色
+    break;  
+    case can_busy:
+        WS2812_Ctrl(20,20,0);//黄色
+    break;         
+    default:
+        break;
+    }
+}
+
+void vAssertCalled(uint32_t ulLine, const char *pcFile)
+{
+    taskENTER_CRITICAL();
+    WS2812_Ctrl(20,0,20);//紫色
+    while(1);
+}

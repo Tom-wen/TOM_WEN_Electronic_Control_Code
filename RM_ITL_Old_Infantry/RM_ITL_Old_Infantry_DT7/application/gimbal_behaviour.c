@@ -223,7 +223,7 @@ static void gimbal_behavour_set(gimbal_control_t *gimbal_mode_set)
         }
         else if (switch_is_mid(rc_ctrl.rc.s[GIMBAL_MODE_CHANNEL]))  // ÖÐ
         {
-            gimbal_behaviour = GIMBAL_ABSOLUTE_ANGLE;
+            gimbal_behaviour = GIMBAL_AUTO;
         }
         else if (switch_is_down(rc_ctrl.rc.s[GIMBAL_MODE_CHANNEL]))  // ÏÂ
         {

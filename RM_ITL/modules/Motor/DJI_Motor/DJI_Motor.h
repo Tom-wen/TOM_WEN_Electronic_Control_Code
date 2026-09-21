@@ -24,6 +24,7 @@ void DJI_Motor_enable(MotorControlData *motors);
 void DJI_Motor_disable(MotorControlData *motors);
 void DJI3508_SpdClose_mode2(MotorInstance *motors);
 void DJI6020_PosSpdClose_mode2(MotorInstance *motors);
+void DJI6020_GimbalGyro_mode(MotorInstance *motors);
 void DJI2006_SpdClose_mode(MotorInstance *motors);
 void update_total_angle(MotorControlData *m);
 void DJI_motor_can_callback(CANRxData *Rx_data, CAN_PORT can_port);

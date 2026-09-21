@@ -141,7 +141,7 @@ typedef enum
 } chassis_mode_e;
 
 //底盘控制数据
-typedef struct
+typedef struct Chassis_Ctrl_Cmd_s
 {
     // 控制部分
     float vx_set;                          // 前进方向速度
@@ -161,7 +161,6 @@ typedef struct
     float chassis_relative_angle_set; // 设置相对云台控制角度
     float chassis_yaw_set;
     pid_type_def chassis_angle_pid;            // 底盘跟随角度pid
-
 
 } Chassis_Ctrl_Cmd_s;
 

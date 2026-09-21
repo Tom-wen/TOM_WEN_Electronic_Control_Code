@@ -1,4 +1,8 @@
 #include "chassis_behaviour.h"
+#include "gimbal.h"           // 用于访问 Gimbal_6020
+#include "user_lib.h"         // 用于 first_order_filter_cali 函数
+#include "pid.h"              // 如果使用PID控制器
+
 
 /* =========================== 变量声明 =========================== */
 #ifdef vtm_rc_ctrl

@@ -9,7 +9,8 @@ Chassis_Ctrl_Cmd_s chassis_cmd_move;
 static void chassis_set_mode(void);
 static void chassis_feedback_update(void);
 static void chassis_set_contorl(void);
-static void chassis_vector_to_mecanum_wheel_speed(const float vx_set, const float vy_set, 
+static void chassis_control_loop(void);
+static void chassis_vector_to_mecanum_wheel_speed(const float vx_set, const float vy_set,
                                                    const float wz_set, float wheel_speed[4]);
  
 /**

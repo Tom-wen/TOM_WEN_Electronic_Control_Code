@@ -1,12 +1,18 @@
+/**
+ * @file    gimbal_behaviour.c
+ * @brief   云台行为控制实现
+ * @details 实现云台模式选择和遥控器输入到云台控制参数的映射
+ *          代码结构参考chassis_behaviour.c的组织方式
+ */
 
 #include "gimbal_behaviour.h"
-#include <math.h>
 
-// 宏定义
-#define int_abs(x) ((x) > 0 ? (x) : (-x))
+#ifdef COMPILE_GIMBAL
+
+/* =========================== 宏定义 =========================== */
 
 /**
- * @brief 遥控器的死区判断
+ * @brief 遥控器死区判断
  * @param input 输入的遥控器值
  * @param output 输出的死区处理后遥控器值
  * @param dealine 死区值
@@ -23,360 +29,241 @@
         }                                                \
     }
 
-// 全局变量定义
-gimbal_behaviour_e gimbal_behaviour = GIMBAL_ZERO_FORCE;
-gimbal_behaviour_e last_gimbal_behaviour;
+/* =========================== 外部变量 =========================== */
 
-/* =========================== 变量声明 =========================== */
-#ifdef vtm_rc_ctrl
-  uint8_t gimbal_control_mode_index=0;
-#endif
+extern uint8_t auto_aim_flag;
+
+/* =========================== 静态函数声明 =========================== */
 
 /**
- * @brief 云台行为状态机设置
- * @param gimbal_mode_set 云台数据指针
+ * @brief 云台无力控制 - 所有控制参数设为0
+ * @param gimbal_control_set 云台数据指针
  */
-static void gimbal_behavour_set(Gimbal_Ctrl_Cmd_s *gimbal_mode_set);
-
-
-
-
+static void gimbal_zero_force_control(Gimbal_Ctrl_Cmd_s *gimbal_control_set);
 
 /**
- * @brief 云台行为模式设置
- * @param gimbal_mode_set 云台数据指针
+ * @brief 云台正常控制 - 遥控器/鼠标映射到yaw、pitch控制量
+ * @param gimbal_control_set 云台数据指针
+ */
+static void gimbal_normal_control(Gimbal_Ctrl_Cmd_s *gimbal_control_set);
+
+/* =========================== 函数实现 =========================== */
+
+/**
+ * @brief 云台模式选择
+ * @param gimbal_mode_set 云台控制数据指针
+ * @details 根据遥控器拨杆/按键状态设置云台控制模式和自瞄标志位
  */
 void gimbal_behaviour_mode_set(Gimbal_Ctrl_Cmd_s *gimbal_mode_set)
 {
-    if (gimbal_mode_set == NULL)
+    if(gimbal_mode_set == NULL)
     {
         return;
     }
 
-    // 云台行为状态机设置
-    gimbal_behavour_set(gimbal_mode_set);
-
-}
-
-/**
- * @brief 云台行为控制
- * @param add_yaw 设置的yaw角度增加值，单位 rad
- * @param add_pitch 设置的pitch角度增加值，单位 rad
- * @param gimbal_control_set 云台数据指针
- */
-void gimbal_behaviour_control_set(float *add_yaw, float *add_pitch, Gimbal_Ctrl_Cmd_s *gimbal_control_set)
-{
-    if (add_yaw == NULL || add_pitch == NULL || gimbal_control_set == NULL)
+    // 遥控器不在线时设置为零力模式
+    if(sbus_online == 0)
     {
+        gimbal_mode_set->gimbal_mode = GIMBAL_ZERO_FORCE;
         return;
     }
 
-    static uint8_t last_behaviour = GIMBAL_ZERO_FORCE;
-
-    // 根据云台行为模式选择对应的控制函数
-    switch (gimbal_behaviour)
+#ifdef DJI_REMOTE
+    // DJI遥控器：根据左拨杆位置设置模式
+    switch (left_switch)
     {
-        case GIMBAL_ABSOLUTE_ANGLE:
-            gimbal_absolute_angle_control(add_yaw, add_pitch, gimbal_control_set);
+        case switch_down:
+            gimbal_mode_set->gimbal_mode = GIMBAL_ZERO_FORCE;
             break;
-
-        case GIMBAL_AUTO://自瞄模式
-            gimbal_auto_control(add_yaw, add_pitch, gimbal_control_set);
+        case switch_mid:
+            gimbal_mode_set->gimbal_mode = GIMBAL_NORMAL;
             break;
-
+        case switch_up:
+            gimbal_mode_set->gimbal_mode = GIMBAL_ABSOLUTE_ANGLE;
+            break;
         default:
             break;
     }
-
-    // 模式切换时重置角度设定值
-    if (last_behaviour != gimbal_behaviour)
+    // 侧拨杆控制自瞄开关
+    if(side_switch_on)
     {
-        gimbal_control_set->gimbal_pitch_motor.absolute_angle_set = gimbal_control_set->gimbal_pitch_motor.absolute_angle;
-        gimbal_control_set->gimbal_yaw_motor.absolute_angle_set = gimbal_control_set->gimbal_yaw_motor.absolute_angle;
+        auto_aim_flag = 1;
     }
-
-    last_behaviour = gimbal_behaviour;
-}
-
-
-/**
- * @brief 云台行为状态机设置
- * @param gimbal_mode_set 云台数据指针
- */
-static void gimbal_behavour_set(Gimbal_Ctrl_Cmd_s *gimbal_mode_set)
-{
-    if (gimbal_mode_set == NULL)
+    else if(side_switch_off)
     {
-        return;
+        auto_aim_flag = 0;
     }
+#endif
 
-    #ifdef DT7_rc_ctrl
-        // 开关控制云台状态
-        if (switch_is_up(rc_ctrl.rc.s[GIMBAL_MODE_CHANNEL]))  // 上
-        {
-            gimbal_behaviour = GIMBAL_ABSOLUTE_ANGLE;
-        }
-        else if (switch_is_mid(rc_ctrl.rc.s[GIMBAL_MODE_CHANNEL]))  // 中
-        {
-            gimbal_behaviour = GIMBAL_ABSOLUTE_ANGLE;
-        }
-        else if (switch_is_down(rc_ctrl.rc.s[GIMBAL_MODE_CHANNEL]))  // 下
-        {
-            gimbal_behaviour = GIMBAL_ZERO_FORCE;
-        }
-    #endif
+#ifdef FS_REMOTE
+    // FS遥控器：根据右拨杆位置设置模式
+    switch (right_switch)
+    {
+        case switch_up:
+            gimbal_mode_set->gimbal_mode = GIMBAL_ZERO_FORCE;
+            break;
+        case switch_mid:
+            gimbal_mode_set->gimbal_mode = GIMBAL_NORMAL;
+            break;
+        case switch_down:
+            gimbal_mode_set->gimbal_mode = GIMBAL_ABSOLUTE_ANGLE;
+            break;
+        default:
+            break;
+    }
+    // 左拨杆控制自瞄开关
+    switch (left_switch)
+    {
+        case switch_up:
+            auto_aim_flag = 0;
+            break;
+        case switch_down:
+            auto_aim_flag = 1;
+            break;
+        default:
+            auto_aim_flag = 0;
+            break;
+    }
+#endif
 
-    #ifdef i6x_rc_ctrl
-        // 开关控制云台状态
-        if (i6x_switch_is_down(i6x_ctrl.s[GIMBAL_MODE_CHANNEL]))  // 下
-        {
-            gimbal_behaviour = GIMBAL_ABSOLUTE_ANGLE;
-        }
-        else if (i6x_switch_is_mid(i6x_ctrl.s[GIMBAL_MODE_CHANNEL]))  // 中
-        {
-            gimbal_behaviour = GIMBAL_ABSOLUTE_ANGLE;
-        }
-        else if (i6x_switch_is_up(i6x_ctrl.s[GIMBAL_MODE_CHANNEL]))  // 上
-        {
-            gimbal_behaviour = GIMBAL_AUTO;
-        }
-    #endif
+#ifdef VT_03_REMOTE
+    {
+        static uint8_t last_switch_state = 0xFF;
+        static gimbal_mode_e current_gimbal_mode = GIMBAL_NORMAL;
 
-    #ifdef vtm_rc_ctrl
-        // 检测R键是否按下（上升沿触发）
-        static uint8_t r_key_last_state = 0;
-        uint8_t r_key_current_state = (vtm_rc_data.key & KEY_PRESSED_OFFSET_R) ? 1 : 0;
+        gimbal_mode_set->gimbal_mode = current_gimbal_mode;
 
-        // 上升沿检测：当前按下且上次未按下
-        if (r_key_current_state && !r_key_last_state)
+        // R键循环切换模式（上升沿检测）
+        if(rc_ctrl.key_rising_edge & (1 << 8))
         {
-            // 切换到下一个模式（循环切换）
-            gimbal_control_mode_index = (gimbal_control_mode_index + 1) % 2; // 2种模式
-
-            // 根据索引设置底盘模式
-            switch (gimbal_control_mode_index)
+            if(current_gimbal_mode == GIMBAL_NORMAL)
             {
-                case 0:
-                    gimbal_behaviour = GIMBAL_ABSOLUTE_ANGLE;
+                current_gimbal_mode = GIMBAL_ABSOLUTE_ANGLE;
+            }
+            else if(current_gimbal_mode == GIMBAL_ABSOLUTE_ANGLE)
+            {
+                current_gimbal_mode = GIMBAL_NORMAL;
+            }
+            gimbal_mode_set->gimbal_mode = current_gimbal_mode;
+        }
+        // 拨杆切换模式（边沿检测，只有位置变化时才切换）
+        else if((left_switch != last_switch_state) && (left_switch != switch_down))
+        {
+            switch (left_switch)
+            {
+                case switch_down:
+                    current_gimbal_mode = GIMBAL_NO_FOLLOW;
                     break;
-                case 1:
-                    gimbal_behaviour = GIMBAL_ABSOLUTE_ANGLE;
+                case switch_mid:
+                    current_gimbal_mode = GIMBAL_ABSOLUTE_ANGLE;
+                    break;
+                case switch_up:
+                    current_gimbal_mode = GIMBAL_ABSOLUTE_ANGLE;
+                    break;
+                default:
+                    current_gimbal_mode = GIMBAL_ZERO_FORCE;
                     break;
             }
-            last_gimbal_behaviour = gimbal_behaviour;
+            gimbal_mode_set->gimbal_mode = current_gimbal_mode;
+            last_switch_state = left_switch;
         }
-        // 更新上一次R键状态
-        r_key_last_state = r_key_current_state;
-
-        if(vtm_rc_data.key & KEY_PRESSED_OFFSET_X)
-        {
-            gimbal_behaviour = GIMBAL_ABSOLUTE_ANGLE;
-        }
-
-        if (open_fire(vtm_rc_data.mouse_right))
-        {
-            gimbal_behaviour = GIMBAL_AUTO;
-        }
-        else
-        {
-            gimbal_behaviour = last_gimbal_behaviour;
-        }
-
-
-        // 记录上一次的 mode_sw 状态
-        static uint8_t last_mode_sw = 0;
-        if(vtm_rc_data.mode_sw == 1 || vtm_rc_data.mode_sw == 2)
-        {
-
-                    // 检测 mode_sw 是否改变
-                if (vtm_rc_data.mode_sw != last_mode_sw)
-                {
-                    // mode_sw 改变时，设置为绝对角度模式
-                    gimbal_behaviour = GIMBAL_ABSOLUTE_ANGLE;
-                    gimbal_control_mode_index = 0;  // 同步更新索引
-                    last_gimbal_behaviour = gimbal_behaviour;
-                }
-
-                // 检测FN2键是否按下（上升沿触发）
-                static uint8_t FN2_key_last_state = 0;
-                uint8_t FN2_key_current_state = vtm_rc_data.fn_2 ? 1 : 0;
-
-                // 上升沿检测：当前按下且上次未按下
-                if (FN2_key_current_state && !FN2_key_last_state)
-                {
-                    // 切换到下一个模式（循环切换）
-                    gimbal_control_mode_index = (gimbal_control_mode_index + 1) % 2; // 2种模式
-
-                    // 根据索引设置底盘模式
-                    switch (gimbal_control_mode_index)
-                    {
-                        case 0:
-                            gimbal_behaviour = GIMBAL_ABSOLUTE_ANGLE;
-                            break;
-                        case 1:
-                            gimbal_behaviour = GIMBAL_AUTO;
-                            break;
-                    }
-                    last_gimbal_behaviour = gimbal_behaviour;
-                }
-                // 更新上一次FN2键状态
-                FN2_key_last_state = FN2_key_current_state;
-
-                    // 更新上一次 mode_sw 状态
-                last_mode_sw = vtm_rc_data.mode_sw;
-        }
-
-
-    #endif
+    }
+#endif
 }
 
-
 /**
- * @brief 云台绝对角度控制
- * @param yaw yaw轴角度控制，为角度的增量 单位 rad
- * @param pitch pitch轴角度控制，为角度的增量 单位 rad
- * @param gimbal_control_set 云台数据指针
+ * @brief 设置云台控制量
+ * @param gimbal_control_set 云台控制数据指针
+ * @details 根据当前云台模式调用不同的控制函数，将遥控器输入映射到yaw、pitch控制参数
  */
-static void gimbal_absolute_angle_control(float *yaw, float *pitch, Gimbal_Ctrl_Cmd_s *gimbal_control_set)
+void gimbal_behaviour_control_set(Gimbal_Ctrl_Cmd_s *gimbal_control_set)
 {
-    if (yaw == NULL || pitch == NULL || gimbal_control_set == NULL)
+    if(gimbal_control_set == NULL)
     {
         return;
     }
 
-    static int16_t yaw_channel = 0, pitch_channel = 0;
+    switch(gimbal_control_set->gimbal_mode)
+    {
+        case GIMBAL_ZERO_FORCE:
+        case GIMBAL_NO_FOLLOW:
+            gimbal_zero_force_control(gimbal_control_set);
+            break;
 
-    #ifdef DT7_rc_ctrl    
-        rc_deadband_limit(rc_ctrl.rc.ch[YAW_CHANNEL], yaw_channel, RC_DEADBAND);
-        rc_deadband_limit(rc_ctrl.rc.ch[PITCH_CHANNEL], pitch_channel, RC_DEADBAND);
-    #endif
+        case GIMBAL_NORMAL:
+        case GIMBAL_ABSOLUTE_ANGLE:
+            gimbal_normal_control(gimbal_control_set);
+            break;
 
-    #ifdef i6x_rc_ctrl
-        rc_deadband_limit(i6x_ctrl.ch[YAW_CHANNEL], yaw_channel, RC_DEADBAND);
-        rc_deadband_limit(i6x_ctrl.ch[PITCH_CHANNEL], pitch_channel, RC_DEADBAND);
-    #endif
+        default:
+            gimbal_zero_force_control(gimbal_control_set);
+            break;
+    }
+}
 
-    #ifdef vtm_rc_ctrl
+/* =========================== 静态控制函数 =========================== */
 
-            rc_deadband_limit(vtm_rc_data.mouse_x, yaw_channel, RC_DEADBAND);
-            rc_deadband_limit(vtm_rc_data.mouse_y, pitch_channel, RC_DEADBAND);
-            static uint8_t q_last_key_state = 0;
-            static uint8_t e_last_key_state = 0;
-
-            // 获取当前按键状态
-            uint8_t q_current_key_state = (vtm_rc_data.key & KEY_PRESSED_OFFSET_Q) ? 1 : 0;
-            uint8_t e_current_key_state = (vtm_rc_data.key & KEY_PRESSED_OFFSET_E) ? 1 : 0;
-
-            // 检测 Q 键的上升沿（按下瞬间）
-            if (q_current_key_state && !q_last_key_state)
-            {
-                *yaw = KEY_RUN;
-                *pitch = 0.0f;
-            }
-            // 检测 E 键的上升沿（按下瞬间）
-            else if (e_current_key_state && !e_last_key_state)
-            {
-                *yaw = -KEY_RUN;
-                *pitch = 0.0f;
-            }
-            else
-            {
-                // 正常鼠标控制
-                *yaw = yaw_channel * YAW_RC_SEN;
-                *pitch = pitch_channel * PITCH_RC_SEN;
-            }
-
-            q_last_key_state = q_current_key_state;
-            e_last_key_state = e_current_key_state;
-
-
-
-            //下面是图传遥控器控制
-            if(vtm_rc_data.mode_sw == 1 || vtm_rc_data.mode_sw == 2)
-            {
-                rc_deadband_limit(vtm_rc_data.ch[3], yaw_channel, RC_DEADBAND);
-                rc_deadband_limit(vtm_rc_data.ch[2], pitch_channel, RC_DEADBAND);
-                *yaw = yaw_channel * YAW_RC_SEN;
-                *pitch = pitch_channel * PITCH_RC_SEN;
-            }
-
-        #else
-            // 非 vtm 遥控器时使用默认控制
-            *yaw = yaw_channel * YAW_RC_SEN;
-            *pitch = pitch_channel * PITCH_RC_SEN;
-        #endif
-
+/**
+ * @brief 云台无力控制
+ * @param gimbal_control_set 云台数据指针
+ */
+static void gimbal_zero_force_control(Gimbal_Ctrl_Cmd_s *gimbal_control_set)
+{
+    gimbal_control_set->yaw = 0;
+    gimbal_control_set->pitch = 0;
+    gimbal_control_set->yaw_vel = 0;
+    gimbal_control_set->pitch_vel = 0;
 }
 
 /**
- * @brief 云台相对角度控制
- * @param yaw yaw轴角度控制，为角度的增量 单位 rad
- * @param pitch pitch轴角度控制，为角度的增量 单位 rad
+ * @brief 云台正常/绝对角度控制（遥控器/鼠标输入映射）
  * @param gimbal_control_set 云台数据指针
+ * @details 键盘鼠标有操作时优先使用鼠标，否则使用摇杆
  */
-static void gimbal_relative_angle_control(float *yaw, float *pitch,  *gimbal_control_set)
+static void gimbal_normal_control(Gimbal_Ctrl_Cmd_s *gimbal_control_set)
 {
-    if (yaw == NULL || pitch == NULL || gimbal_control_set == NULL)
+#ifdef DJI_REMOTE
+    // 键盘鼠标有操作时用鼠标，否则用摇杆
+    if(rc_ctrl.mouse_x != 0 || rc_ctrl.mouse_y != 0)
     {
-        return;
-    }
-
-    static int16_t yaw_channel = 0, pitch_channel = 0;
-
-    #ifdef DT7_rc_ctrl    
-        rc_deadband_limit(rc_ctrl.rc.ch[YAW_CHANNEL], yaw_channel, RC_DEADBAND);
-        rc_deadband_limit(rc_ctrl.rc.ch[PITCH_CHANNEL], pitch_channel, RC_DEADBAND);
-    #endif
-
-    #ifdef i6x_rc_ctrl
-        rc_deadband_limit(i6x_ctrl.ch[YAW_CHANNEL], yaw_channel, RC_DEADBAND);
-        rc_deadband_limit(i6x_ctrl.ch[PITCH_CHANNEL], pitch_channel, RC_DEADBAND);
-    #endif
-
-    *yaw = yaw_channel * YAW_RC_SEN;
-    *pitch = pitch_channel * PITCH_RC_SEN ;
-}
-
-/**
- * @brief 云台静止控制
- * @param yaw yaw轴角度控制，为角度的增量 单位 rad
- * @param pitch pitch轴角度控制，为角度的增量 单位 rad
- * @param gimbal_control_set 云台数据指针
- */
-static void gimbal_motionless_control(float *yaw, float *pitch, gimbal_control_t *gimbal_control_set)
-{
-    if (yaw == NULL || pitch == NULL || gimbal_control_set == NULL)
-    {
-        return;
-    }
-
-    *yaw = 0.0f;
-    *pitch = 0.0f;
-}
-
-/**
- * @brief 云台自瞄模式控制
- * @param yaw yaw轴角度控制，为角度的增量 单位 rad
- * @param pitch pitch轴角度控制，为角度的增量 单位 rad
- * @param gimbal_control_set 云台数据指针
- */
-static void gimbal_auto_control(float *yaw, float *pitch, gimbal_control_t *gimbal_control_set)
-{
-    if (yaw == NULL || pitch == NULL || gimbal_control_set == NULL)
-    {
-        return;
-    }
-
-    if(auto_shoot.pitch_add == 0 && auto_shoot.yaw_add==0)
-    {
-        *yaw = gimbal_control.gimbal_yaw_motor.absolute_angle_set;
-        *pitch = gimbal_control.gimbal_pitch_motor.absolute_angle_set;
+        gimbal_control_set->yaw = -rc_ctrl.mouse_x * 2.2f;
+        gimbal_control_set->pitch = -rc_ctrl.mouse_y * 2.2f;
     }
     else
     {
-        // 上位机控制逻辑
-        *yaw = auto_shoot.yaw_add;
-        *pitch = auto_shoot.pitch_add;
+        gimbal_control_set->yaw = -(float)rc_ctrl.rc.ch[2];
+        gimbal_control_set->pitch = (float)rc_ctrl.rc.ch[3];
     }
+#endif
+
+#ifdef FS_REMOTE
+    if(rc_ctrl.mouse_x != 0 || rc_ctrl.mouse_y != 0)
+    {
+        gimbal_control_set->yaw = -rc_ctrl.mouse_x * 2.2f;
+        gimbal_control_set->pitch = -rc_ctrl.mouse_y * 2.2f;
+    }
+    else
+    {
+        gimbal_control_set->yaw = -(float)rc_ctrl.rc.ch[2];
+        gimbal_control_set->pitch = (float)rc_ctrl.rc.ch[3];
+    }
+#endif
+
+#ifdef VT_03_REMOTE
+    if(rc_ctrl.mouse_x != 0 || rc_ctrl.mouse_y != 0)
+    {
+        gimbal_control_set->yaw = -rc_ctrl.mouse_x * 2.2f;
+        gimbal_control_set->pitch = -rc_ctrl.mouse_y * 2.2f;
+    }
+    else
+    {
+        gimbal_control_set->yaw = -(float)rc_ctrl.rc.ch[2];
+        gimbal_control_set->pitch = (float)rc_ctrl.rc.ch[3];
+    }
+#endif
+
+    gimbal_control_set->yaw_vel = 0;
+    gimbal_control_set->pitch_vel = 0;
 }
 
+#endif // COMPILE_GIMBAL

@@ -118,11 +118,11 @@ void Chassis_Motor_Init(MotorInstance *motors, MotorControlData *motors_data)
 #ifdef COMPILE_GIMBAL
 void Gimbal_Motor_Init(MotorInstance *motors, MotorControlData *motors_data)
 {
-    // 6020电机初始化 - 使用CAN3总线
-    // YAW轴（偏航轴）电机，ID=7
-    motors[0] = CreateMotor(Motor6020V, 7, &motors_data[0], 2, DJI6020_PosSpdClose_mode2, DJI_motor_can_callback, CAN2);
-    // PITCH轴（俯仰轴）电机，ID=6
-    motors[1] = CreateMotor(Motor6020V, 6, &motors_data[1], 2, DJI6020_PosSpdClose_mode2, DJI_motor_can_callback, CAN1);
+    // 6020电机初始化 - 云台陀螺仪模式（外环IMU角度，内环陀螺仪角速度）
+    // YAW轴（偏航轴）电机，ID=7，CAN2
+    motors[0] = CreateMotor(Motor6020V, 7, &motors_data[0], 2, DJI6020_GimbalGyro_mode, DJI_motor_can_callback, CAN2);
+    // PITCH轴（俯仰轴）电机，ID=6，CAN1
+    motors[1] = CreateMotor(Motor6020V, 6, &motors_data[1], 2, DJI6020_GimbalGyro_mode, DJI_motor_can_callback, CAN1);
 }
 #endif
 

@@ -233,45 +233,13 @@ void referee_routine_analyse(referee_receive *referee_data)
 }
 void dynamic_ui_speed_update()
 {
-    switch (chassis_cmd_send.gear_level)
-    {
-        case 1:
-            ui_mode_ui_group2_speed_number->end_y = 660;
-            ui_update_mode_ui_group2();
-            break;
-        case 2:
-            ui_mode_ui_group2_speed_number->end_y = 720;
-            ui_update_mode_ui_group2();
-            break;    
-        case 3:
-            ui_mode_ui_group2_speed_number->end_y = 780;
-            ui_update_mode_ui_group2();
-            break;               
-        default:
-            ui_mode_ui_group2_speed_number->end_y = 660;
-            ui_update_mode_ui_group2();
-            break;
-    }
+
 }
 
 //底盘控制模式更新
 void dynamic_ui_mode_update()
 {
-    switch (chassis_cmd_send.chassis_mode)
-    {
-        case CHASSIS_FOLLOW_GIMBAL_YAW:
-            ui_mode_ui_group1_follow_mode->color = 2;
-            ui_mode_ui_group1_rotate_mode->color = 8;
-            ui_update_mode_ui_group1();
-            break;
-        case CHASSIS_ROTATE:
-            ui_mode_ui_group1_follow_mode->color = 8;
-            ui_mode_ui_group1_rotate_mode->color = 2;
-            ui_update_mode_ui_group1();
-            break;    
-        default:
-            break;
-    }
+
 }
 
 //发射控制模式更新

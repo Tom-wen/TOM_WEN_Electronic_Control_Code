@@ -25,6 +25,33 @@ extern RNG_HandleTypeDef hrng;
 
 uint8_t GlobalDebugMode = 7;
 
+/**
+  * @brief          一阶低通滤波初始化
+  * @param[in]      first_order_filter_type: 一阶低通滤波结构体
+  * @param[in]      frame_period: 滤波周期，单位 s
+  * @param[in]      num: 滤波系数（时间常数）
+  */
+void first_order_filter_init(first_order_filter_type_t *first_order_filter_type, float frame_period, const float num[1])
+{
+    first_order_filter_type->frame_period = frame_period;
+    first_order_filter_type->num[0] = num[0];
+    first_order_filter_type->input = 0.0f;
+    first_order_filter_type->out = 0.0f;
+}
+
+/**
+  * @brief          一阶低通滤波计算
+  * @param[in]      first_order_filter_type: 一阶低通滤波结构体
+  * @param[in]      input: 输入值
+  */
+void first_order_filter_cali(first_order_filter_type_t *first_order_filter_type, float input)
+{
+    first_order_filter_type->input = input;
+    first_order_filter_type->out =
+        first_order_filter_type->num[0] / (first_order_filter_type->num[0] + first_order_filter_type->frame_period) * first_order_filter_type->out +
+        first_order_filter_type->frame_period / (first_order_filter_type->num[0] + first_order_filter_type->frame_period) * first_order_filter_type->input;
+}
+
 //快速开方
 float Sqrt(float x)
 {
